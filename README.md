@@ -7,12 +7,12 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![CustomTkinter](https://img.shields.io/badge/UI-CustomTkinter-green.svg)](https://github.com/TomSchimansky/CustomTkinter)
 [![Lisans](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macos-lightgrey.svg)](https://github.com/MEMATİ8383/Advanced-Text-Editor)
+[![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macos-lightgrey.svg)](https://github.com/Memati8383/Advanced-Text-Editor)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Downloads](https://img.shields.io/github/downloads/MEMATİ8383/Advanced-Text-Editor/total.svg)](https://github.com/MEMATİ8383/Advanced-Text-Editor/releases)
-[![Issues](https://img.shields.io/github/issues/MEMATİ8383/Advanced-Text-Editor.svg)](https://github.com/MEMATİ8383/Advanced-Text-Editor/issues)
+[![Downloads](https://img.shields.io/github/downloads/Memati8383/Advanced-Text-Editor/total.svg)](https://github.com/Memati8383/Advanced-Text-Editor/releases)
+[![Issues](https://img.shields.io/github/issues/Memati8383/Advanced-Text-Editor.svg)](https://github.com/Memati8383/Advanced-Text-Editor/issues)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![Stars](https://img.shields.io/github/stars/MEMATİ8383/Advanced-Text-Editor.svg)](https://github.com/MEMATİ8383/Advanced-Text-Editor/stargazers)
+[![Stars](https://img.shields.io/github/stars/Memati8383/Advanced-Text-Editor.svg)](https://github.com/Memati8383/Advanced-Text-Editor/stargazers)
 
 
 <br>
@@ -78,7 +78,7 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 
 1. **Projeyi Bilgisayarınıza İndirin**
    ```bash
-   git clone https://github.com/MEMATİ8383/Advanced-Text-Editor.git
+   git clone https://github.com/Memati8383/Advanced-Text-Editor.git
    cd Advanced-Text-Editor
    ```
 
@@ -182,7 +182,7 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
    ```
 5. **🔀 PR Açın**: Ana repoya bir Pull Request gönderin ve kodunuzu inceleyelim!
 
-> 🐛 **Hata mı buldunuz?** Lütfen [Issues](https://github.com/MEMATİ8383/Advanced-Text-Editor/issues) sayfasından bildirin.
+> 🐛 **Hata mı buldunuz?** Lütfen [Issues](https://github.com/Memati8383/Advanced-Text-Editor/issues) sayfasından bildirin.
 > ⭐ **Beğendiniz mi?** Projeye yıldız vererek destek olabilirsiniz!
 
 ---
@@ -193,5 +193,6 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p>Copyright © 2024 Memati. Tüm Hakları Saklıdır.</p>
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
+
 
 
