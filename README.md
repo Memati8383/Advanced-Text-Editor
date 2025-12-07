@@ -33,7 +33,7 @@
 
 ### 🚀 **Gelişmiş Kodlama Araçları**
 - **🧠 Akıllı Otomatik Tamamlama**: Yazarken size yardımcı olan bağlamsal öneriler.
-- **📂 Kod K atlama (Code Folding)**: Fonksiyon ve sınıf bloklarını katlayarak kod karmaşasını azaltın.
+- **📂 Kod Katlama (Code Folding)**: Fonksiyon ve sınıf bloklarını katlayarak kod karmaşasını azaltın.
 - **⚖️ Akıllı Girinti & Parantez**: Otomatik girinti ve parantez/tırnak kapatma ile hatasız yazım.
 - **🖱️ Çoklu İmleç**: Alt+Click ile birden fazla yerde aynı anda düzenleme yapın.
   - Alt+Click: Tıklanan yere imleç ekle/kaldır
@@ -193,6 +193,3 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p>Copyright © 2024 Memati. Tüm Hakları Saklıdır.</p>
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
-
-
-
