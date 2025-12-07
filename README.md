@@ -139,25 +139,23 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 
 ---
 
-## 📝 Sürüm Notları
+# 📸 Ekran Görüntüleri
 
-### 🚀 v1.0 - İlk Resmi Sürüm (Aralık 2024)
+## 🔹 Ana Ekran
 
-**Görünüm & UX İyileştirmeleri:**
-- ✨ Modern menü sistemi (emoji ikonlu, animasyonlu dropdownlar)
-- 📊 Gelişmiş durum çubuğu (4 bölümlü, hover efektleri)
-- 🎨 Zenginleştirilmiş temalar (accent colors)
+<p align="center">
+  <img src="ekran_görüntüleri/main.PNG" alt="Main" width="600"/>
+</p>
 
-**Dosya Sistemi:**
-- 🌍 100+ dosya formatı desteği
-- 🎨 Her dosya için özel emoji ikonu
-- 📦 Özel dosyalar (package.json, Dockerfile, etc.)
+## 🔹 Menü Görünümleri
 
-**Yeni Özellikler:**
-- 🖱️ Çoklu imleç desteği (Alt+Click, Ctrl+D)
-- 🔢 Satır işlemleri (Çoğalt, Taşı, Sil, Birleştir)
-- ❓ Modern help system (arama, navigasyon)
-- 📚 10 kapsamlı yardım bölümü
+<p align="center">
+  <img src="ekran_görüntüleri/dosya.png" alt="Dosya" width="300"/>
+  <img src="ekran_görüntüleri/düzenle.png" alt="Düzenle" width="300"/>
+  <img src="ekran_görüntüleri/görünüm.png" alt="Görünüm" width="300"/>
+  <img src="ekran_görüntüleri/tema.png" alt="Tema" width="300"/>
+  <img src="ekran_görüntüleri/yardım.png" alt="Yardım" width="300"/>
+</p>
 
 ---
 
