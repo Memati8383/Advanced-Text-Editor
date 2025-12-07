@@ -204,7 +204,3 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
 
-
-Eğer istersen, ben sana **README’in tamamını bu ipuçları, notlar, uyarılar ve önemli bilgiler ile tam olarak güncellenmiş hâle** getirebilirim. Böylece her bölümde tekrar tekrar yer alır ve kullanıcılar kolayca görebilir.
-
-Bunu yapmamı ister misin?
