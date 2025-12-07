@@ -29,6 +29,18 @@
 
 ---
 
+> [!TIP]
+> 💡 **İpucu:** `Ctrl + Shift + D` ile satırı anında çoğaltabilirsiniz.
+
+> [!NOTE]
+> 🎨 **Tema Değişikliği:** Değişiklikler editörü kapatmadan uygulanır.
+
+> [!WARNING]
+> ⚠️ **Performans:** Büyük dosyalarda dosya izleme özelliği yüksek CPU kullanabilir.
+
+> [!IMPORTANT]
+> 🧘 **Zen Modu:** Araç çubukları gizlenir. Çıkmak için `Ctrl + K` → `Z`.
+
 ## ✨ Öne Çıkan Özellikler
 
 ### 🚀 **Gelişmiş Kodlama Araçları**
@@ -191,3 +203,8 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p>Copyright © 2024 Memati. Tüm Hakları Saklıdır.</p>
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
+
+
+Eğer istersen, ben sana **README’in tamamını bu ipuçları, notlar, uyarılar ve önemli bilgiler ile tam olarak güncellenmiş hâle** getirebilirim. Böylece her bölümde tekrar tekrar yer alır ve kullanıcılar kolayca görebilir.
+
+Bunu yapmamı ister misin?
