@@ -1,19 +1,19 @@
 
-# Configuration for the Text Editor
+# Metin Editörü Yapılandırması
 
 APP_NAME = "Memati Editör"
 APP_SIZE = "1200x800"
 
-# Fonts
-FONT_FAMILY = "Consolas"  # Monospace for code
+# Yazı Tipleri
+FONT_FAMILY = "Consolas"  # Kod için eşaralıklı yazı tipi
 FONT_SIZE = 14
 
-# Syntax Highlighting Styles (Fallback/Custom)
-# We will primarily use Pygments styles, but can define overrides here.
-THEME_MODE = "Dark"  # "System", "Dark", "Light"
-DEFAULT_THEME_COLOR = "blue"  # Themes: "blue" (standard), "green", "dark-blue"
+# Sözdizimi Vurgulama Stilleri (Yedek/Özel)
+# Öncelikle Pygments stillerini kullanacağız, ancak burada geçersiz kılmalar tanımlanabilir.
+THEME_MODE = "Dark"  # "System" (Sistem), "Dark" (Koyu), "Light" (Açık)
+DEFAULT_THEME_COLOR = "blue"  # Temalar: "blue" (standart), "green" (yeşil), "dark-blue" (koyu mavi)
 
-# File Types
+# Dosya Türleri
 SUPPORTED_FILES = [
     ("All Files", "*.*"),
     ("Python", "*.py"),

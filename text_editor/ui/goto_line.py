@@ -9,10 +9,10 @@ class GoToLineDialog(ctk.CTkToplevel):
         self.resizable(False, False)
         self.attributes("-topmost", True)
         
-        # Center dialog
+        # İletişim kutusunu ortala
         self.center_window()
         
-        # UI
+        # Arayüz
         self.lbl = ctk.CTkLabel(self, text="Satır Numarası Girin:")
         self.lbl.pack(pady=(15, 5))
         
@@ -40,13 +40,13 @@ class GoToLineDialog(ctk.CTkToplevel):
         line_num = int(line_num)
         
         try:
-            # Check range
+            # Aralığı kontrol et
             total_lines = int(self.editor.text_area.index("end-1c").split('.')[0])
             if 1 <= line_num <= total_lines:
                 self.editor.text_area.mark_set("insert", f"{line_num}.0")
                 self.editor.text_area.see(f"{line_num}.0")
                 
-                # Highlight the line briefly (optional, maybe just selection)
+                # Satırı kısa süre vurgula (isteğe bağlı, belki sadece seçim)
                 self.editor.text_area.tag_remove("sel", "1.0", "end")
                 self.editor.text_area.tag_add("sel", f"{line_num}.0", f"{line_num+1}.0")
                 

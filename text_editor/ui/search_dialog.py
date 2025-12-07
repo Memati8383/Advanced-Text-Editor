@@ -8,23 +8,23 @@ class SearchDialog(ctk.CTkToplevel):
         self.geometry("400x200")
         self.resizable(False, False)
         
-        # Make it stay on top
+        # Her zaman üstte kalsın
         self.attributes("-topmost", True)
         
-        # Grid layout
+        # Izgara düzeni
         self.grid_columnconfigure(1, weight=1)
         
-        # Find
+        # Bul
         ctk.CTkLabel(self, text="Aranan:").grid(row=0, column=0, padx=10, pady=10, sticky="w")
         self.find_entry = ctk.CTkEntry(self)
         self.find_entry.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
         
-        # Replace
+        # Değiştir
         ctk.CTkLabel(self, text="Yeni Değer:").grid(row=1, column=0, padx=10, pady=10, sticky="w")
         self.replace_entry = ctk.CTkEntry(self)
         self.replace_entry.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
         
-        # Buttons
+        # Düğmeler
         self.btn_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.btn_frame.grid(row=2, column=0, columnspan=2, pady=20)
         
@@ -45,18 +45,18 @@ class SearchDialog(ctk.CTkToplevel):
         search_str = self.find_entry.get()
         if not search_str: return
         
-        # Start from current insert position
+        # Mevcut imleç konumundan başla
         start_pos = text_widget.index("insert")
         
-        # Search
+        # Ara
         pos = text_widget.search(search_str, start_pos, stopindex="end")
         
         if not pos:
-            # Wrap around
+            # Başa sar (Wrap around)
             pos = text_widget.search(search_str, "1.0", stopindex=start_pos)
             
         if pos:
-            # Select found text
+            # Bulunan metni seç
             length = len(search_str)
             end_pos = f"{pos}+{length}c"
             text_widget.tag_remove("sel", "1.0", "end")
@@ -70,8 +70,8 @@ class SearchDialog(ctk.CTkToplevel):
         text_widget = self.get_current_text_widget()
         if not text_widget: return
         
-        # If selection matches find string, replace it
-        # Otherwise find next
+        # Seçim arama dizesiyle eşleşiyorsa, değiştir
+        # Aksi takdirde bir sonrakini bul
         
         search_str = self.find_entry.get()
         replace_str = self.replace_entry.get()
@@ -84,7 +84,7 @@ class SearchDialog(ctk.CTkToplevel):
             if selected_text == search_str:
                 text_widget.delete(sel_start, sel_end)
                 text_widget.insert(sel_start, replace_str)
-                # Find next
+                # Bir sonrakini bul
                 self.find_next()
             else:
                 self.find_next()
@@ -100,10 +100,10 @@ class SearchDialog(ctk.CTkToplevel):
         
         if not search_str: return
         
-        # Count replacements
+        # Değişiklikleri say
         count = 0
         
-        # Start from beginning
+        # Baştan başla
         start = "1.0"
         while True:
             pos = text_widget.search(search_str, start, stopindex="end")

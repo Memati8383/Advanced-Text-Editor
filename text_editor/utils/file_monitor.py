@@ -14,29 +14,25 @@ class FileMonitor:
     def __init__(self, callback):
         self.observer = Observer()
         self.callback = callback
-        self.watched_files = {} # path -> watch
+        self.watched_files = {} # yol -> izleyici
         self.observer.start()
 
     def add_file(self, file_path):
         directory = os.path.dirname(file_path)
         if not directory: return 
 
-        # We watch the directory because watching a single file is tricky in some OSs or editors that use swap files
-        # However, watching the whole dir might be noisy. 
-        # We will filter in the handler (which we are not doing robustly yet, but handler receives the path)
+        # Dizin izlemeyi kontrol et?
+        # Watchdog dizinleri izler.
+        # Biz sadece olay içeriğini işleyebiliriz.
         
-        # Check if we already watch this directory?
-        # Watchdog watches directories.
-        # We can just handle the event content.
-        
-        # Simple approach: Watch the directory recursively=False
+        # Basit yaklaşım: Dizini recursive=False izle
         if directory not in self.watched_files:
             handler = FileChangeHandler(self.on_file_changed)
             watch = self.observer.schedule(handler, directory, recursive=False)
             self.watched_files[directory] = watch
     
     def on_file_changed(self, src_path):
-        # Pass to main callback
+        # Ana geri çağrıya ilet
         self.callback(src_path)
 
     def stop(self):

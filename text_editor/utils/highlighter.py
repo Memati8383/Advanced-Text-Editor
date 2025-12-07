@@ -10,36 +10,36 @@ class SyntaxHighlighter:
         self.setup_tags()
 
     def setup_tags(self):
-        # Create tags based on the style
+        # Stile dayalı etiketler oluştur
         style = get_style_by_name(self.style_name)
         for token, opts in style:
             start = opts.get('color')
             background = opts.get('bgcolor')
-            # Font styles
+            # Yazı tipi stilleri
             font_opts = []
             if opts.get('bold'): font_opts.append('bold')
             if opts.get('italic'): font_opts.append('italic')
             if opts.get('underline'): font_opts.append('underline')
             font_str = " ".join(font_opts) if font_opts else None
             
-            # Helper to convert hex to #hex if needed (pygments usually returns string without # or with)
+            # Gerekirse hex'i #hex'e dönüştürmek için yardımcı (pygments genellikle # olmadan veya # ile dize döndürür)
             fg = f"#{start}" if start else None
             bg = f"#{background}" if background else None
 
-            # Configure tag in text widget
-            # Tag name is str(token)
+            # Metin aracında etiketi yapılandır
+            # Etiket adı str(token)
             kwargs = {}
             if fg: kwargs['foreground'] = fg
             if bg: kwargs['background'] = bg
-            # Note: fonts in tk.Text are tricky, usually handled by changing the font attribute, 
-            # but tag_config allows 'font'. We need to start with the base font and apply styling.
-            # For simplicity, we might skip bold/italic in V1 or try to construct a font string.
-            # Common font format: ("Consolas", 12, "bold")
-            # We'll just set colors for now to ensure stability.
+            # Not: tk.Text içindeki yazı tipleri zordur, genellikle yazı tipi niteliği değiştirilerek yönetilir,
+            # ancak tag_config 'font'a izin verir. Temel yazı tipiyle başlamalı ve stil uygulamalıyız.
+            # Basitlik için, V1'de kalın/italik atlayabilir veya bir yazı tipi dizesi oluşturmayı deneyebiliriz.
+            # Yaygın yazı tipi formatı: ("Consolas", 12, "bold")
+            # Kararlılığı sağlamak için şimdilik sadece renkleri ayarlayacağız.
             
             self.text_widget.tag_config(str(token), **kwargs)
             
-        # Configure current line tag
+        # Geçerli satır etiketini yapılandır
         self.text_widget.tag_config("current_line", background="#2d2d30")
 
     def highlight(self, content=None, lexer=None):
@@ -52,17 +52,17 @@ class SyntaxHighlighter:
             else:
                 lexer = PythonLexer()
 
-        # We must NOT clear all tags because fold tags might exist!
-        # Instead, we should remove only syntax tags.
-        # But for now, let's just clear syntax tags if we can identify them?
-        # Or blindly clear all tags except "sel" and "fold_*" and "current_line"
+        # Tüm etiketleri TEMİZLEMEMELİYİZ çünkü katlama etiketleri olabilir!
+        # Bunun yerine, sadece sözdizimi etiketlerini kaldırmalıyız.
+        # Ama şimdilik, tanımlayabilirsek sadece sözdizimi etiketlerini temizleyelim?
+        # Veya "sel", "fold_*" ve "current_line" dışındaki tüm etiketleri körü körüne temizle
         
-        # Performance optimization: Only re-highlight changed range?
-        # For simplicity in V1: clear all tokens.
-        # Ideally, we have a list of token tags?
+        # Performans optimizasyonu: Sadece değişen aralığı yeniden vurgula?
+        # V1'de basitlik için: tüm belirteçleri temizle.
+        # İdeal olarak, bir belirteç etiketleri listemiz var mı?
         
-        # Since we use str(token) as tag name (e.g. Token.Keyword), we can filter.
-        # But for now, let's just avoid clearning "fold_" tags.
+        # str(token) etiket adı olarak kullandığımızdan (örn. Token.Keyword), filtreleyebiliriz.
+        # Ama şimdilik, "fold_" etiketlerini temizlemekten kaçınalım.
         for tag in self.text_widget.tag_names():
             if not tag.startswith("fold_") and tag != "sel" and tag != "current_line":
                 self.text_widget.tag_remove(tag, "1.0", "end")
@@ -74,17 +74,17 @@ class SyntaxHighlighter:
             self.text_widget.mark_set("range_start", "range_end")
 
     def highlight_current_line(self):
-        # Remove tag from everywhere
+        # Etiketi her yerden kaldır
         self.text_widget.tag_remove("current_line", "1.0", "end")
         
-        # Add to current line
+        # Geçerli satıra ekle
         self.text_widget.tag_add("current_line", "insert linestart", "insert lineend+1c")
 
     def set_lexer_from_filename(self, filename):
         try:
             lexer = get_lexer_for_filename(filename)
         except pygments.util.ClassNotFound:
-            lexer = PythonLexer() # Fallback
+            lexer = PythonLexer() # Yedek
         self.current_lexer = lexer
         self.highlight()
         return lexer

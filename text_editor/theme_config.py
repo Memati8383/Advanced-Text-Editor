@@ -1,9 +1,9 @@
 
-# Theme Configuration
+# Tema Yapılandırması
 
-# 1. Dark (VS Code Dark)
+# 1. Koyu (VS Code Dark)
 DARK_THEME = {
-    "type": "Dark", # Base CTk mode
+    "type": "Dark", # Temel CTk modu
     "bg": "#1e1e1e",
     "fg": "#d4d4d4",
     "menu_bg": "#333333",
@@ -16,31 +16,39 @@ DARK_THEME = {
     "editor_fg": "#d4d4d4",
     "line_num_bg": "#1e1e1e",
     "line_num_fg": "#858585",
-    "status_bg": "#007acc",
+    "status_bg": "#1a73e8",
     "status_fg": "#ffffff",
     "caret": "#ffffff",
-    "pygments_style": "monokai"
+    "accent_color": "#0098ff",
+    "pygments_style": "monokai",
+    "terminal_bg": "#1e1e1e",
+    "terminal_fg": "#cccccc",
+    "terminal_selection": "#264f78"
 }
 
-# 2. Light (VS Code Light)
+# 2. Açık (VS Code Light)
 LIGHT_THEME = {
     "type": "Light",
     "bg": "#ffffff",
     "fg": "#000000",
-    "menu_bg": "#dddddd",
+    "menu_bg": "#f0f0f0",
     "menu_fg": "#333333",
-    "menu_hover": "#c0c0c0",
-    "tab_bg": "#f3f3f3",
+    "menu_hover": "#e0e0e0",
+    "tab_bg": "#f8f8f8",
     "tab_selected": "#ffffff",
     "tab_hover": "#e5e5e5",
     "editor_bg": "#ffffff",
     "editor_fg": "#000000",
     "line_num_bg": "#ffffff",
     "line_num_fg": "#2b91af",
-    "status_bg": "#007acc",
+    "status_bg": "#4285f4",
     "status_fg": "#ffffff",
     "caret": "#000000",
-    "pygments_style": "default"
+    "accent_color": "#1a73e8",
+    "pygments_style": "default",
+    "terminal_bg": "#f5f5f5",
+    "terminal_fg": "#333333",
+    "terminal_selection": "#b4d7ff"
 }
 
 # 3. Dracula
@@ -58,10 +66,14 @@ DRACULA_THEME = {
     "editor_fg": "#f8f8f2",
     "line_num_bg": "#282a36",
     "line_num_fg": "#6272a4",
-    "status_bg": "#bd93f9",
+    "status_bg": "#ff79c6",
     "status_fg": "#282a36",
     "caret": "#f8f8f2",
-    "pygments_style": "monokai"
+    "accent_color": "#bd93f9",
+    "pygments_style": "monokai",
+    "terminal_bg": "#282a36",
+    "terminal_fg": "#f8f8f2",
+    "terminal_selection": "#44475a"
 }
 
 # 4. Solarized Light
@@ -79,10 +91,14 @@ SOLARIZED_LIGHT_THEME = {
     "editor_fg": "#657b83",
     "line_num_bg": "#fdf6e3",
     "line_num_fg": "#93a1a1",
-    "status_bg": "#2aa198",
+    "status_bg": "#268bd2",
     "status_fg": "#fdf6e3",
     "caret": "#657b83",
-    "pygments_style": "friendly"
+    "accent_color": "#2aa198",
+    "pygments_style": "friendly",
+    "terminal_bg": "#fdf6e3",
+    "terminal_fg": "#657b83",
+    "terminal_selection": "#eee8d5"
 }
 
 # 5. Monokai
@@ -100,10 +116,14 @@ MONOKAI_THEME = {
     "editor_fg": "#f8f8f2",
     "line_num_bg": "#272822",
     "line_num_fg": "#75715e",
-    "status_bg": "#f92672",
-    "status_fg": "#f8f8f2",
+    "status_bg": "#a6e22e",
+    "status_fg": "#272822",
     "caret": "#f8f8f2",
-    "pygments_style": "monokai"
+    "accent_color": "#f92672",
+    "pygments_style": "monokai",
+    "terminal_bg": "#272822",
+    "terminal_fg": "#f8f8f2",
+    "terminal_selection": "#49483e"
 }
 
 THEMES = {
@@ -126,10 +146,14 @@ THEMES = {
         "editor_fg": "#d8dee9",
         "line_num_bg": "#2e3440",
         "line_num_fg": "#4c566a",
-        "status_bg": "#88c0d0",
-        "status_fg": "#2e3440",
+        "status_bg": "#5e81ac",
+        "status_fg": "#eceff4",
         "caret": "#d8dee9",
-        "pygments_style": "monokai"
+        "accent_color": "#88c0d0",
+        "pygments_style": "monokai",
+        "terminal_bg": "#2e3440",
+        "terminal_fg": "#d8dee9",
+        "terminal_selection": "#434c5e"
     },
     "Gruvbox": {
         "type": "Dark",
@@ -145,10 +169,14 @@ THEMES = {
         "editor_fg": "#ebdbb2",
         "line_num_bg": "#282828",
         "line_num_fg": "#928374",
-        "status_bg": "#fabd2f",
+        "status_bg": "#d79921",
         "status_fg": "#282828",
         "caret": "#ebdbb2",
-        "pygments_style": "monokai"
+        "accent_color": "#fabd2f",
+        "pygments_style": "monokai",
+        "terminal_bg": "#282828",
+        "terminal_fg": "#ebdbb2",
+        "terminal_selection": "#3c3836"
     },
     "One Dark Pro": {
         "type": "Dark",
@@ -164,10 +192,14 @@ THEMES = {
         "editor_fg": "#abb2bf",
         "line_num_bg": "#282c34",
         "line_num_fg": "#5c6370",
-        "status_bg": "#98c379",
+        "status_bg": "#61afef",
         "status_fg": "#282c34",
         "caret": "#528bff",
-        "pygments_style": "monokai"
+        "accent_color": "#98c379",
+        "pygments_style": "monokai",
+        "terminal_bg": "#282c34",
+        "terminal_fg": "#abb2bf",
+        "terminal_selection": "#3e4451"
     },
     "GitHub Dark": {
         "type": "Dark",
@@ -183,10 +215,14 @@ THEMES = {
         "editor_fg": "#c9d1d9",
         "line_num_bg": "#0d1117",
         "line_num_fg": "#6e7681",
-        "status_bg": "#1f6feb",
-        "status_fg": "#ffffff",
+        "status_bg": "#58a6ff",
+        "status_fg": "#0d1117",
         "caret": "#58a6ff",
-        "pygments_style": "monokai"
+        "accent_color": "#1f6feb",
+        "pygments_style": "monokai",
+        "terminal_bg": "#0d1117",
+        "terminal_fg": "#c9d1d9",
+        "terminal_selection": "#21262d"
     },
     "Synthwave 84": {
         "type": "Dark",
@@ -202,10 +238,14 @@ THEMES = {
         "editor_fg": "#f97e72",
         "line_num_bg": "#2a2139",
         "line_num_fg": "#848bbd",
-        "status_bg": "#36f9f6",
+        "status_bg": "#ff7edb",
         "status_fg": "#2a2139",
         "caret": "#f97e72",
-        "pygments_style": "monokai"
+        "accent_color": "#36f9f6",
+        "pygments_style": "monokai",
+        "terminal_bg": "#2a2139",
+        "terminal_fg": "#f97e72",
+        "terminal_selection": "#372963"
     }
 }
 

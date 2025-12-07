@@ -1,7 +1,7 @@
 import tkinter as tk
 import re
 
-# Comprehensive Keyword Lists
+# Kapsamlı Anahtar Kelime Listeleri
 KEYWORDS = {
     "python": [
         "def", "class", "print", "import", "from", "return", "if", "else", "elif",
@@ -38,14 +38,14 @@ KEYWORDS = {
 class AutoCompleter:
     def __init__(self, editor_widget, keywords=None):
         self.editor = editor_widget
-        self.current_keywords = KEYWORDS["python"] # Default
+        self.current_keywords = KEYWORDS["python"] # Varsayılan
         
-        # Popup listbox
+        # Açılır liste kutusu
         self.popup = None
         self.listbox = None
         
     def set_language(self, lexer_name):
-        # Map pygments lexer names to our keyword keys
+        # Pygments lexer adlarını anahtar kelime anahtarlarımıza eşleyin
         lexer_name = lexer_name.lower()
         if "python" in lexer_name:
             self.current_keywords = KEYWORDS["python"]
@@ -56,16 +56,16 @@ class AutoCompleter:
         elif "javascript" in lexer_name or "js" in lexer_name:
             self.current_keywords = KEYWORDS["javascript"]
         else:
-            self.current_keywords = [] # Empty or generic? or keep previous
+            self.current_keywords = [] # Boş veya genel? veya öncekini koru
 
     def show_suggestions(self, event=None):
-        # Get word under cursor
+        # İmlecin altındaki kelimeyi al
         try:
             current_idx = self.editor.index("insert")
             line_start = f"{current_idx.split('.')[0]}.0"
             text_upto_cursor = self.editor.get(line_start, current_idx)
             
-            # Regex to find the word being typed
+            # Yazılan kelimeyi bulmak için Regex
             match = re.search(r'(\w+)$', text_upto_cursor)
             
             if not match:
@@ -74,17 +74,17 @@ class AutoCompleter:
                 
             word = match.group(1)
             
-            # Too short?
+            # Çok mu kısa?
             if len(word) < 2:
                 self.hide()
                 return
 
-            # Find suggestions
-            # 1. Start with hardcoded keywords for current language
+            # Önerileri bul
+            # 1. Geçerli dil için sabit kodlanmış anahtar kelimelerle başla
             candidates = set(k for k in self.current_keywords if k.startswith(word))
             
-            # 2. Add words from current document (dynamic)
-            # Limit this for performance on huge files if needed
+            # 2. Mevcut belgeden kelimeler ekle (dinamik)
+            # Gerekirse çok büyük dosyalarda performans için bunu sınırla
             full_text = self.editor.get("1.0", "end")
             doc_words = re.findall(r'\w+', full_text)
             candidates.update(w for w in doc_words if w.startswith(word) and w != word)
@@ -117,12 +117,12 @@ class AutoCompleter:
             self.listbox.bind("<Tab>", self.insert_selected)
             self.editor.bind("<FocusOut>", self.on_focus_loss)
             
-        # Update content
+        # İçeriği güncelle
         for s in suggestions:
             self.listbox.insert("end", s)
         self.listbox.selection_set(0)
         
-        # Position popup under cursor
+        # Açılır pencereyi imlecin altına yerleştir
         bbox = self.editor.bbox(idx)
         if bbox:
             x, y, w, h = bbox
@@ -147,7 +147,7 @@ class AutoCompleter:
         
         selected_word = self.listbox.get(selection[0])
         
-        # Replace current typed word
+        # Geçerli yazılan kelimeyi değiştir
         current_idx = self.editor.index("insert")
         line_start = f"{current_idx.split('.')[0]}.0"
         text_upto_cursor = self.editor.get(line_start, current_idx)
@@ -163,12 +163,12 @@ class AutoCompleter:
         return "break"
 
     def on_focus_loss(self, event):
-        # Needed to prevent immediate close when clicking scrollbar of listbox if we had one
-        # For now, simplistic approach
+        # Liste kutusunun kaydırma çubuğuna tıklandığında hemen kapanmayı önlemek için gerekli
+        # Şimdilik, basit yaklaşım
         self.editor.after(100, self.hide)
 
     def handle_key(self, event):
-        # Navigation
+        # Gezinme
         if self.popup:
             if event.keysym == "Down":
                 self.listbox.event_generate("<Down>")
@@ -182,7 +182,7 @@ class AutoCompleter:
             elif event.keysym in ["Return", "Tab"]:
                 return self.insert_selected()
                 
-        # Trigger on alphanumeric
+        # Alfanümerik karakterlerde tetikle
         if len(event.char) == 1 and (event.char.isalnum() or event.char in ['_', '-', '.']) or event.keysym == "BackSpace":
             self.editor.after(10, self.show_suggestions)
 
