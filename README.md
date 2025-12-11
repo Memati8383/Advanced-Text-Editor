@@ -30,7 +30,7 @@ Detaylı kullanım rehberleri için `docs/` klasörüne göz atın:
 ## 🏁 Hızlı Başlangıç
 
 ```bash
-git clone https://github.com/memati/memati-editor.git
+git clone https://github.com/Memati8383/Advanced-Text-Editor.git
 cd memati-editor
 pip install -r requirements.txt
 python run_editor.py
@@ -41,4 +41,5 @@ python run_editor.py
 Bu proje MIT Lisansı ile lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakabilirsiniz.
 
 ---
-Copyright © 2024 Memati Editör Geliştirme Ekibi
+Copyright © 2025 Memati Editör Geliştirme Ekibi
+
