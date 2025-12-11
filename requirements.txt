@@ -1,0 +1,4 @@
+customtkinter
+Pygments
+watchdog
+Pillow
