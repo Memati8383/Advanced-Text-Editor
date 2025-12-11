@@ -95,7 +95,7 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 
 1. **Projeyi Bilgisayarınıza İndirin**
    ```bash
-   git clone https://github.com/MEMATİ8383/memati-editor.git
+   git clone https://github.com/Memati8383/Advanced-Text-Editor.git
    cd memati-editor
    ```
 
@@ -204,7 +204,7 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
    ```
 5. **🔀 PR Açın**: Ana repoya bir Pull Request gönderin ve kodunuzu inceleyelim!
 
-> 🐛 **Hata mı buldunuz?** Lütfen [Issues](https://github.com/MEMATİ8383/memati-editor/issues) sayfasından bildirin.
+> 🐛 **Hata mı buldunuz?** Lütfen [Issues](https://github.com/Memati8383/Advanced-Text-Editor/issues) sayfasından bildirin.
 > ⭐ **Beğendiniz mi?** Projeye yıldız vererek destek olabilirsiniz!
 
 ---
@@ -215,5 +215,6 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p>Copyright © 2024 Memati. Tüm Hakları Saklıdır.</p>
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
+
 
 
