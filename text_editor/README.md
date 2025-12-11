@@ -7,12 +7,12 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![CustomTkinter](https://img.shields.io/badge/UI-CustomTkinter-green.svg)](https://github.com/TomSchimansky/CustomTkinter)
 [![Lisans](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macos-lightgrey.svg)](https://github.com/MEMATİ8383/memati-editor)
+[![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macos-lightgrey.svg)](https://github.com/Memati8383/Advanced-Text-Editor)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Downloads](https://img.shields.io/github/downloads/MEMATİ8383/memati-editor/total.svg)](https://github.com/MEMATİ8383/memati-editor/releases)
-[![Issues](https://img.shields.io/github/issues/MEMATİ8383/memati-editor.svg)](https://github.com/MEMATİ8383/memati-editor/issues)
+[![Downloads](https://img.shields.io/github/downloads/MEMATİ8383/memati-editor/total.svg)](https://github.com/Memati8383/Advanced-Text-Editor/releases)
+[![Issues](https://img.shields.io/github/issues/Memati8383/Advanced-Text-Editor.svg)](https://github.com/Memati8383/Advanced-Text-Editor/issues)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![Stars](https://img.shields.io/github/stars/MEMATİ8383/memati-editor.svg)](https://github.com/MEMATİ8383/memati-editor/stargazers)
+[![Stars](https://img.shields.io/github/stars/Memati8383/Advanced-Text-Editor.svg)](https://github.com/Memati8383/Advanced-Text-Editor/stargazers)
 
 
 <br>
@@ -215,3 +215,4 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p>Copyright © 2024 Memati. Tüm Hakları Saklıdır.</p>
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
+
