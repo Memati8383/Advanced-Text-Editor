@@ -88,7 +88,11 @@ Keyifli kodlamalar! 🚀
 
     @staticmethod
     def get_shortcuts():
-        return """⌨️ KLAVYE KISAYOLLARI
+        from text_editor.utils.shortcut_manager import ShortcutManager
+        shortcuts = ShortcutManager.get_instance()
+        fmt = shortcuts.get_display_string
+        
+        return f"""⌨️ KLAVYE KISAYOLLARI
 
 Memati Editör'ü klavyeden kontrol edin!
 
@@ -96,25 +100,28 @@ Memati Editör'ü klavyeden kontrol edin!
 │  📁 DOSYA İŞLEMLERİ                     │
 └─────────────────────────────────────────┘
 
-Ctrl + N         →  Yeni Sekme
-Ctrl + O         →  Dosya Aç
-Ctrl + Shift + O →  Klasör (Proje) Aç
-Ctrl + S         →  Kaydet
-Ctrl + Shift + S →  Farklı Kaydet
-Ctrl + W         →  Sekmeyi Kapat
+{fmt(shortcuts.get("new_tab")): <16} →  Yeni Sekme
+{fmt(shortcuts.get("open_file")): <16} →  Dosya Aç
+{fmt(shortcuts.get("open_folder")): <16} →  Klasör (Proje) Aç
+{fmt(shortcuts.get("save_file")): <16} →  Kaydet
+{fmt(shortcuts.get("save_as")): <16} →  Farklı Kaydet
+{fmt(shortcuts.get("close_tab")): <16} →  Sekmeyi Kapat
 
 ┌─────────────────────────────────────────┐
 │  ✏️ DÜZENLEME                            │
 └─────────────────────────────────────────┘
 
-Ctrl + Z         →  Geri Al
-Ctrl + Y         →  Yinele
-Ctrl + X         →  Kes
-Ctrl + C         →  Kopyala
-Ctrl + V         →  Yapıştır
-Ctrl + A         →  Tümünü Seç
-Ctrl + F         →  Bul ve Değiştir
-Ctrl + G         →  Satıra Git
+{fmt(shortcuts.get("undo")): <16} →  Geri Al
+{fmt(shortcuts.get("redo")): <16} →  Yinele
+{fmt(shortcuts.get("cut")): <16} →  Kes
+{fmt(shortcuts.get("copy")): <16} →  Kopyala
+{fmt(shortcuts.get("paste")): <16} →  Yapıştır
+{fmt(shortcuts.get("select_all")): <16} →  Tümünü Seç
+{fmt(shortcuts.get("find")): <16} →  Bul ve Değiştir
+{fmt(shortcuts.get("goto_line")): <16} →  Satıra Git
+{fmt(shortcuts.get("duplicate_line")): <16} →  Satır Çoğalt (Yeni)
+{fmt(shortcuts.get("move_line_up")): <16} →  Satır Yukarı (Yeni)
+{fmt(shortcuts.get("move_line_down")): <16} →  Satır Aşağı (Yeni)
 
 ┌─────────────────────────────────────────┐
 │  🖱️ ÇOKLU İMLEÇ                         │
@@ -129,22 +136,22 @@ Escape           →  İmleçleri Temizle
 └─────────────────────────────────────────┘
 
 Ctrl + Tekerlek  →  Yakınlaştır/Uzaklaştır
-Ctrl + 0         →  Zoom Sıfırla
-F11              →  Tam Ekran
-Ctrl + B         →  Dosya Gezgini Aç/Kapat
-Ctrl + M         →  Minimap Aç/Kapat
-Ctrl + Shift + L →  Satır Numaraları
-Alt + Z          →  Word Wrap (Satır Kaydır)
-Ctrl + `         →  Terminal Aç/Kapat
-Ctrl + Shift + V →  Markdown Önizleme
-Ctrl + K, Z      →  Zen Mode (Dikkat Modu)
+{fmt(shortcuts.get("zoom_reset")): <16} →  Zoom Sıfırla
+{fmt(shortcuts.get("toggle_fullscreen")): <16} →  Tam Ekran
+{fmt(shortcuts.get("toggle_file_explorer")): <16} →  Dosya Gezgini Aç/Kapat
+{fmt(shortcuts.get("toggle_minimap")): <16} →  Minimap Aç/Kapat
+{fmt(shortcuts.get("toggle_line_numbers")): <16} →  Satır Numaraları
+{fmt(shortcuts.get("toggle_word_wrap")): <16} →  Word Wrap (Satır Kaydır)
+{fmt(shortcuts.get("toggle_terminal")): <16} →  Terminal Aç/Kapat
+{fmt(shortcuts.get("preview_markdown")): <16} →  Markdown Önizleme
+{fmt(shortcuts.get("toggle_zen_mode")): <16} →  Zen Mode (Dikkat Modu)
 
 ┌─────────────────────────────────────────┐
 │  📋 KOPYALAMA KISAYOLLARI               │
 └─────────────────────────────────────────┘
 
-Ctrl + Shift + C →  Dosya Yolunu Kopyala
-Ctrl + Alt + C   →  Göreli Yolu Kopyala
+{fmt(shortcuts.get("copy_path")): <16} →  Dosya Yolunu Kopyala
+{fmt(shortcuts.get("copy_relative_path")): <16} →  Göreli Yolu Kopyala
 
 ┌─────────────────────────────────────────┐
 │  💡 PRO İPUÇLARI                        │
@@ -916,8 +923,8 @@ Modern, Hafif ve Güçlü Python IDE
 
 🪐 İsim: {APP_NAME}
 📦 Sürüm: 1.0
-📅 Yayın: Aralık 2024
-🏷️ Kod Adı: "Phoenix"
+📅 Yayın: 2025
+🏷️ Kod Adı: "Memati"
 
 ┌─────────────────────────────────────────┐
 │  🛠️ TEKNOLOJİ YIĞINI                    │
@@ -967,7 +974,7 @@ Modern, Hafif ve Güçlü Python IDE
 🆓 Ücretsiz ve Open Source
 🔓 Kaynak kodu GitHub'da
 
-Copyright © 2024 Memati
+Copyright © 2025 Memati
 Tüm Hakları Saklıdır.
 
 ┌─────────────────────────────────────────┐

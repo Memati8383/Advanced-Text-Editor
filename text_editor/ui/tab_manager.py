@@ -7,8 +7,10 @@ from typing import Optional, List, Dict, Any, Callable
 import customtkinter as ctk
 
 from text_editor.ui.editor import CodeEditor
+from text_editor.ui.image_viewer import ImageViewer
 from text_editor.utils.file_monitor import FileMonitor
 from text_editor.theme_config import DARK_THEME
+from text_editor.ui.context_menu import ModernContextMenu 
 try:
     from text_editor.utils.file_icons import FileIcons
 except ImportError:
@@ -21,10 +23,12 @@ logger = logging.getLogger(__name__)
 AUTO_SAVE_INTERVAL_MS = 30000  # 30 seconds
 NEW_TAB_PREFIX = "Adsız"
 DEFAULT_FONT = ("Segoe UI", 13)
+IMAGE_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.webp'}
 
-class TabManager(ctk.CTkTabview):
+class TabManager(ctk.CTkFrame):
     """
     Birden fazla sekmeyi ve kod editörünü yönetir.
+    Scrollable (kaydırılabilir) sekme çubuğu ile çok sayıda sekmeyi destekler.
     Her sekme bağımsız bir CodeEditor örneği içerir.
     Dosya açma, kaydetme, otomatik kaydetme ve dosya izleme işlemlerini yönetir.
     """
@@ -33,12 +37,18 @@ class TabManager(ctk.CTkTabview):
         super().__init__(master, **kwargs)
         
         self.status_callback = status_callback
-        self._init_state()
         
-        # Create first tab
+        # Grid yapılandırması
+        self.grid_rowconfigure(0, weight=0) # Sekme çubuğu (sabit yükseklik)
+        self.grid_rowconfigure(1, weight=1) # İçerik alanı (esnek)
+        self.grid_columnconfigure(0, weight=1)
+
+        self._init_state()
+        self._setup_ui()
+
+        # İlk sekmeyi oluştur
         self.add_new_tab()
         
-        self._setup_ui()
         self._start_services()
 
     def _init_state(self):
@@ -46,31 +56,154 @@ class TabManager(ctk.CTkTabview):
         self.editors: Dict[str, CodeEditor] = {}
         self.current_theme = DARK_THEME
         self.untitled_count = 0
+        self.context_menu_window = None
+        
+        # Özel sekme yönetimi için yapılar
+        self._tab_buttons: Dict[str, ctk.CTkButton] = {}
+        self._tab_frames: Dict[str, ctk.CTkFrame] = {}
+        self._current_name: Optional[str] = None
+        
+        # Tema renkleri (Varsayılan - Dark Theme benzeri)
+        self.style_config = {
+            "tab_bg": "transparent",
+            "tab_hover": "#2d2d2d",
+            "tab_selected": "#1e1e1e",
+            "tab_text": "#d4d4d4",
+            "bar_bg": "transparent",
+            "accent_color": "#007acc"
+        }
 
     def _setup_ui(self):
         """UI bileşenlerini ve stillerini yapılandırır."""
-        self.configure(
-            corner_radius=8,
-            fg_color="transparent",
-            segmented_button_fg_color="#181818",
-            segmented_button_selected_color="#1e1e1e",
-            segmented_button_selected_hover_color="#252526",
-            segmented_button_unselected_color="#181818",
-            segmented_button_unselected_hover_color="#2d2d2d",
-            text_color="#d4d4d4"
+        # Kendisi şeffaf olabilir veya arka plan rengi alabilir
+        self.configure(fg_color="transparent")
+
+        # 1. Kaydırılabilir Sekme Çubuğu
+        self._tab_bar = ctk.CTkScrollableFrame(
+            self,
+            orientation="horizontal",
+            height=32, # Buton yüksekliğine uygun
+            fg_color=self.style_config["bar_bg"],
+            corner_radius=0
         )
-        self._segmented_button.configure(font=DEFAULT_FONT)
+        self._tab_bar.grid(row=0, column=0, sticky="ew", padx=0, pady=(0, 2))
+        
+        # 2. İçerik Alanı
+        self._content_area = ctk.CTkFrame(
+            self,
+            fg_color="transparent",
+            corner_radius=0
+        )
+        self._content_area.grid(row=1, column=0, sticky="nsew", padx=0, pady=0)
+        self._content_area.grid_rowconfigure(0, weight=1)
+        self._content_area.grid_columnconfigure(0, weight=1)
 
     def _start_services(self):
         """Arka plan hizmetlerini başlatır (Dosya izleyici, Otomatik kaydetme)."""
         self.file_monitor = FileMonitor(self.on_file_changed)
         self.after(AUTO_SAVE_INTERVAL_MS, self.auto_save_loop)
 
+    # === CTkTabview Uyumluluk Yöntemleri ===
+
+    def add(self, name: str):
+        """Yeni bir sekme (buton ve çerçeve) ekler."""
+        if name in self._tab_frames:
+            return  # Zaten varsa işlem yapma
+
+        # 1. İçerik Çerçevesi
+        frame = ctk.CTkFrame(self._content_area, corner_radius=0, fg_color="transparent")
+        self._tab_frames[name] = frame
+        
+        # 2. Sekme Butonu
+        btn = ctk.CTkButton(
+            self._tab_bar,
+            text=name,
+            font=DEFAULT_FONT,
+            width=120, # Genişlik, yazıya göre değişebilir aslında ama sabit iyidir
+            height=30,
+            corner_radius=6,
+            fg_color=self.style_config["tab_bg"],
+            hover_color=self.style_config["tab_hover"],
+            text_color=self.style_config["tab_text"],
+            command=lambda n=name: self.set(n)
+        )
+        btn.pack(side="left", padx=2, pady=2)
+        self._tab_buttons[name] = btn
+        
+        return name
+
+    def _get_tab_order(self) -> List[str]:
+        """Sekmelerin görsel sırasını döndürür."""
+        return list(self._tab_buttons.keys())
+
+    def delete(self, name: str):
+        """Sekmeyi, butonunu ve içeriğini siler."""
+        if name not in self._tab_frames:
+            return
+
+        # İçeriği temizle
+        self._tab_frames[name].destroy()
+        del self._tab_frames[name]
+
+        # Butonu temizle
+        self._tab_buttons[name].destroy()
+        del self._tab_buttons[name]
+
+        # Editörü temizle (TabManager maintainerı olarak)
+        if name in self.editors:
+            del self.editors[name]
+
+        # Eğer silinen aktif sekme ise, başka birine geç
+        if self._current_name == name:
+            self._current_name = None
+            if self._tab_frames:
+                # Son eklenen veya ilk sekmeye geç
+                new_tab = list(self._tab_frames.keys())[-1]
+                self.set(new_tab)
+            else:
+                # Hiç sekme kalmadıysa yeni oluştur
+                self.add_new_tab()
+
+    def set(self, name: str):
+        """Aktif sekmeyi değiştirir."""
+        if name not in self._tab_frames:
+            return
+
+        # Eski sekmeyi gizle
+        if self._current_name and self._current_name in self._tab_frames:
+            self._tab_frames[self._current_name].grid_forget()
+            # Eski butonu pasif renge döndür
+            if self._current_name in self._tab_buttons:
+                self._tab_buttons[self._current_name].configure(
+                    fg_color=self.style_config["tab_bg"],
+                    border_width=0
+                )
+
+        # Yeni sekmeyi göster
+        self._current_name = name
+        self._tab_frames[name].grid(row=0, column=0, sticky="nsew")
+        
+        # Yeni butonu aktif renge döndür
+        if name in self._tab_buttons:
+            self._tab_buttons[name].configure(
+                fg_color=self.style_config["tab_selected"],
+                border_width=2,
+                border_color=self.style_config.get("accent_color", "#007acc")
+            )
+
+    def get(self) -> str:
+        """Aktif sekmenin adını döndürür."""
+        return self._current_name
+
+    def tab(self, name: str) -> ctk.CTkFrame:
+        """Sekmenin içerik çerçevesini döndürür."""
+        return self._tab_frames[name]
+
     # === Yardımcı Yöntemler ===
 
     def _update_status(self, message: str, status_type: str = "info", timeout: int = 0):
         """
-        Durum çubuğunu geri çağırma veya geri dönüş (fallback) kullanarak güvenli bir şekilde günceller.
+        Durum çubuğunu güvenli bir şekilde günceller.
         """
         if self.status_callback:
             try:
@@ -78,7 +211,6 @@ class TabManager(ctk.CTkTabview):
             except Exception as e:
                 logger.error(f"Status callback error: {e}")
         else:
-            # Geri çekilme (Gevşek bağlantı girişimi)
             try:
                 main_window = self.winfo_toplevel()
                 if hasattr(main_window, 'status_bar') and main_window.status_bar:
@@ -88,13 +220,6 @@ class TabManager(ctk.CTkTabview):
 
         if timeout > 0:
             self.after(timeout, lambda: self._update_status("Hazır", "ready"))
-
-    def _get_tab_order(self) -> List[str]:
-        """Sekmelerin görsel sırasını döndürür."""
-        try:
-            return self._segmented_button._value_list
-        except AttributeError:
-            return list(self.editors.keys())
 
     def get_current_tab_name(self) -> str:
         """Aktif sekmenin adını (ID) döndürür."""
@@ -106,7 +231,7 @@ class TabManager(ctk.CTkTabview):
         return self.editors.get(name)
 
     def _copy_to_clipboard(self, text: str, success_message: str):
-        """Metni panoya kopyalar ve kullanıcıyı bilgilendirir."""
+        """Metni panoya kopyalar."""
         self.clipboard_clear()
         self.clipboard_append(text)
         self.update()
@@ -126,21 +251,18 @@ class TabManager(ctk.CTkTabview):
             display_name = os.path.basename(editor.file_path)
             icon = FileIcons.get_icon(display_name) if FileIcons else "📄"
         else:
-            display_name = tab_name # Dahili isme geri dön (örn. Adsız-1)
+            display_name = tab_name 
             icon = "📝"
 
         # Değişiklik Göstergesi
-        dirty_marker = " * " if editor.content_modified else " "
+        dirty_marker = " •" if editor.content_modified else ""
         
-        # Metni ayarla: "🐍 script.py *"
+        # Metni ayarla
         final_text = f"{icon} {display_name}{dirty_marker}"
         
-        # Buton metnini doğrudan güncelle
-        try:
-            if hasattr(self, "_segmented_button") and tab_name in self._segmented_button._buttons_dict:
-                self._segmented_button._buttons_dict[tab_name].configure(text=final_text)
-        except Exception as e:
-            logger.error(f"Failed to update tab visuals: {e}")
+        # Buton metnini güncelle
+        if tab_name in self._tab_buttons:
+            self._tab_buttons[tab_name].configure(text=final_text)
 
     # === Çekirdek Mantık ===
 
@@ -165,21 +287,22 @@ class TabManager(ctk.CTkTabview):
             self.untitled_count += 1
             name = f"{NEW_TAB_PREFIX}-{self.untitled_count}"
         
-        # Benzersiz dahili isim/ID sağla
         name = self._ensure_unique_name(name)
 
-        # Sekme ekle
+        # Sekme ekle (Custom Implementation)
         self.add(name)
-        self.set(name)
         
         # Editör oluştur
         self._create_editor_in_tab(name)
         
         # Olayları bağla
         self._bind_tab_events(name)
-        
-        # İlk görsel güncelleme
+
+        # Görseli güncelle
         self._update_tab_visuals(name)
+        
+        # Sekmeyi aktif yap
+        self.set(name)
         
         return name
 
@@ -194,16 +317,14 @@ class TabManager(ctk.CTkTabview):
 
     def _bind_tab_events(self, tab_name: str):
         """Fare olaylarını sekme butonuna bağlar."""
-        if hasattr(self, "_segmented_button") and tab_name in self._segmented_button._buttons_dict:
-            btn = self._segmented_button._buttons_dict[tab_name]
+        if tab_name in self._tab_buttons:
+            btn = self._tab_buttons[tab_name]
             
             # Sağ tık - Bağlam Menüsü
             btn.bind("<Button-3>", lambda e, n=tab_name: self.show_context_menu(e, n))
             
             # Orta tık - Sekmeyi Kapat
             btn.bind("<Button-2>", lambda e, n=tab_name: self.check_and_close_tab(n)) 
-            # Not: Button-2 genellikle Windows'ta orta tıklamadır, bazı Linux yapılandırmalarında Button-3 olabilir.
-            # Kapsam için Button-2 ekleniyor.
 
     def _create_editor_in_tab(self, tab_name: str):
         """Sekme içinde CodeEditor oluşturur."""
@@ -218,12 +339,7 @@ class TabManager(ctk.CTkTabview):
         editor.grid(row=0, column=0, sticky="nsew")
         self.editors[tab_name] = editor
 
-        # "Kirli" (değiştirilmiş) durumunu güncellemek için değişiklikleri dinle
-        # Bir proxy geri çağrısı ile metin widget'ının olaylarına bağlanıyoruz
-        # CodeEditor zaten <<Change>> olayını bağladığından, mantığımızı ekleyebilir veya KeyRelease olayına bağlayabiliriz
         editor.text_area.bind("<KeyRelease>", lambda e: self._on_editor_content_changed(tab_name), add="+")
-        
-        # Ayrıca editör mantığı tarafından yayınlanıyorsa özel <<Change>> olayına da bağlan
         editor.text_area.bind("<<Change>>", lambda e: self._on_editor_content_changed(tab_name), add="+")
 
     def _on_editor_content_changed(self, tab_name: str):
@@ -231,31 +347,49 @@ class TabManager(ctk.CTkTabview):
         self._update_tab_visuals(tab_name)
 
     def show_context_menu(self, event, tab_name: str):
-        """Bir sekme için bağlam menüsünü gösterir."""
-        menu = tk.Menu(self, tearoff=0)
+        """Bir sekme için modern bağlam menüsünü gösterir."""
+        if self.context_menu_window:
+            self.context_menu_window.close()
+            self.context_menu_window = None
+
+        commands = [
+            ("Kapat", lambda: self.check_and_close_tab(tab_name)),
+            ("Diğerlerini Kapat", lambda: self.close_others(tab_name)),
+            ("Sağdakileri Kapat", lambda: self.close_right(tab_name)),
+            "-",
+            ("📋 Dosya Yolunu Kopyala", lambda: self.copy_path(tab_name)),
+            ("📋 Dosya Adını Kopyala", lambda: self.copy_filename(tab_name))
+        ]
+
+        menu_theme = None
+        if self.current_theme:
+            border_color = self.current_theme.get("accent_color", "#454545")
+            if "border" in self.current_theme:
+                border_color = self.current_theme["border"]
+
+            menu_theme = {
+                "bg": self.current_theme.get("menu_bg", "#2b2b2b"),
+                "border": border_color,
+                "hover": self.current_theme.get("menu_hover", "#094771"),
+                "text": self.current_theme.get("menu_fg", "#cccccc"),
+                "separator": border_color
+            }
         
-        # Kapatma
-        menu.add_command(label=f"Kapat", command=lambda: self.check_and_close_tab(tab_name))
-        menu.add_command(label="Diğerlerini Kapat", command=lambda: self.close_others(tab_name))
-        menu.add_command(label="Sağdakileri Kapat", command=lambda: self.close_right(tab_name))
-        menu.add_separator()
-        
-        # Kopyalama
-        menu.add_command(label="📋 Dosya Yolunu Kopyala", command=lambda: self.copy_path(tab_name))
-        menu.add_command(label="📋 Dosya Adını Kopyala", command=lambda: self.copy_filename(tab_name))
-        
-        try:
-            menu.tk_popup(event.x_root, event.y_root)
-        finally:
-            menu.grab_release()
+        self.context_menu_window = ModernContextMenu(
+            self.winfo_toplevel(),
+            commands,
+            event.x_root,
+            event.y_root,
+            theme=menu_theme
+        )
 
     # === Sekme Kapatma Mantığı ===
 
     def check_and_close_tab(self, name: str):
-        """
-        Sekmeyi kapatmadan önce kaydedilmemiş değişiklikleri kontrol eder.
-        """
+        """Sekmeyi kapatmadan önce kaydedilmemiş değişiklikleri kontrol eder."""
         if name not in self.editors:
+            # Editör yoksa direkt sil (örn. bozuk durum)
+            self.close_tab(name)
             return
 
         editor = self.editors[name]
@@ -266,30 +400,26 @@ class TabManager(ctk.CTkTabview):
                 f"'{display_name}' dosyasında kaydedilmemiş değişiklikler var.\nKapatmadan önce kaydetmek ister misiniz?"
             )
             
-            if response is None: # İptal
+            if response is None: 
                 return
-            elif response is True: # Evet
+            elif response is True: 
                 if editor.file_path:
                     editor.save_file()
                 else:
-                    self.set(name) # Farklı kaydetmek için odaklan
+                    self.set(name)
                     self.save_current_file_as()
-                    # Kaydetmenin başarılı olup olmadığını kontrol et (dosya yolu ayarlandı ve değiştirilmedi)
-                    if editor.content_modified: # Kullanıcı kaydetme iletişim kutusunu iptal etti
+                    if editor.content_modified:
                         return
 
-        # Kapatmaya devam et
         self.close_tab(name)
 
     def close_tab(self, name: str):
         """Sekmeyi kapatır ve kaynakları temizler."""
-        self.delete(name)
         if name in self.editors:
             del self.editors[name]
         
-        # Eğer hiç sekme kalmadıysa, yeni bir tane oluştur
-        if not self.editors:
-            self.add_new_tab()
+        # UI'dan sil
+        self.delete(name)
 
     def close_current_tab(self):
         """Mevcut aktif sekmeyi kapatır."""
@@ -317,7 +447,6 @@ class TabManager(ctk.CTkTabview):
     # === Pano İşlemleri ===
 
     def copy_path(self, name: str = None) -> bool:
-        """Tam dosya yolunu kopyalar."""
         editor = self.editors.get(name or self.get_current_tab_name())
         if editor and editor.file_path:
             self._copy_to_clipboard(editor.file_path, "Dosya yolu kopyalandı")
@@ -326,7 +455,6 @@ class TabManager(ctk.CTkTabview):
         return False
 
     def copy_relative_path(self, name: str = None) -> bool:
-        """Dosya yolunu proje köküne göre kopyalar."""
         editor = self.editors.get(name or self.get_current_tab_name())
         if not (editor and editor.file_path):
             self._update_status("Dosya kaydedilmemiş", "warning")
@@ -335,17 +463,14 @@ class TabManager(ctk.CTkTabview):
         try:
             main_window = self.winfo_toplevel()
             root_path = getattr(main_window.file_explorer, 'root_path', None) if hasattr(main_window, 'file_explorer') else None
-            
             base_path = root_path or os.getcwd()
             relative_path = os.path.relpath(editor.file_path, base_path)
-            
             self._copy_to_clipboard(relative_path, "Göreli yol kopyalandı")
             return True
         except Exception:
             return self.copy_path(name)
 
     def copy_filename(self, name: str = None) -> bool:
-        """Sadece dosya adını kopyalar."""
         editor = self.editors.get(name or self.get_current_tab_name())
         if editor and editor.file_path:
             filename = os.path.basename(editor.file_path)
@@ -357,56 +482,69 @@ class TabManager(ctk.CTkTabview):
     # === Dosya İşlemleri ===
 
     def open_file(self, path: str = None):
-        """Bir dosya açar. Zaten açıksa odaklanır. Değilse yeni sekmede açar."""
         file_path = path or filedialog.askopenfilename()
         if not file_path:
             return
 
-        # Zaten açık mı kontrol et
         for name, editor in self.editors.items():
             if editor.file_path and os.path.abspath(editor.file_path) == os.path.abspath(file_path):
                 self.set(name)
                 return
 
-        # Boş ve isimsiz ise mevcut olanı yeniden kullan
         if self._should_use_current_tab():
-            # Sadece mevcut olanın içine yükle
             current_name = self.get_current_tab_name()
             self._load_file_into_tab(current_name, file_path)
         else:
-            # Yeni sekme mantığını aç
             self._load_file_into_new_tab(file_path)
 
     def _should_use_current_tab(self) -> bool:
-        """Mevcut sekmenin yeni bir dosya için kullanılıp kullanılamayacağını belirler."""
         current_name = self.get_current_tab_name()
         current_editor = self.get_current_editor()
-        
-        # ID kontrolü (isimsiz) + içerik kontrolü
         return (NEW_TAB_PREFIX in current_name and 
                 current_editor and 
                 not current_editor.content_modified and 
                 len(current_editor.text_area.get("1.0", "end-1c")) == 0)
 
     def _load_file_into_tab(self, tab_name: str, file_path: str):
-        """Bir dosyayı mevcut bir sekmeye/editöre yükler."""
+        ext = os.path.splitext(file_path)[1].lower()
+        is_image = ext in IMAGE_EXTENSIONS
+        current_view = self.editors[tab_name]
+        
+        if is_image and not isinstance(current_view, ImageViewer):
+            self._replace_tab_content(tab_name, ImageViewer)
+        elif not is_image and not isinstance(current_view, CodeEditor):
+            self._replace_tab_content(tab_name, CodeEditor)
+            
         editor = self.editors[tab_name]
         editor.load_file(file_path)
         editor.file_path = file_path
         editor.set_lexer_from_file(file_path)
-        
         self.file_monitor.add_file(file_path)
         self._update_tab_visuals(tab_name)
 
+    def _replace_tab_content(self, tab_name: str, view_class):
+        if tab_name in self.editors:
+            self.editors[tab_name].destroy()
+            
+        tab_frame = self.tab(tab_name)
+        new_view = view_class(tab_frame)
+        
+        if self.current_theme:
+            new_view.apply_theme(self.current_theme)
+            
+        new_view.grid(row=0, column=0, sticky="nsew")
+        self.editors[tab_name] = new_view
+        
+        if isinstance(new_view, CodeEditor):
+            new_view.text_area.bind("<KeyRelease>", lambda e: self._on_editor_content_changed(tab_name), add="+")
+            new_view.text_area.bind("<<Change>>", lambda e: self._on_editor_content_changed(tab_name), add="+")
+
     def _load_file_into_new_tab(self, file_path: str):
-        """Yeni bir sekme oluşturur ve dosyayı yükler."""
-        # İlk ID için temel olarak dosya adını kullan, ancak benzersiz olduğundan emin ol
         filename = os.path.basename(file_path)
         tab_name = self.add_new_tab(filename)
         self._load_file_into_tab(tab_name, file_path)
 
     def save_current_file(self):
-        """Mevcut dosyayı kaydeder."""
         editor = self.get_current_editor()
         if not editor:
             return
@@ -419,10 +557,6 @@ class TabManager(ctk.CTkTabview):
             self.save_current_file_as()
 
     def save_current_file_as(self):
-        """
-        Farklı Kaydet iletişim kutusu. Sekmeyi yok etmeden (geri alma geçmişini/durumunu koruyarak)
-        editör yolunu ve sekme başlığını günceller.
-        """
         editor = self.get_current_editor()
         if not editor:
             return
@@ -431,46 +565,36 @@ class TabManager(ctk.CTkTabview):
         if not file_path:
             return
 
-        # Yeni yola kaydet
         old_path = editor.file_path
         editor.file_path = file_path
         
         if editor.save_file():
-            # Editör durumunu güncelle
             editor.set_lexer_from_file(file_path)
             
-            # Dosya izleyiciyi değiştir
             if old_path:
                 self.file_monitor.remove_file(old_path)
             self.file_monitor.add_file(file_path)
             
-            # Görselleri güncelle (Başlık, İkon)
             current_tab_name = self.get_current_tab_name()
             self._update_tab_visuals(current_tab_name)
-            
             self._update_status(f"Farklı kaydedildi: {os.path.basename(file_path)}", "success")
 
     def on_file_changed(self, path: str):
-        """Harici dosya değişiklikleri için geri çağrı."""
         self.after(0, lambda: self.handle_file_change(path))
 
     def handle_file_change(self, path: str):
-        """Harici dosya değişikliklerini işler."""
         if not os.path.exists(path):
             return
 
         for name, editor in self.editors.items():
             if editor.file_path and os.path.abspath(editor.file_path) == os.path.abspath(path):
-                # Kendi kaydettiğimiz değişiklik mi?
                 try:
                     current_mtime = os.path.getmtime(path)
-                    # Eğer son kaydettiğimiz zaman ile şimdiki zaman kaba taslak aynıysa (fark < 2sn), yoksay
                     if hasattr(editor, 'last_mtime') and abs(current_mtime - editor.last_mtime) < 2.0:
                         return
                 except OSError:
                     pass
 
-                # Değişiklik oldu, kullanıcıya sor
                 display_name = os.path.basename(editor.file_path)
                 if messagebox.askyesno("Dosya Değişti", f"'{display_name}' dosyası harici olarak değiştirildi.\nYeniden yüklemek ister misiniz?"):
                     editor.load_file(path)
@@ -483,30 +607,53 @@ class TabManager(ctk.CTkTabview):
         """TabManager ve tüm editörlere temayı uygular."""
         self.current_theme = theme
         
-        self.configure(
-            segmented_button_fg_color=theme["tab_bg"],
-            segmented_button_selected_color=theme["tab_selected"],
-            segmented_button_selected_hover_color=theme["tab_selected"],
-            segmented_button_unselected_color=theme["tab_bg"],
-            segmented_button_unselected_hover_color=theme["tab_hover"],
-            text_color=theme["fg"]
-        )
+        # Tema renklerini güncelle
+        self.style_config["tab_bg"] = "transparent"
+        self.style_config["tab_selected"] = theme.get("tab_selected", "#1e1e1e")
+        self.style_config["tab_hover"] = theme.get("tab_hover", "#2d2d2d")
+        self.style_config["tab_text"] = theme.get("fg", "#d4d4d4")
+        self.style_config["bar_bg"] = theme.get("tab_bg", "transparent")
+        self.style_config["accent_color"] = theme.get("accent_color", "#007acc")
+
+        self.configure(fg_color="transparent")
         
+        if hasattr(self, "_tab_bar"):
+            self._tab_bar.configure(fg_color=self.style_config["bar_bg"])
+        
+        # Mevcut butonları güncelle
+        for name, btn in self._tab_buttons.items():
+            is_active = (name == self._current_name)
+            
+            if is_active:
+                btn.configure(
+                    text_color=self.style_config["tab_text"],
+                    hover_color=self.style_config["tab_selected"],
+                    fg_color=self.style_config["tab_selected"],
+                    border_width=2,
+                    border_color=self.style_config["accent_color"]
+                )
+            else:
+                btn.configure(
+                    text_color=self.style_config["tab_text"],
+                    hover_color=self.style_config["tab_hover"],
+                    fg_color=self.style_config["tab_bg"],
+                    border_width=0
+                )
+        
+        # Editörleri güncelle
         for editor in self.editors.values():
             editor.apply_theme(theme)
 
-    # === Görünüm Eylemleri (Satır Numaraları, Minimap vb.) ===
+    # === Görünüm Eylemleri (Editör Ayarları) ===
 
     def _toggle_editor_feature(self, feature_method_name: str) -> Optional[bool]:
-        """Bir özelliği tüm editörlerde açar/kapatır."""
         current_editor = self.get_current_editor()
         if not current_editor:
             return None
             
         method = getattr(current_editor, feature_method_name)
-        new_state = method() # Aktif editörü değiştir
+        new_state = method()
         
-        # Diğerlerini senkronize et
         for editor in self.editors.values():
             getattr(editor, feature_method_name)(new_state)
             
@@ -517,7 +664,6 @@ class TabManager(ctk.CTkTabview):
     def toggle_word_wrap(self): return self._toggle_editor_feature('toggle_word_wrap')
 
     def get_view_states(self) -> Dict[str, Any]:
-        """Mevcut görünüm durumlarını döndürür."""
         editor = self.get_current_editor()
         if editor:
             return editor.get_view_states()
@@ -526,7 +672,6 @@ class TabManager(ctk.CTkTabview):
     # === Editör Proxy Yöntemleri ===
 
     def _proxy_editor_action(self, action_name: str):
-        """Bir eylem dizesini mevcut editör örneğine proxy eder."""
         editor = self.get_current_editor()
         if editor and hasattr(editor, action_name):
             getattr(editor, action_name)()

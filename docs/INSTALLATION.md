@@ -15,8 +15,8 @@ Memati Editör'ü bilgisayarınıza kurmak ve çalıştırmak için aşağıdaki
 Terminal veya komut istemcisini açın ve projeyi indirin:
 
 ```bash
-git clone https://github.com/memati/memati-editor.git
-cd memati-editor
+git clone https://github.com/Memati8383/Advanced-Text-Editor.git
+cd Advanced-Text-Editor
 ```
 
 (Eğer git yüklü değilse, projeyi ZIP olarak indirip çıkarabilirsiniz.)

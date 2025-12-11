@@ -43,6 +43,7 @@
 - **🔍 Gelişmiş Arama**: Regex destekli güçlü Bul ve Değiştir aracı.
 - **🔢 Satıra Git**: `Ctrl+G` ile kodunuzun derinliklerine hızla ulaşın.
 - **📝 Markdown Önizleme**: Canlı önizleme, senkronize kaydırma, kelime/karakter sayımı, okuma süresi hesaplama ve tema uyumlu modern arayüz (Ctrl+Shift+V).
+- **🖼️ Resim Görüntüleyici**: Resim dosyalarını (PNG, JPG, BMP, GIF vb.) doğrudan editör içinde görüntüleyin. Yakınlaştırma, kaydırma ve döndürme özellikleri mevcuttur.
 
 ### 🎨 **Modern Arayüz & Deneyim**
 - **💎 17 Premium Tema**: **Dracula**, **Monokai**, **Solarized (Light & Dark)**, **Nord**, **Gruvbox**, **One Dark Pro**, **GitHub Dark**, **Synthwave '84**, **Night Owl**, **Tokyo Night**, **Cobalt2**, **Material Palenight**, **Ayu Dark**, **Shades of Purple**, **VS Code Dark** ve **Light**.
@@ -75,6 +76,7 @@
 - **🎨 Akıllı ve Renkli İkon Sistemi**: Her dosya türü için özel renklendirilmiş emoji ikonu (🐍 Python, ⚛️ React, 🔷 TypeScript, vb.)
 - **📦 Özel Dosya Tanıma**: package.json, Dockerfile, README.md, LICENSE gibi özel dosyalar otomatik tanınır.
 - **🎯 Otomatik Algılama**: Dosya uzantısına göre syntax highlighting ve ikon seçimi.
+- **🖼️ Görsel Medya Desteği**: Resim dosyaları için yerleşik görüntüleyici ve önizleme.
 
 ### 🛡️ **Güvenlik ve Performans**
 - **💾 Sessiz Otomatik Kayıt**: Kodunuzu yazarken arka planda otomatik olarak güvenceye alın.
@@ -95,8 +97,9 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 
 1. **Projeyi Bilgisayarınıza İndirin**
    ```bash
+   ```bash
    git clone https://github.com/Memati8383/Advanced-Text-Editor.git
-   cd memati-editor
+   cd Advanced-Text-Editor
    ```
 
 2. **Sanal Ortamı Oluşturun (Önerilen)**
@@ -151,6 +154,10 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 | | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> | Markdown Önizleme |
 | | <kbd>F11</kbd> | Tam Ekran Modu |
 | | <kbd>Ctrl</kbd> + <kbd>Tekerlek</kbd> | Yakınlaştır / Uzaklaştır |
+| **🖼️ Resim** | <kbd>Tekerlek</kbd> | Resme Yakınlaş/Uzaklaş |
+| | <kbd>Yön Tuşları</kbd> | Resim İçinde Gezin |
+| | <kbd>R</kbd> / <kbd>L</kbd> | Sağa / Sola Döndür |
+| | <kbd>F</kbd> | Ekrana Sığdır |
 | **⌨️ Terminal** | <kbd>Ctrl</kbd> + <kbd>`</kbd> | Terminal Aç/Kapat |
 | **📋 Kopyalama** | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> | Dosya Yolunu Kopyala |
 | | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>C</kbd> | Göreli Yolu Kopyala |
@@ -215,6 +222,3 @@ Bu proje açık kaynaklıdır ve topluluk katkılarıyla büyümektedir. Her tü
   <p>Copyright © 2024 Memati. Tüm Hakları Saklıdır.</p>
   <p><sub><i>Memati tarafından ☕ ve ❤️ ile kodlandı.</i></sub></p>
 </div>
-
-
-

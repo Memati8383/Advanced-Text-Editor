@@ -15,6 +15,10 @@
 *   **Akıllı Editör:** Sözdizimi vurgulama, otomatik tamamlama ve kod katlama.
 *   **Entegre Terminal:** Kodunuzu yazarken terminal komutlarını çalıştırın.
 *   **Markdown Önizleme:** Canlı önizleme ile dokümantasyon hazırlayın.
+*   **Resim Görüntüleyici:** Resim dosyalarını (PNG, JPG, BMP vb.) doğrudan editör içinde görüntüleyin.
+*   **Minimap (Kod Haritası):** Uzun dosyalarda kodun kuş bakışı görünümü ile hızlı gezinin.
+*   **İnteraktif Öğretici:** Editörü kullanmayı adım adım öğrenin (`Yardım > Öğretici`).
+*   **Gelişmiş Arama:** Regex destekli güçlü bul ve değiştir araçları.
 *   **Performans:** Büyük dosyalarla bile hızlı ve stabil çalışır.
 
 ## 📚 Dokümantasyon
@@ -42,4 +46,3 @@ Bu proje MIT Lisansı ile lisanslanmıştır. Detaylar için [LICENSE](LICENSE) 
 
 ---
 Copyright © 2025 Memati Editör Geliştirme Ekibi
-

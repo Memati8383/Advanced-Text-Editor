@@ -20,7 +20,7 @@ Yeni bir özellik mi istiyorsunuz? "Suggestion" etiketiyle bir Issue açarak fik
 Projeye kod katkısında bulunmak istiyorsanız:
 
 1.  Bu depoyu (repository) **Fork** edin.
-2.  Kendi bilgisayarınıza klonlayın: `git clone https://github.com/SİZİN_KULLANICI_ADINIZ/memati-editor.git`
+2.  Kendi bilgisayarınıza klonlayın: `git clone https://github.com/Memati8383/Advanced-Text-Editor.git`
 3.  Yeni bir dal (branch) oluşturun: `git checkout -b ozellik/yeni-ozellik` veya `git checkout -b fix/hata-duzeltme`
 4.  Değişikliklerinizi yapın ve **Commit** edin: `git commit -m "Yeni özellik eklendi"`
 5.  Dalınızı uzak sunucuya (remote) gönderin: `git push origin ozellik/yeni-ozellik`

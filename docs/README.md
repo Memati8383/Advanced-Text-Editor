@@ -21,6 +21,7 @@ Kullanıcı deneyimini iyileştiren yardımcı araçlar ve arayüz bileşenleri.
 *   [**Durum Çubuğu (Status Bar)**](status_bar.md) - İmleç konumu, dil ve kodlama bilgileri.
 *   [**Satıra Git (Go To Line)**](goto_line.md) - Belirli bir satıra hızlı erişim.
 *   [**Markdown Önizleme**](markdown_preview.md) - Canlı Markdown görüntüleyicisi.
+*   [**Resim Görüntüleyici (Image Viewer)**](image_viewer.md) - Dahili resim görüntüleme aracı.
 
 ## 🧠 Gelişmiş Özellikler
 
@@ -28,6 +29,8 @@ Kod yazımını hızlandıran ve kolaylaştıran akıllı özellikler.
 
 *   [**Otomatik Tamamlama (Autocompleter)**](autocompleter.md) - Akıllı kod önerileri.
 *   [**Sözdizimi Vurgulayıcı (Syntax Highlighter)**](syntax_highlighter.md) - Renkli kod görünümü ve dil desteği.
+*   [**Dil Desteği (Language Support)**](languages.md) - Yeni dil ekleme ve yapılandırma.
+*   [**Dosya İzleyici (File Monitor)**](file_monitor.md) - Harici dosya değişikliklerini algılama sistemi.
 
 ## 📚 Yardım ve Öğrenme
 

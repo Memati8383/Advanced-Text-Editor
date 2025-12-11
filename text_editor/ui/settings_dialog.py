@@ -9,6 +9,7 @@ from tkinter import ttk, colorchooser, font as tkfont
 import json
 import os
 from typing import Dict, Any, Callable
+from text_editor.utils.shortcut_manager import ShortcutManager
 
 
 class SettingsDialog(ctk.CTkToplevel):
@@ -1130,51 +1131,22 @@ class SettingsDialog(ctk.CTkToplevel):
 
         
     def show_keyboard_shortcuts(self):
-        """Klavye kısayollarını gösterir."""
-        shortcuts = {
-            "Dosya İşlemleri": {
-                "Yeni Dosya": "Ctrl+N",
-                "Dosya Aç": "Ctrl+O",
-                "Kaydet": "Ctrl+S",
-                "Farklı Kaydet": "Ctrl+Shift+S",
-                "Tümünü Kaydet": "Ctrl+Alt+S",
-                "Kapat": "Ctrl+W",
-                "Çıkış": "Alt+F4"
-            },
-            "Düzenleme": {
-                "Geri Al": "Ctrl+Z",
-                "Yinele": "Ctrl+Y",
-                "Kes": "Ctrl+X",
-                "Kopyala": "Ctrl+C",
-                "Yapıştır": "Ctrl+V",
-                "Tümünü Seç": "Ctrl+A",
-                "Bul": "Ctrl+F",
-                "Değiştir": "Ctrl+H"
-            },
-            "Görünüm": {
-                "Tam Ekran": "F11",
-                "Zen Modu": "Ctrl+K Z",
-                "Satır Numaraları": "Ctrl+L",
-                "Word Wrap": "Alt+Z",
-                "Minimap": "Ctrl+M",
-                "Durum Çubuğu": "Ctrl+/",
-                "Dosya Gezgini": "Ctrl+B",
-                "Terminal": "Ctrl+`",
-                "Markdown Önizleme": "Ctrl+Shift+V"
-            },
-            "Gezinme": {
-                "Sonraki Sekme": "Ctrl+Tab",
-                "Önceki Sekme": "Ctrl+Shift+Tab",
-                "Satıra Git": "Ctrl+G"
-            },
-            "Zoom": {
-                "Yakınlaştır": "Ctrl+Fare Tekerleği Yukarı",
-                "Uzaklaştır": "Ctrl+Fare Tekerleği Aşağı",
-                "Sıfırla": "Ctrl+0"
-            }
-        }
+        """Klavye kısayollarını gösterir ve düzenlemeye izin verir."""
+        shortcut_manager = ShortcutManager.get_instance()
+        shortcuts = shortcut_manager.shortcuts
+        metadata = shortcut_manager.SHORTCUT_METADATA
         
-        for category, shortcuts_dict in shortcuts.items():
+        # Kategorilere göre grupla
+        grouped_shortcuts = {}
+        for action_id, sequence in shortcuts.items():
+            meta = metadata.get(action_id, {"category": "Diğer", "label": action_id})
+            category = meta["category"]
+            if category not in grouped_shortcuts:
+                grouped_shortcuts[category] = []
+            grouped_shortcuts[category].append((action_id, meta["label"], sequence))
+            
+        # UI Oluştur
+        for category, items in grouped_shortcuts.items():
             # Kategori başlığı
             category_label = ctk.CTkLabel(
                 self.scrollable_frame,
@@ -1193,28 +1165,185 @@ class SettingsDialog(ctk.CTkToplevel):
             separator.pack(fill="x", pady=(0, 10))
             
             # Kısayollar
-            for action, shortcut in shortcuts_dict.items():
+            for action_id, label, sequence in items:
+                display_seq = shortcut_manager.get_display_string(sequence)
+                
                 shortcut_frame = ctk.CTkFrame(self.scrollable_frame, fg_color="transparent")
                 shortcut_frame.pack(fill="x", pady=3)
                 
                 action_label = ctk.CTkLabel(
                     shortcut_frame,
-                    text=action,
+                    text=label,
                     font=ctk.CTkFont(size=12),
                     anchor="w"
                 )
                 action_label.pack(side="left")
                 
-                shortcut_badge = ctk.CTkLabel(
+                # Düzenlenebilir Buton
+                shortcut_btn = ctk.CTkButton(
                     shortcut_frame,
-                    text=shortcut,
+                    text=display_seq if display_seq else "Yok",
                     font=ctk.CTkFont(size=11, family="Courier New"),
                     fg_color=("gray80", "gray25"),
+                    text_color=("black", "white"),
+                    hover_color=("gray70", "gray35"),
                     corner_radius=6,
-                    padx=10,
-                    pady=5
+                    height=24,
+                    width=100,
+                    command=lambda aid=action_id: self.start_shortcut_recording(aid)
                 )
-                shortcut_badge.pack(side="right")
+                shortcut_btn.pack(side="right")
+        
+        # En alta varsayılanlara sıfırla butonu
+        reset_frame = ctk.CTkFrame(self.scrollable_frame, fg_color="transparent")
+        reset_frame.pack(fill="x", pady=(30, 20), padx=10)
+        
+        reset_btn = ctk.CTkButton(
+            reset_frame,
+            text="Varsayılanlara Sıfırla (Reset)",
+            fg_color="#dc3545",
+            hover_color="#c82333",
+            font=ctk.CTkFont(size=12, weight="bold"),
+            command=self.reset_shortcuts_command
+        )
+        reset_btn.pack(side="right")
+        
+    def reset_shortcuts_command(self):
+        """Kısayolları sıfırlar ve UI'ı yeniler."""
+        manager = ShortcutManager.get_instance()
+        manager.reset_to_defaults()
+        self.show_settings_content('shortcuts')
+        
+    def start_shortcut_recording(self, action_id):
+        # ... implementation continues below ...
+        """Kısayol kaydetme diyaloğunu başlatır."""
+        manager = ShortcutManager.get_instance()
+        current_seq = manager.get(action_id)
+        display_current = manager.get_display_string(current_seq)
+        meta = manager.SHORTCUT_METADATA.get(action_id, {})
+        action_label = meta.get("label", action_id)
+
+        # Modal Diyalog
+        dialog = ctk.CTkToplevel(self)
+        dialog.title("Kısayol Ata")
+        dialog.geometry("400x250")
+        dialog.transient(self)
+        dialog.grab_set()
+        
+        # Ortala
+        dialog.update_idletasks()
+        x = self.winfo_x() + (self.winfo_width() // 2) - 200
+        y = self.winfo_y() + (self.winfo_height() // 2) - 125
+        dialog.geometry(f"+{x}+{y}")
+        
+        # İçerik
+        ctk.CTkLabel(
+            dialog, 
+            text=f"'{action_label}' için yeni kısayol",
+            font=ctk.CTkFont(size=14, weight="bold")
+        ).pack(pady=(20, 10))
+        
+        info_label = ctk.CTkLabel(
+            dialog,
+            text="İstediğiniz tuş kombinasyonuna basın...\n(İptal etmek için ESC)",
+            font=ctk.CTkFont(size=12),
+            text_color="gray"
+        )
+        info_label.pack(pady=5)
+        
+        shortcut_display = ctk.CTkLabel(
+            dialog,
+            text=display_current,
+            font=ctk.CTkFont(size=24, weight="bold", family="Courier New"),
+            fg_color=("gray90", "gray20"),
+            corner_radius=8,
+            width=200,
+            height=50
+        )
+        shortcut_display.pack(pady=20)
+        
+        # Tuş Yakalama
+        current_keys = set()
+        
+        def on_key_press(event):
+            # Modifier tuşlarını kontrol et
+            is_ctrl = (event.state & 0x4) != 0
+            is_alt = (event.state & 0x20000) != 0 or (event.state & 0x20) != 0 # Windows vs Linux alt
+            is_shift = (event.state & 0x1) != 0
+            
+            keys = []
+            if is_ctrl: keys.append("Control")
+            if is_alt: keys.append("Alt")
+            if is_shift: keys.append("Shift")
+            
+            # Ana tuş (Modifier değilse)
+            if event.keysym not in ("Control_L", "Control_R", "Alt_L", "Alt_R", "Shift_L", "Shift_R"):
+                keys.append(event.keysym)
+            
+            # Tkinter formatı oluştur: <Control-Key-c> gibi
+            # Basitleştirilmiş format: <Control-c>
+            
+            # Eğer sadece modifier varsa gösterme
+            if not keys or (len(keys) == 1 and keys[0] in ("Control", "Alt", "Shift")):
+                shortcut_display.configure(text=" + ".join(keys) + " ...")
+                return
+
+            # Sequence oluştur
+            parts = []
+            if "Control" in keys: parts.append("Control")
+            if "Alt" in keys: parts.append("Alt")
+            if "Shift" in keys: parts.append("Shift")
+            
+            # Son tuşu ekle (varsa ve modifier değilse)
+            last_key = keys[-1]
+            if last_key not in ("Control", "Alt", "Shift"):
+                # Özel isimlendirmeleri düzelt (örn: return -> Return)
+                parts.append(last_key)
+            
+            sequence = f"<{'-'.join(parts)}>"
+            
+            # Görselleştir
+            shortcut_display.configure(text=manager.get_display_string(sequence))
+            
+            # ESC iptal eder
+            if event.keysym == "Escape":
+                dialog.destroy()
+                return
+
+            # Kaydet ve kapat
+            # Kullanıcıya onay sorabiliriz veya direkt kaydedebiliriz.
+            # Şimdilik direkt kaydediyoruz ama bir "Kaydet" butonu daha güvenli olabilir.
+            # Ancak UX açısından tuşa basınca algılaması daha hızlı.
+            
+            # Onay butonu aktifleşsin
+            save_btn.configure(state="normal", command=lambda: apply_shortcut(sequence))
+            
+        def apply_shortcut(seq):
+            manager.set(action_id, seq)
+            dialog.destroy()
+            # Listeyi yenilemek için paneli güncelle
+            self.show_category("Klavye Kısayolları")
+            
+        save_btn = ctk.CTkButton(
+            dialog,
+            text="Kaydet",
+            state="disabled",
+            width=100
+        )
+        save_btn.pack(side="left", padx=20, pady=20, expand=True)
+        
+        cancel_btn = ctk.CTkButton(
+            dialog,
+            text="İptal",
+            command=dialog.destroy,
+            fg_color="transparent",
+            border_width=1,
+            width=100
+        )
+        cancel_btn.pack(side="right", padx=20, pady=20, expand=True)
+        
+        dialog.bind("<Key>", on_key_press)
+        dialog.focus_set()
                 
     def show_terminal_settings(self):
         """Terminal ayarlarını gösterir."""

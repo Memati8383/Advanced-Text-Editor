@@ -9,6 +9,7 @@ def main():
     app = MainWindow()
     app.title(APP_NAME)
     app.geometry(APP_SIZE)
+    app.after(0, lambda: app.state('zoomed'))
     app.mainloop()
 
 if __name__ == "__main__":

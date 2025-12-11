@@ -185,6 +185,28 @@ class HelpWindow(ctk.CTkToplevel):
             "💡 İpuçları ve Püf Noktaları": HelpContentProvider.get_tips_and_tricks,
             "❓ SSS": HelpContentProvider.get_faq,
             "📊 Performans Raporu": lambda: HelpContentProvider.get_performance_report(self.app),
+            "🖼️ Resim Görüntüleyici": lambda: """# Resim Görüntüleyici
+
+Memati Editör, kod dosyalarının yanı sıra resim dosyalarını da görüntüleyebilir.
+
+## Özellikler
+- **Yakınlaştırma/Uzaklaştırma:** Fare tekerleği ile resme odaklanabilirsiniz.
+- **Kaydırma:** Büyütülmüş resimlerde sürükleyerek veya yön tuşlarıyla gezinebilirsiniz.
+- **Döndürme:** 'R' ve 'L' tuşlarıyla resmi döndürebilirsiniz.
+- **Ekrana Sığdır:** 'F' tuşu veya araç çubuğundaki buton ile resmi pencereye sığdırabilirsiniz.
+
+## Desteklenen Formatlar
+- PNG, JPG, JPEG, GIF, BMP, WEBP""",
+            "🔢 Satıra Git": lambda: """# Satıra Git
+
+Büyük dosyalarda belirli bir satıra hızlıca ulaşmak için kullanılır.
+
+## Kullanım
+1. **Ctrl+G** kısayolunu kullanın veya **Düzen** menüsünden **Satıra Git**'i seçin.
+2. Açılan pencereye gitmek istediğiniz satır numarasını yazın.
+3. **Git** butonuna tıklayın veya **Enter**'a basın.
+
+Editör sizi otomatik olarak o satıra götürecek ve satırı vurgulayacaktır.""",
             "🐛 Hata Bildir": HelpContentProvider.get_report_bug,
             "ℹ️ Hakkında": HelpContentProvider.get_about
         }

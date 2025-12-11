@@ -11,6 +11,7 @@ import tkinter as tk
 import os
 import re
 import json
+from text_editor.utils.shortcut_manager import ShortcutManager
 
 class MainWindow(ctk.CTk):
     """
@@ -191,93 +192,117 @@ class MainWindow(ctk.CTk):
         from text_editor.ui.help_system import HelpSystem
         self.help_system = HelpSystem(self)
 
-        # Klavye Kısayolları
-        self.bind("<Control-n>", lambda e: self.tab_manager.add_new_tab())
-        self.bind("<Control-o>", lambda e: self.tab_manager.open_file())
-        self.bind("<Control-Shift-O>", lambda e: self.open_folder())
-        self.bind("<Control-s>", lambda e: self.tab_manager.save_current_file())
-        self.bind("<Control-Shift-s>", lambda e: self.tab_manager.save_current_file_as())
-        self.bind("<Control-f>", lambda e: self.tab_manager.show_find_replace())
-        self.bind("<Control-g>", lambda e: self.tab_manager.show_goto_line())
-        self.bind("<F11>", self.toggle_fullscreen)
+        # Klavye Kısayolları (ShortcutManager üzerinden)
+        self.shortcut_manager = ShortcutManager.get_instance()
+        shortcuts = self.shortcut_manager
         
-        # Görünüm Kısayolları
-        self.bind("<Control-b>", lambda e: self.toggle_file_explorer())  # Dosya gezgini
-        self.bind("<Control-m>", lambda e: self.tab_manager.toggle_minimap())  # Minimap
-        self.bind("<Control-Shift-M>", lambda e: self.toggle_status_bar())  # Status bar
-        self.bind("<Control-Shift-L>", lambda e: self.tab_manager.toggle_line_numbers())  # Satır numaraları
-        self.bind("<Alt-z>", lambda e: self.tab_manager.toggle_word_wrap())  # Word wrap
-        self.bind("<Control-k>", self._zen_mode_check)  # Zen mode (Ctrl+K, Z)
-        self.bind("<Control-grave>", lambda e: self.toggle_terminal())  # Terminal (Ctrl+`)
-        self.bind("<Control-quoteleft>", lambda e: self.toggle_terminal())  # Terminal alternatif
-        self.bind("<Control-Shift-V>", lambda e: self.toggle_markdown_preview())  # Markdown Preview
+        # Dosya İşlemleri
+        self.bind(shortcuts.get("new_tab"), lambda e: self.tab_manager.add_new_tab())
+        self.bind(shortcuts.get("open_file"), lambda e: self.tab_manager.open_file())
+        self.bind(shortcuts.get("open_folder"), lambda e: self.open_folder())
+        self.bind(shortcuts.get("save_file"), lambda e: self.tab_manager.save_current_file())
+        self.bind(shortcuts.get("save_as"), lambda e: self.tab_manager.save_current_file_as())
+        self.bind(shortcuts.get("find"), lambda e: self.tab_manager.show_find_replace())
+        self.bind(shortcuts.get("goto_line"), lambda e: self.tab_manager.show_goto_line())
         
-        # Kopyalama Kısayolları
-        self.bind("<Control-Shift-C>", lambda e: self.tab_manager.copy_path())  # Dosya yolunu kopyala
-        self.bind("<Control-Alt-c>", lambda e: self.tab_manager.copy_relative_path())  # Göreli yolu kopyala
+        # Görünüm
+        self.bind(shortcuts.get("toggle_fullscreen"), self.toggle_fullscreen)
+        self.bind(shortcuts.get("toggle_file_explorer"), lambda e: self.toggle_file_explorer())
+        self.bind(shortcuts.get("toggle_minimap"), lambda e: self.tab_manager.toggle_minimap())
+        self.bind(shortcuts.get("toggle_status_bar"), lambda e: self.toggle_status_bar())
+        self.bind(shortcuts.get("toggle_line_numbers"), lambda e: self.tab_manager.toggle_line_numbers())
+        self.bind(shortcuts.get("toggle_word_wrap"), lambda e: self.tab_manager.toggle_word_wrap())
+        self.bind(shortcuts.get("toggle_terminal"), lambda e: self.toggle_terminal())
+        self.bind(shortcuts.get("preview_markdown"), lambda e: self.toggle_markdown_preview())
+        
+        # Zen Mode
+        self.bind(shortcuts.get("toggle_zen_mode"), self.toggle_zen_mode)
+        
+        # Kopyalama Kısayolları (Henüz manager'da yoksa ekleyelim veya varsayılan bırakalım)
+        self.bind("<Control-Shift-C>", lambda e: self.tab_manager.copy_path())
+        self.bind("<Control-Alt-c>", lambda e: self.tab_manager.copy_relative_path())
         
         # Ayarlar kısayolu
-        self.bind("<Control-comma>", lambda e: self.open_settings())  # Ctrl+, ile ayarlar
+        self.bind("<Control-comma>", lambda e: self.open_settings())
         
         # Başlangıç temasını uygula
         saved_theme = self.settings.get("theme", "Dark")
         self.after(100, lambda: self.apply_theme(saved_theme))
+
+    def create_zen_exit_button(self):
+        """Zen modu çıkış butonunu oluşturur."""
+        self.zen_exit_btn = ctk.CTkButton(
+            self,
+            text="⤣ Zen Modundan Çık",
+            command=self.toggle_zen_mode,
+            width=140,
+            height=32,
+            corner_radius=16,
+            fg_color=("gray80", "gray20"),
+            hover_color=("gray70", "gray30"),
+            font=("Segoe UI", 12, "bold")
+        )
+        # Sağ üst köşeye yerleştir
+        self.zen_exit_btn.place(relx=0.98, rely=0.02, anchor="ne")
 
     def show_file_menu(self, button):
         """Dosya menüsünü gösterir - modern, stilize dropdown"""
         if not self.modern_menu:
             return
         
+        shortcuts = self.shortcut_manager
+        fmt = shortcuts.get_display_string
+        
         menu_items = [
             {
                 "icon": "📄",
                 "label": "Yeni Sekme",
-                "shortcut": "Ctrl+N",
+                "shortcut": fmt(shortcuts.get("new_tab")),
                 "command": self.tab_manager.add_new_tab
             },
             {
                 "icon": "📂",
                 "label": "Dosya Aç",
-                "shortcut": "Ctrl+O",
+                "shortcut": fmt(shortcuts.get("open_file")),
                 "command": self.tab_manager.open_file
             },
             {
                 "icon": "📁",
                 "label": "Klasör Aç",
-                "shortcut": "Ctrl+Shift+O",
+                "shortcut": fmt(shortcuts.get("open_folder")),
                 "command": self.open_folder
             },
             {"separator": True},
             {
                 "icon": "💾",
                 "label": "Kaydet",
-                "shortcut": "Ctrl+S",
+                "shortcut": fmt(shortcuts.get("save_file")),
                 "command": self.tab_manager.save_current_file
             },
             {
                 "icon": "📝",
                 "label": "Farklı Kaydet",
-                "shortcut": "Ctrl+Shift+S",
+                "shortcut": fmt(shortcuts.get("save_as")),
                 "command": self.tab_manager.save_current_file_as
             },
             {"separator": True},
             {
                 "icon": "🔍",
                 "label": "Bul ve Değiştir",
-                "shortcut": "Ctrl+F",
+                "shortcut": fmt(shortcuts.get("find")),
                 "command": self.tab_manager.show_find_replace
             },
             {
                 "icon": "🎯",
                 "label": "Satıra Git",
-                "shortcut": "Ctrl+G",
+                "shortcut": fmt(shortcuts.get("goto_line")),
                 "command": self.tab_manager.show_goto_line
             },
             {"separator": True},
             {
                 "icon": "🚪",
                 "label": "Çıkış",
-                "shortcut": "Alt+F4",
+                "shortcut": fmt(shortcuts.get("quit")),
                 "command": self.quit
             }
         ]
@@ -289,93 +314,96 @@ class MainWindow(ctk.CTk):
         if not self.modern_menu:
             return
         
+        shortcuts = self.shortcut_manager
+        fmt = shortcuts.get_display_string
+        
         menu_items = [
             {
                 "icon": "↶",
                 "label": "Geri Al",
-                "shortcut": "Ctrl+Z",
+                "shortcut": fmt(shortcuts.get("undo")),
                 "command": lambda: self.focus_get().event_generate("<<Undo>>") if self.focus_get() else None
             },
             {
                 "icon": "↷",
                 "label": "Yinele",
-                "shortcut": "Ctrl+Y",
+                "shortcut": fmt(shortcuts.get("redo")),
                 "command": lambda: self.focus_get().event_generate("<<Redo>>") if self.focus_get() else None
             },
             {"separator": True},
             {
                 "icon": "✂️",
                 "label": "Kes",
-                "shortcut": "Ctrl+X",
+                "shortcut": fmt(shortcuts.get("cut")),
                 "command": lambda: self.focus_get().event_generate("<<Cut>>") if self.focus_get() else None
             },
             {
                 "icon": "📋",
                 "label": "Kopyala",
-                "shortcut": "Ctrl+C",
+                "shortcut": fmt(shortcuts.get("copy")),
                 "command": lambda: self.focus_get().event_generate("<<Copy>>") if self.focus_get() else None
             },
             {
                 "icon": "📌",
                 "label": "Yapıştır",
-                "shortcut": "Ctrl+V",
+                "shortcut": fmt(shortcuts.get("paste")),
                 "command": lambda: self.focus_get().event_generate("<<Paste>>") if self.focus_get() else None
             },
             {"separator": True},
             {
                 "icon": "📑",
                 "label": "Satır Çoğalt",
-                "shortcut": "Ctrl+⇧+D",
+                "shortcut": fmt(shortcuts.get("duplicate_line")),
                 "command": self.tab_manager.duplicate_line
             },
             {
                 "icon": "⬆️",
                 "label": "Yukarı Taşı",
-                "shortcut": "Alt+↑",
+                "shortcut": fmt(shortcuts.get("move_line_up")),
                 "command": self.tab_manager.move_line_up
             },
             {
                 "icon": "⬇️",
                 "label": "Aşağı Taşı",
-                "shortcut": "Alt+↓",
+                "shortcut": fmt(shortcuts.get("move_line_down")),
                 "command": self.tab_manager.move_line_down
             },
             {
                 "icon": "🗑️",
                 "label": "Satır Sil",
-                "shortcut": "Ctrl+⇧+K",
+                "shortcut": fmt(shortcuts.get("delete_line")),
                 "command": self.tab_manager.delete_line
             },
             {
                 "icon": "🔗",
                 "label": "Satır Birleştir",
-                "shortcut": "Ctrl+J",
+                "shortcut": fmt(shortcuts.get("join_lines")),
                 "command": self.tab_manager.join_lines
             },
             {"separator": True},
             {
                 "icon": "🔍",
                 "label": "Bul/Değiştir",
-                "shortcut": "Ctrl+F",
+                "shortcut": fmt(shortcuts.get("find")),
                 "command": self.tab_manager.show_find_replace
             },
             {
                 "icon": "🎯",
                 "label": "Satıra Git",
-                "shortcut": "Ctrl+G",
+                "shortcut": fmt(shortcuts.get("goto_line")),
                 "command": self.tab_manager.show_goto_line
             },
             {"separator": True},
             {
                 "icon": "📋",
                 "label": "Yol Kopyala",
-                "shortcut": "Ctrl+⇧+C",
+                "shortcut": fmt(shortcuts.get("copy_path")),
                 "command": self.tab_manager.copy_path
             },
             {
                 "icon": "📂",
                 "label": "Göreli Yol",
-                "shortcut": "Ctrl+Alt+C",
+                "shortcut": fmt(shortcuts.get("copy_relative_path")),
                 "command": self.tab_manager.copy_relative_path
             }
         ]
@@ -517,6 +545,9 @@ class MainWindow(ctk.CTk):
         # Mevcut durumları al
         view_states = self.tab_manager.get_view_states()
         
+        shortcuts = self.shortcut_manager
+        fmt = shortcuts.get_display_string
+        
         def get_toggle_icon(is_on):
             return "✅" if is_on else "⬜"
         
@@ -524,57 +555,57 @@ class MainWindow(ctk.CTk):
             {
                 "icon": get_toggle_icon(view_states.get("line_numbers", True)),
                 "label": "Satır Numaraları",
-                "shortcut": "Ctrl+Shift+L",
+                "shortcut": fmt(shortcuts.get("toggle_line_numbers")),
                 "command": self.toggle_line_numbers_with_feedback
             },
             {
                 "icon": get_toggle_icon(view_states.get("word_wrap", False)),
                 "label": "Satır Sarma (Word Wrap)",
-                "shortcut": "Alt+Z",
+                "shortcut": fmt(shortcuts.get("toggle_word_wrap")),
                 "command": self.toggle_word_wrap_with_feedback
             },
             {
                 "icon": get_toggle_icon(view_states.get("minimap", True)),
                 "label": "Minimap",
-                "shortcut": "Ctrl+M",
+                "shortcut": fmt(shortcuts.get("toggle_minimap")),
                 "command": self.toggle_minimap_with_feedback
             },
             {"separator": True},
             {
                 "icon": get_toggle_icon(self._status_bar_visible),
                 "label": "Durum Çubuğu",
-                "shortcut": "Ctrl+Shift+M",
+                "shortcut": fmt(shortcuts.get("toggle_status_bar")),
                 "command": self.toggle_status_bar
             },
             {
                 "icon": get_toggle_icon(self._file_explorer_visible),
                 "label": "Dosya Gezgini",
-                "shortcut": "Ctrl+B",
+                "shortcut": fmt(shortcuts.get("toggle_file_explorer")),
                 "command": self.toggle_file_explorer
             },
             {
                 "icon": get_toggle_icon(self._terminal_visible),
                 "label": "Terminal",
-                "shortcut": "Ctrl+`",
+                "shortcut": fmt(shortcuts.get("toggle_terminal")),
                 "command": self.toggle_terminal
             },
             {
                 "icon": get_toggle_icon(self._markdown_preview_visible),
                 "label": "Markdown Önizleme",
-                "shortcut": "Ctrl+Shift+V",
+                "shortcut": fmt(shortcuts.get("preview_markdown")),
                 "command": self.toggle_markdown_preview
             },
             {"separator": True},
             {
                 "icon": "🧘",
                 "label": "Zen Modu",
-                "shortcut": "Ctrl+K, Z",
+                "shortcut": fmt(shortcuts.get("toggle_zen_mode")),
                 "command": self.toggle_zen_mode
             },
             {
                 "icon": "📺",
                 "label": "Tam Ekran",
-                "shortcut": "F11",
+                "shortcut": fmt(shortcuts.get("toggle_fullscreen")),
                 "command": self.toggle_fullscreen
             }
         ]
@@ -671,6 +702,9 @@ class MainWindow(ctk.CTk):
             # Tam ekran yap
             self.attributes("-fullscreen", True)
             
+            # Çıkış butonunu göster
+            self.create_zen_exit_button()
+            
             self._status_bar_visible = False
             self._file_explorer_visible = False
             self._menu_visible = False
@@ -678,6 +712,10 @@ class MainWindow(ctk.CTk):
         else:
             # Zen Mode'dan çık - önceki durumları geri yükle
             self.attributes("-fullscreen", False)
+            
+            # Çıkış butonunu kaldır
+            if hasattr(self, 'zen_exit_btn'):
+                self.zen_exit_btn.destroy()
             
             # Menüyü geri getir
             self.menu_frame.grid(row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0)
