@@ -279,15 +279,15 @@ class TerminalPanel(ctk.CTkFrame):
         self.output_frame.grid_columnconfigure(0, weight=1)
         self.output_frame.grid_rowconfigure(0, weight=1)
         
-        # Monospace font
+        # Sabit genişlikli (Monospace) yazı tipi
         self.terminal_font = tkfont.Font(family="Cascadia Code", size=self.font_size)
-        # Fallback font
+        # Yedek yazı tipi
         try:
             self.terminal_font.actual()
         except:
             self.terminal_font = tkfont.Font(family="Consolas", size=self.font_size)
         
-        # Text widget
+        # Metin bileşeni
         self.output_text = tk.Text(
             self.output_frame,
             wrap="word",
@@ -306,7 +306,7 @@ class TerminalPanel(ctk.CTkFrame):
         )
         self.output_text.grid(row=0, column=0, sticky="nsew")
         
-        # Scrollbar
+        # Kaydırma çubuğu
         self.scrollbar = ctk.CTkScrollbar(self.output_frame, command=self.output_text.yview)
         self.scrollbar.grid(row=0, column=1, sticky="ns")
         self.output_text.configure(yscrollcommand=self.scrollbar.set)
@@ -934,4 +934,3 @@ class TerminalPanel(ctk.CTkFrame):
         if self.current_process:
             self.current_process.terminate()
         super().destroy()
-

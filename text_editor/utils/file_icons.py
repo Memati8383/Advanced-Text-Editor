@@ -137,7 +137,7 @@ class FileIcons:
         ".gitignore": {"icon": "🚫", "type": "Git Ignore", "color": "#f05032"},
         ".gitattributes": {"icon": "📝", "type": "Git Attributes", "color": "#f05032"},
         
-        # Package Manager
+        # Paket Yöneticisi
         "package.json": {"icon": "📦", "type": "NPM Package", "color": "#cb3837"},
         "package-lock.json": {"icon": "🔒", "type": "NPM Lock", "color": "#cb3837"},
         "yarn.lock": {"icon": "🔒", "type": "Yarn Lock", "color": "#2c8ebb"},
@@ -147,7 +147,7 @@ class FileIcons:
         "Cargo.toml": {"icon": "📦", "type": "Rust Cargo", "color": "#ce422b"},
         "go.mod": {"icon": "📦", "type": "Go Module", "color": "#00add8"},
         
-        # Build & Config
+        # Derleme & Yapılandırma
         "Makefile": {"icon": "🔨", "type": "Makefile", "color": "#6d6d6d"},
         "CMakeLists.txt": {"icon": "🔨", "type": "CMake", "color": "#064f8d"},
         ".dockerfile": {"icon": "🐳", "type": "Dockerfile", "color": "#2496ed"},
@@ -157,15 +157,15 @@ class FileIcons:
         ".prettierrc": {"icon": "✨", "type": "Prettier Config", "color": "#f7b93e"},
         "tsconfig.json": {"icon": "🔷", "type": "TypeScript Config", "color": "#3178c6"},
         
-        # README & License
+        # README & Lisans
         "README.md": {"icon": "📖", "type": "README", "color": "#083fa1"},
         "LICENSE": {"icon": "⚖️", "type": "License", "color": "#6d6d6d"},
         "LICENSE.md": {"icon": "⚖️", "type": "License", "color": "#6d6d6d"},
         
-        # Log Files
+        # Günlük (Log) Dosyaları
         ".log": {"icon": "📊", "type": "Log File", "color": "#6d6d6d"},
         
-        # Video & Audio
+        # Video & Ses
         ".mp4": {"icon": "🎬", "type": "MP4 Video", "color": "#ff6b6b"},
         ".avi": {"icon": "🎬", "type": "AVI Video", "color": "#ff6b6b"},
         ".mov": {"icon": "🎬", "type": "MOV Video", "color": "#ff6b6b"},

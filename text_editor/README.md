@@ -42,20 +42,37 @@
 - **🗺️ Mini Harita (Minimap)**: Dosyanızın önizlemesi ile büyük dosyalarda kaybolmadan gezinin.
 - **🔍 Gelişmiş Arama**: Regex destekli güçlü Bul ve Değiştir aracı.
 - **🔢 Satıra Git**: `Ctrl+G` ile kodunuzun derinliklerine hızla ulaşın.
+- **📝 Markdown Önizleme**: Canlı önizleme, senkronize kaydırma, kelime/karakter sayımı, okuma süresi hesaplama ve tema uyumlu modern arayüz (Ctrl+Shift+V).
 
 ### 🎨 **Modern Arayüz & Deneyim**
-- **💎 9 Premium Tema**: **Dracula**, **Monokai**, **Solarized**, **Nord**, **Gruvbox**, **One Dark Pro**, **GitHub Dark**, **Synthwave '84** ve **Light**.
+- **💎 17 Premium Tema**: **Dracula**, **Monokai**, **Solarized (Light & Dark)**, **Nord**, **Gruvbox**, **One Dark Pro**, **GitHub Dark**, **Synthwave '84**, **Night Owl**, **Tokyo Night**, **Cobalt2**, **Material Palenight**, **Ayu Dark**, **Shades of Purple**, **VS Code Dark** ve **Light**.
 - **🎨 Modern Menüler**: Emoji ikonlu, fade-in animasyonlu, stilize dropdown menüler.
 - **📊 Gelişmiş Durum Çubuğu**: Dinamik ikonlar, hover efektleri ve detaylı bilgi gösterimi.
 - **🔎 Dinamik Yakınlaştırma**: `Ctrl + Tekerlek` ile editör yazı boyutunu ve arayüzü ölçeklendirin.
 - **📑 Sekme Yönetimi**: Sürükle-bırak hissi veren, sağ tık menülü (Diğerlerini/Sağdakileri Kapat) gelişmiş sekme sistemi.
 - **🖥️ Çerçevesiz Tam Ekran**: `F11` ile tamamen koda odaklanın.
+- **🧘 Zen Modu**: `Ctrl+K, Z` ile arayüzü gizleyip sadece editöre odaklanın.
 - **📁 Gelişmiş Dosya Gezgini**: Ağaç yapısı, her dosya için özel ikon, 100+ uzantı desteği.
 - **⌨️ Entegre Terminal**: PowerShell/Bash desteği, tema uyumu, komut geçmişi ile güçlü terminal.
+- **🎓 İnteraktif Tutorial Mode**: Yeni kullanıcılar için adım adım rehberlik, spotlight efektleri ve görev doğrulama ile interaktif öğrenme deneyimi.
+- **⚙️ Kapsamlı Ayarlar Sistemi**: Tüm uygulama ayarlarını tek yerden yönetin, dışa/içe aktarın, kategorilere ayrılmış modern arayüz.
+
+### 📚 **Öğrenme ve Yardım**
+- **🎓 İnteraktif Öğretici**: 
+  - Adım adım rehberlik sistemi
+  - Görsel vurgulama (spotlight) ile UI elemanlarını gösterme
+  - İnteraktif görevler ve doğrulama
+  - İlerleme takibi ve navigasyon
+  - 5 dakikada editörü öğrenin!
+- **❓ Kapsamlı Yardım Sistemi**: 
+  - 10 detaylı yardım bölümü
+  - Arama özelliği
+  - Geri/İleri navigasyon
+  - Animasyonlu geçişler
 
 ### 📄 **Dosya Desteği**
 - **🌍 100+ Dosya Formatı**: Python, JavaScript, TypeScript, React, Vue, Java, C++, Rust, Go ve daha fazlası.
-- **🎨 Akıllı İkon Sistemi**: Her dosya türü için özel emoji ikonu (🐍 Python, ⚛️ React, 🔷 TypeScript, vb.)
+- **🎨 Akıllı ve Renkli İkon Sistemi**: Her dosya türü için özel renklendirilmiş emoji ikonu (🐍 Python, ⚛️ React, 🔷 TypeScript, vb.)
 - **📦 Özel Dosya Tanıma**: package.json, Dockerfile, README.md, LICENSE gibi özel dosyalar otomatik tanınır.
 - **🎯 Otomatik Algılama**: Dosya uzantısına göre syntax highlighting ve ikon seçimi.
 
@@ -131,11 +148,13 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 | | <kbd>Ctrl</kbd> + <kbd>B</kbd> | Dosya Gezgini Aç/Kapat |
 | | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> | Durum Çubuğu Aç/Kapat |
 | | <kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>Z</kbd> | Zen Modu |
+| | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> | Markdown Önizleme |
 | | <kbd>F11</kbd> | Tam Ekran Modu |
 | | <kbd>Ctrl</kbd> + <kbd>Tekerlek</kbd> | Yakınlaştır / Uzaklaştır |
 | **⌨️ Terminal** | <kbd>Ctrl</kbd> + <kbd>`</kbd> | Terminal Aç/Kapat |
 | **📋 Kopyalama** | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> | Dosya Yolunu Kopyala |
 | | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>C</kbd> | Göreli Yolu Kopyala |
+| **⚙️ Ayarlar** | <kbd>Ctrl</kbd> + <kbd>,</kbd> | Ayarlar Penceresini Aç |
 
 ---
 
@@ -155,9 +174,12 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 
 **Yeni Özellikler:**
 - 🖱️ Çoklu imleç desteği (Alt+Click, Ctrl+D)
+- 📝 Gelişmiş Markdown Önizleme (Canlı istatistikler, detaylı tablo)
 - 🔢 Satır işlemleri (Çoğalt, Taşı, Sil, Birleştir)
+- 🎓 İnteraktif Tutorial Mode (adım adım öğrenme)
 - ❓ Modern help system (arama, navigasyon)
 - 📚 10 kapsamlı yardım bölümü
+- ⚙️ Kapsamlı ayarlar sistemi (7 kategori, dışa/içe aktarma, tema önizleme)
 
 ---
 

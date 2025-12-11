@@ -15,7 +15,7 @@ class LineNumbers(tk.Text):
     Ayrıca kod katlama (folding) işaretçilerini de gösterir.
     """
     def __init__(self, master, text_widget, **kwargs):
-        super().__init__(master, width=8, padx=4, highlightthickness=0, bd=0, 
+        super().__init__(master, width=8, padx=4, pady=5, highlightthickness=0, bd=0, 
                          font=(FONT_FAMILY, FONT_SIZE), state="disabled", cursor="arrow", wrap="none", **kwargs)
         self.text_widget = text_widget
         self.text_widget.bind("<<Change>>", self.redraw)
@@ -25,78 +25,86 @@ class LineNumbers(tk.Text):
     def redraw(self, *args):
         """
         Satır numaralarını yeniden çizer.
-        Performans için sadece o anda ekranda görünen satırları işler.
-        Metin içeriği değiştiğinde veya kaydırma yapıldığında çağrılır.
+        Tüm dosyayı işler ve text_widget ile senkronize scrolling sağlar.
         """
         self.configure(state="normal")
         self.delete("1.0", "end")
         
-        i = self.text_widget.index("@0,0")
-        try:
-             # Durdurma koşulunu belirlemek için son görünür satır indeksini tanımla
-            end_index = self.text_widget.index(f"@0,{self.text_widget.winfo_height()}")
-        except:
-             return
-
-        while True:
-            # Dosyanın sonunu veya görünür alanı geçip geçmediğimizi kontrol et
-            if self.text_widget.compare(i, ">", end_index) and self.text_widget.compare(i, "!=", end_index):
-               break
-               
-            # EOF (Dosya Sonu) için ek güvenlik
-            if self.text_widget.compare(i, "==", "end"):
-                break
-
-            dline = self.text_widget.dlineinfo(i)
+        # Metin içeriğini al
+        full_content = self.text_widget.get("1.0", "end-1c")
+        lines = full_content.split('\n')
+        total_lines = len(lines)
+        
+        # Katlanmış satırları belirle
+        folded_lines = set()
+        for tag in self.text_widget.tag_names():
+            if tag.startswith("fold_"):
+                try:
+                    line_num = int(tag.split('_')[1])
+                    folded_lines.add(line_num)
+                except:
+                    pass
+        
+        # Girinti hesaplama yardımcısı
+        def get_indent(s):
+            return len(s) - len(s.lstrip())
             
-            # Sadece görünürse çiz (dline None değilse)
-            if dline is not None:
-                linenum = str(i).split(".")[0]
+        buffer = []
+        
+        for i, line_content in enumerate(lines):
+            linenum = i + 1
+            marker = "  " # Varsayılan: 2 boşluk
+            
+            # Katlanabilirlik kontrolü
+            if line_content.strip():
+                curr_indent = get_indent(line_content)
                 
-                # Katlama özelliğini kontrol et
-                marker = "  " # Hizalama için 2 boşluk
-                if self.master.is_line_foldable(int(linenum)):
-                    if self.master.is_line_folded(int(linenum)):
-                        marker = "▶ " # Kapalı
-                    else:
-                        marker = "▼ " # Açık
-
-                # Biçimlendirme: İşaretçi Sol, Satır Numarası Sağ
-                # "marker linenum"
-                display_text = f"{marker}{linenum:>4}\n"
-                self.insert("end", display_text)
+                # Sonraki satırları kontrol et
+                for j in range(i + 1, total_lines):
+                    next_line = lines[j]
+                    if next_line.strip():
+                        # İlk dolu satırı bulduk
+                        if get_indent(next_line) > curr_indent:
+                            if linenum in folded_lines:
+                                marker = "▶ "
+                            else:
+                                marker = "▼ "
+                        break
             
-            # Gizli olsa bile mantıksal satırı her zaman artır
-            i = self.text_widget.index(f"{i}+1line")
+            buffer.append(f"{marker}{linenum:>4}\n")
+        
+        self.insert("1.0", "".join(buffer))
+        
+        # Katlama etiketlerini uygula
+        for tag in self.text_widget.tag_names():
+            if tag.startswith("fold_"):
+                ranges = self.text_widget.tag_ranges(tag)
+                if ranges:
+                    self.tag_add(tag, *ranges)
+                    self.tag_config(tag, elide=True)
 
+        # Scrolling'i senkronize et (Async yap ki render tamamlansın)
+        def sync_scroll():
+            try:
+                self.yview_moveto(self.text_widget.yview()[0])
+            except:
+                pass
+                
+        self.after_idle(sync_scroll)
+            
         self.configure(state="disabled")
 
     def on_click(self, event):
         """
         Satır numaraları alanına tıklama olayını işler.
-        Özellikle kod katlama (folding) oklarına tıklanıp tıklanmadığını kontrol eder.
         """
-        # Tıklanan y konumundan kesin satır numarasını belirle
-        index = self.index(f"@{event.x},{event.y}")
-        line_idx = int(index.split('.')[0])
-        
-        line_content = self.get(f"{line_idx}.0", f"{line_idx}.end")
-        if not line_content.strip():
-            return
-            
         try:
-            # "▼   10" veya "     10" içinden sayıyı ayıkla
-            # Boşluklara göre ayır ve sayı olan kısmı bul
-            parts = line_content.split()
-            actual_line_num = None
-            for p in parts:
-                if p.isdigit():
-                    actual_line_num = int(p)
-                    break
+            index = self.index(f"@{event.x},{event.y}")
+            line_idx = int(index.split('.')[0])
             
-            if actual_line_num:
-                self.master.toggle_fold(actual_line_num)
-        except ValueError:
+            # Basitleştirilmiş mantık: LineNumbers satır indeksi == Gerçek satır numarası
+            self.master.toggle_fold(line_idx)
+        except Exception:
             pass
 
 class CodeEditor(ctk.CTkFrame):
@@ -110,6 +118,7 @@ class CodeEditor(ctk.CTkFrame):
         self.file_path = file_path
         self.content_modified = False
         self.font_size = FONT_SIZE
+        self.last_mtime = 0
         
         # Çoklu imleç desteği
         self.cursors = []  # [(satır, sütun), ...] formatında imleç pozisyonları
@@ -292,6 +301,10 @@ class CodeEditor(ctk.CTkFrame):
         self.update_status_bar()
         if event and event.keysym in ["Return", "BackSpace", "Delete", "space"]:
              self.highlighter.highlight()
+             
+        # Otomatik tamamlama olayını tetikle
+        if self.completer and event:
+            self.completer.on_key_release(event)
 
     def on_click(self, event):
         self.highlighter.highlight_current_line()
@@ -334,6 +347,13 @@ class CodeEditor(ctk.CTkFrame):
                 self.minimap.update_content()
                 self.highlighter.highlight()
                 self.content_modified = False
+                
+            # Son değişiklik zamanını kaydet
+            try:
+                self.last_mtime = os.path.getmtime(file_path)
+            except OSError:
+                self.last_mtime = 0
+                
         except Exception as e:
             print(f"Error loading file: {e}")
             messagebox.showerror("Error", f"Could not load file: {e}")
@@ -346,6 +366,13 @@ class CodeEditor(ctk.CTkFrame):
                 with open(self.file_path, 'w', encoding='utf-8') as f:
                     f.write(content)
                 self.content_modified = False
+                
+                # Son değişiklik zamanını güncelle
+                try:
+                    self.last_mtime = os.path.getmtime(self.file_path)
+                except OSError:
+                    pass
+                    
                 return True
             except Exception as e:
                 messagebox.showerror("Error", f"Could not save file: {e}")
@@ -474,6 +501,10 @@ class CodeEditor(ctk.CTkFrame):
         style_name = theme.get("pygments_style", "monokai")
         self.highlighter.update_style(style_name)
         self.minimap.update_style(style_name)
+        
+        # Otomatik tamamlama temasını güncelle
+        if self.completer:
+            self.completer.update_theme(theme)
 
     # Katlama Uygulaması
     def is_line_foldable(self, line_num):

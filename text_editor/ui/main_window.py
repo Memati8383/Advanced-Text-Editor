@@ -5,8 +5,12 @@ from text_editor.ui.status_bar import StatusBar
 from text_editor.ui.file_explorer import FileExplorer
 from text_editor.ui.modern_menu import ModernMenuBar
 from text_editor.ui.terminal import TerminalPanel
+from text_editor.ui.markdown_preview import MarkdownPreview
+from text_editor.ui.settings_dialog import SettingsDialog
 import tkinter as tk
 import os
+import re
+import json
 
 class MainWindow(ctk.CTk):
     """
@@ -17,16 +21,21 @@ class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         
+        # Ayarları yükle
+        self.settings = self.load_settings()
+        
         # Modern menü bar (tema uygulandıktan sonra güncellenecek)
         self.modern_menu = None
         
         # Görünüm durumları
-        self._status_bar_visible = True
-        self._file_explorer_visible = True
+        self._status_bar_visible = self.settings.get("show_status_bar", True)
+        self._file_explorer_visible = self.settings.get("show_file_explorer", True)
         self._menu_visible = True
         self._zen_mode = False
-        self._terminal_visible = False  # Terminal başlangıçta kapalı
+        self._terminal_visible = self.settings.get("show_terminal", False)
         self.terminal_panel = None  # Terminal paneli referansı
+        self._markdown_preview_visible = False  # Markdown preview başlangıçta kapalı
+        self.markdown_preview = None  # Markdown preview referansı
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)  # Menü
@@ -132,6 +141,41 @@ class MainWindow(ctk.CTk):
         add_menu_btn("✏️ Düzenle", self.show_edit_menu, pass_widget=True)
         add_menu_btn("👁️ Görünüm", self.show_view_menu, pass_widget=True)
         add_menu_btn("🎨 Tema", self.show_theme_menu, pass_widget=True)
+        
+        # Tutorial butonu - özel stil
+        tutorial_btn = ctk.CTkButton(
+            self.menu_frame,
+            text="🎓 Öğretici",
+            width=90,
+            height=40,
+            corner_radius=6,
+            fg_color=("#00d4ff", "#0096c7"),
+            hover_color=("#00b8e6", "#007ea7"),
+            font=("Segoe UI", 12, "bold"),
+            anchor="center",
+            border_width=0,
+            command=self.start_tutorial
+        )
+        tutorial_btn.pack(side="left", padx=3, pady=2)
+        self.menu_buttons.append(tutorial_btn)
+        
+        # Ayarlar butonu - özel stil
+        settings_btn = ctk.CTkButton(
+            self.menu_frame,
+            text="⚙️ Ayarlar",
+            width=90,
+            height=40,
+            corner_radius=6,
+            fg_color="transparent",
+            hover_color=("gray75", "gray25"),
+            font=("Segoe UI", 12, "bold"),
+            anchor="center",
+            border_width=0,
+            command=self.open_settings
+        )
+        settings_btn.pack(side="left", padx=3, pady=2)
+        self.menu_buttons.append(settings_btn)
+        
         add_menu_btn("❓ Yardım", lambda: self.help_system.open_help("Hızlı Başlangıç"), pass_widget=False)
         
         # Sağ tarafta versiyon bilgisi
@@ -166,13 +210,18 @@ class MainWindow(ctk.CTk):
         self.bind("<Control-k>", self._zen_mode_check)  # Zen mode (Ctrl+K, Z)
         self.bind("<Control-grave>", lambda e: self.toggle_terminal())  # Terminal (Ctrl+`)
         self.bind("<Control-quoteleft>", lambda e: self.toggle_terminal())  # Terminal alternatif
+        self.bind("<Control-Shift-V>", lambda e: self.toggle_markdown_preview())  # Markdown Preview
         
         # Kopyalama Kısayolları
         self.bind("<Control-Shift-C>", lambda e: self.tab_manager.copy_path())  # Dosya yolunu kopyala
         self.bind("<Control-Alt-c>", lambda e: self.tab_manager.copy_relative_path())  # Göreli yolu kopyala
         
+        # Ayarlar kısayolu
+        self.bind("<Control-comma>", lambda e: self.open_settings())  # Ctrl+, ile ayarlar
+        
         # Başlangıç temasını uygula
-        self.after(100, lambda: self.apply_theme("Dark"))
+        saved_theme = self.settings.get("theme", "Dark")
+        self.after(100, lambda: self.apply_theme(saved_theme))
 
     def show_file_menu(self, button):
         """Dosya menüsünü gösterir - modern, stilize dropdown"""
@@ -360,7 +409,14 @@ class MainWindow(ctk.CTk):
             "Gruvbox": "🍂",
             "One Dark Pro": "⚫",
             "GitHub Dark": "🐙",
-            "Synthwave 84": "🌃"
+            "Synthwave 84": "🌃",
+            "Solarized Dark": "🌘",
+            "Night Owl": "🦉",
+            "Tokyo Night": "🗼",
+            "Cobalt2": "🔵",
+            "Material Palenight": "👾",
+            "Ayu Dark": "🦈",
+            "Shades of Purple": "💜"
         }
         
         menu_items = []
@@ -423,6 +479,8 @@ class MainWindow(ctk.CTk):
             self.status_bar.file_info_label.configure(text_color=theme["status_fg"])
         if hasattr(self.status_bar, 'cursor_info'):
             self.status_bar.cursor_info.configure(text_color=theme["status_fg"])
+        if hasattr(self.status_bar, 'encoding_label'):
+            self.status_bar.encoding_label.configure(text_color=theme["status_fg"])
         
         # Eski info_label varsa (geriye dönük uyumluluk)
         if hasattr(self.status_bar, 'info_label'):
@@ -439,7 +497,11 @@ class MainWindow(ctk.CTk):
         if self.terminal_panel:
             self.terminal_panel.update_theme(theme)
         
-        # 6. Ana pencere arka planı
+        # 6. Markdown Preview (varsa)
+        if self.markdown_preview:
+            self.markdown_preview.update_theme(theme)
+        
+        # 7. Ana pencere arka planı
         self.configure(fg_color=theme.get("bg", "#1e1e1e"))
 
     def toggle_fullscreen(self, event=None):
@@ -495,6 +557,12 @@ class MainWindow(ctk.CTk):
                 "label": "Terminal",
                 "shortcut": "Ctrl+`",
                 "command": self.toggle_terminal
+            },
+            {
+                "icon": get_toggle_icon(self._markdown_preview_visible),
+                "label": "Markdown Önizleme",
+                "shortcut": "Ctrl+Shift+V",
+                "command": self.toggle_markdown_preview
             },
             {"separator": True},
             {
@@ -674,3 +742,195 @@ class MainWindow(ctk.CTk):
                 self.status_bar.set_message("Terminal kapatıldı", "info")
         
         return self._terminal_visible
+    
+    def toggle_markdown_preview(self, event=None):
+        """
+        Markdown önizleme panelini gösterir/gizler.
+        Ctrl+Shift+V kısayolu ile çağrılır.
+        Sadece .md dosyaları için aktif olmalı.
+        """
+        # Mevcut editörü al
+        editor = self.tab_manager.get_current_editor()
+        if not editor:
+            if self._status_bar_visible:
+                self.status_bar.set_message("⚠️ Önce bir dosya açın", "warning")
+            return
+        
+        # Markdown dosyası mı kontrol et
+        file_path = getattr(editor, 'file_path', None)
+        is_markdown = False
+        if file_path:
+            is_markdown = file_path.lower().endswith(('.md', '.markdown', '.mdown', '.mkd'))
+        else:
+            # Dosya yolu yoksa içeriğe bak
+            content = editor.text_area.get("1.0", "100.0")
+            # Markdown belirtileri var mı kontrol et
+            is_markdown = bool(re.search(r'^#+\s|^[\-\*]\s|^>\s|```', content, re.MULTILINE))
+        
+        self._markdown_preview_visible = not self._markdown_preview_visible
+        
+        if self._markdown_preview_visible:
+            # Önizleme panelini oluştur (eğer yoksa)
+            if not self.markdown_preview:
+                from text_editor.theme_config import get_theme
+                current_theme = getattr(self, '_current_theme_name', 'Dark')
+                theme = get_theme(current_theme)
+                
+                self.markdown_preview = MarkdownPreview(self, editor=editor, theme=theme)
+            else:
+                # Editörü güncelle
+                self.markdown_preview.set_editor(editor)
+            
+            # Layout'u düzenle - sağ tarafta göster
+            # Mevcut grid yapısını değiştirmemek için, tab_manager'ın yanına koyalım
+            self.grid_columnconfigure(2, weight=1)  # Preview için yeni sütun
+            self.markdown_preview.grid(row=1, column=2, sticky="nsew", padx=(5, 10), pady=(10, 0))
+            
+            # Editörü bağla
+            self.markdown_preview.set_editor(editor)
+            
+            # Durum mesajı
+            if self._status_bar_visible:
+                self.status_bar.set_message("📄 Markdown önizleme açıldı", "success")
+        else:
+            # Önizleme panelini gizle
+            self.close_markdown_preview()
+        
+        return self._markdown_preview_visible
+    
+    def close_markdown_preview(self):
+        """Markdown önizleme panelini kapatır."""
+        self._markdown_preview_visible = False
+        
+        if self.markdown_preview:
+            self.markdown_preview.grid_remove()
+        
+        # Sütun ağırlığını sıfırla
+        self.grid_columnconfigure(2, weight=0, minsize=0)
+        
+        # Durum mesajı
+        if self._status_bar_visible:
+            self.status_bar.set_message("Markdown önizleme kapatıldı", "info")
+    
+    def start_tutorial(self):
+        """Tutorial Mode'u başlatır"""
+        from text_editor.ui.tutorial_mode import TutorialSystem
+        
+        if not hasattr(self, 'tutorial_system'):
+            self.tutorial_system = TutorialSystem(self)
+        
+        self.tutorial_system.start_tutorial()
+    
+    def open_settings(self):
+        """Ayarlar penceresini açar."""
+        def apply_settings(new_settings):
+            """Ayarları uygular."""
+            self.settings = new_settings
+            
+            # Tema değişmişse uygula
+            if "theme" in new_settings:
+                self.apply_theme(new_settings["theme"])
+            
+            # Yazı tipi değişmişse
+            if "font_family" in new_settings or "font_size" in new_settings:
+                font_family = new_settings.get("font_family", "Consolas")
+                font_size = new_settings.get("font_size", 14)
+                # Tüm editörlere uygula
+                for editor in self.tab_manager.editors.values():
+                    editor.text_area.configure(font=(font_family, font_size))
+            
+            # Görünüm ayarları
+            if "show_status_bar" in new_settings:
+                if new_settings["show_status_bar"] != self._status_bar_visible:
+                    self.toggle_status_bar()
+            
+            if "show_file_explorer" in new_settings:
+                if new_settings["show_file_explorer"] != self._file_explorer_visible:
+                    self.toggle_file_explorer()
+            
+            if "show_terminal" in new_settings:
+                if new_settings["show_terminal"] != self._terminal_visible:
+                    self.toggle_terminal()
+            
+            # Editör ayarları
+            if "show_line_numbers" in new_settings:
+                for editor in self.tab_manager.editors.values():
+                    editor.toggle_line_numbers(new_settings["show_line_numbers"])
+            
+            if "word_wrap" in new_settings:
+                for editor in self.tab_manager.editors.values():
+                    editor.toggle_word_wrap(new_settings["word_wrap"])
+            
+            if "show_minimap" in new_settings:
+                for editor in self.tab_manager.editors.values():
+                    editor.toggle_minimap(new_settings["show_minimap"])
+            
+            # Ayarları kaydet
+            self.save_settings()
+            
+            # Durum mesajı
+            if self._status_bar_visible:
+                self.status_bar.set_message("✅ Ayarlar uygulandı", "success")
+        
+        # Ayarlar penceresini aç
+        settings_dialog = SettingsDialog(self, self.settings, apply_settings)
+    
+    def load_settings(self):
+        """Ayarları dosyadan yükler."""
+        settings_file = os.path.join(
+            os.path.expanduser("~"),
+            ".memati_editor",
+            "settings.json"
+        )
+        
+        # Varsayılan ayarlar
+        default_settings = {
+            "app_name": "Memati Editör",
+            "font_family": "Consolas",
+            "font_size": 14,
+            "language": "Türkçe",
+            "show_line_numbers": True,
+            "word_wrap": False,
+            "show_minimap": True,
+            "tab_size": 4,
+            "auto_save": True,
+            "auto_save_interval": 30,
+            "bracket_matching": True,
+            "syntax_highlighting": True,
+            "show_status_bar": True,
+            "show_file_explorer": True,
+            "show_terminal": False,
+            "start_fullscreen": False,
+            "theme": "Dark",
+            "terminal_type": "PowerShell",
+            "terminal_font_size": 12,
+            "terminal_history": 1000,
+            "performance_mode": False,
+            "auto_backup": True,
+            "max_file_size": 10,
+            "error_reporting": True
+        }
+        
+        if os.path.exists(settings_file):
+            try:
+                with open(settings_file, "r", encoding="utf-8") as f:
+                    loaded_settings = json.load(f)
+                    # Varsayılan ayarları güncelle
+                    default_settings.update(loaded_settings)
+            except Exception as e:
+                print(f"Ayarlar yüklenemedi: {e}")
+        
+        return default_settings
+    
+    def save_settings(self):
+        """Ayarları dosyaya kaydeder."""
+        settings_dir = os.path.join(os.path.expanduser("~"), ".memati_editor")
+        os.makedirs(settings_dir, exist_ok=True)
+        
+        settings_file = os.path.join(settings_dir, "settings.json")
+        
+        try:
+            with open(settings_file, "w", encoding="utf-8") as f:
+                json.dump(self.settings, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"Ayarlar kaydedilemedi: {e}")
