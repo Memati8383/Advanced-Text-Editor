@@ -6,7 +6,7 @@
 
 **Memati Editör**, Python ve CustomTkinter ile geliştirilmiş, modern, hızlı ve özellik zengini bir metin editörüdür. Geliştiriciler için optimize edilmiş bu editör, şık arayüzü ve güçlü araçları ile kodlama deneyiminizi bir üst seviyeye taşır.
 
-![Ekran Görüntüsü](ekran_görüntüleri/screenshot.png)
+![Ekran Görüntüsü](ekran_görüntüleri/main.PNG)
 
 ## 🚀 Öne Çıkan Özellikler
 
@@ -45,6 +45,7 @@ python run_editor.py
 *   **Help System:** Yardım sistemindeki her şeye Türkçe ve ingilizce ile düzenlenmesi sağlanacak.
 *   **locale/tr.json|en.json** Yardım sistemindeki bütün yazılar dil değiştirme ile Türkçe ve İngilizce olarak değiştirilebilecek.
 *   **Bütün Uygulama** Bütün uygulamadaki yazılar dil değiştirme ile Türkçe ve İngilizce olarak değiştirilebilecek.
+*   **Ekran Görüntüleri** Ekran görüntüleri değiştirilecek.
 
 ## 📄 Lisans
 
@@ -52,4 +53,5 @@ Bu proje MIT Lisansı ile lisanslanmıştır. Detaylar için [LICENSE](LICENSE) 
 
 ---
 Copyright © 2025 Memati Editör Geliştirme Ekibi
+
 
