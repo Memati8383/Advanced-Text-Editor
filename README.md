@@ -40,9 +40,16 @@ pip install -r requirements.txt
 python run_editor.py
 ```
 
+## Düzeltilecek hatalar ve yeni  özellikler
+*   **Help System:** Yardım sistemindeki quick_startın dil seçeneği düzeltilecek.
+*   **Help System:** Yardım sistemindeki her şeye Türkçe ve ingilizce ile düzenlenmesi sağlanacak.
+*   **locale/tr.json|en.json** Yardım sistemindeki bütün yazılar dil değiştirme ile Türkçe ve İngilizce olarak değiştirilebilecek.
+*   **Bütün Uygulama** Bütün uygulamadaki yazılar dil değiştirme ile Türkçe ve İngilizce olarak değiştirilebilecek.
+
 ## 📄 Lisans
 
 Bu proje MIT Lisansı ile lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakabilirsiniz.
 
 ---
 Copyright © 2025 Memati Editör Geliştirme Ekibi
+
