@@ -4,220 +4,71 @@ import platform
 import sys
 from text_editor.config import APP_NAME
 from text_editor.ui.help_content import HelpContentProvider
+from text_editor.utils.language_manager import LanguageManager
 
-class HelpWindow(ctk.CTkToplevel):
+class HelpSidebar(ctk.CTkScrollableFrame):
     """
-    Kullanıcıya yardımcı bilgiler sunan ve öğretici modunu başlatan ana yardım penceresi.
-    UI logic ve içerik (Content) birbirinden ayrılmıştır.
+    Yardım penceresinin sol tarafındaki menü ve arama çubuğunu yönetir.
     """
-    
-    def __init__(self, master, app_instance, start_section="Hızlı Başlangıç"):
-        super().__init__(master)
+    def __init__(self, master, app_instance, sections, on_selection_callback, **kwargs):
+        super().__init__(master, **kwargs)
         self.app = app_instance
-        
-        self._setup_window_properties()
-        self._init_variables()
-        self._setup_ui_layout()
-        self._setup_sections()
-        
-        # Başlangıç bölümünü seç
-        self._select_initial_section(start_section)
-        
-        # Animasyonları başlat
-        self.after(50, self.start_fade_in_animation)
-        self.after(2000, self.animate_logo_pulse)
-        self.focus()
-
-    def _setup_window_properties(self):
-        """Pencere temel özelliklerini ayarlar."""
-        self.title(f"🪐 {APP_NAME} - Yardım Merkezi")
-        self.geometry("1000x700")
-        self.attributes("-alpha", 0.0) # Başlangıçta görünmez (fade-in için)
-        self.attributes("-topmost", True)
-        self.lift()
-
-    def _init_variables(self):
-        """Sınıf değişkenlerini başlatır."""
-        # Animasyon değişkenleri
-        self.animation_running = False
-        self.fade_alpha = 0.0
-        self.content_offset = 30
-        self.logo_pulse_size = 32
-        self.logo_pulse_direction = 1
-        self.title_slide_offset = 0
-        
-        # Navigasyon geçmişi
-        self.history = []
-        self.history_index = -1
+        self.sections = sections
+        self.on_select = on_selection_callback
         self.buttons = {}
-
-    def _setup_ui_layout(self):
-        """Ana grid ve UI bileşenlerini yerleştirir."""
-        self.grid_columnconfigure(0, weight=0, minsize=220)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+        self.lang_manager = LanguageManager.get_instance()
         
-        self.create_toolbar()
-        self.create_sidebar()
-        self.create_content_area()
-
-    def create_toolbar(self):
-        """Üst araç çubuğunu oluşturur (Geri, İleri, Ana Sayfa)."""
-        toolbar = ctk.CTkFrame(self, height=45, corner_radius=0, fg_color=("gray95", "#2b2b2b"))
-        toolbar.grid(row=0, column=0, columnspan=2, sticky="ew")
+        self._setup_ui()
         
-        # Geri Butonu
-        self.back_btn = self._create_toolbar_button(toolbar, "◀ Geri", 80, self.go_back, state="disabled")
-        self.back_btn.pack(side="left", padx=(10, 5), pady=7)
-        
-        # İleri Butonu
-        self.forward_btn = self._create_toolbar_button(toolbar, "İleri ▶", 80, self.go_forward, state="disabled")
-        self.forward_btn.pack(side="left", padx=5, pady=7)
-        
-        # Ayırıcı
-        ctk.CTkLabel(toolbar, text="|", text_color=("gray60", "gray50")).pack(side="left", padx=10)
-        
-        # Ana Sayfa Butonu
-        home_btn = self._create_toolbar_button(
-            toolbar, 
-            "🏠 Ana Sayfa", 
-            100, 
-            lambda: self.select_section("🚀 Hızlı Başlangıç")
-        )
-        home_btn.pack(side="left", padx=5, pady=7)
-
-    def _create_toolbar_button(self, parent, text, width, command, state="normal"):
-        """Toolbar butonu oluşturmak için yardımcı metod."""
-        btn = ctk.CTkButton(
-            parent,
-            text=text,
-            width=width,
-            height=32,
-            corner_radius=6,
-            command=command,
-            state=state
-        )
-        self.create_hover_effect(btn)
-        return btn
-
-    def create_sidebar(self):
-        """Sol kenar çubuğunu oluşturur."""
-        self.sidebar = ctk.CTkScrollableFrame(
-            self, 
-            corner_radius=0, 
-            fg_color=("gray92", "#2b2b2b"),
-            border_width=1,
-            border_color=("gray80", "#404040")
-        )
-        self.sidebar.grid(row=1, column=0, sticky="nsew", padx=(0, 1))
-        
-        self._create_sidebar_logo()
+    def _setup_ui(self):
+        self._create_logo()
         self._create_tutorial_button()
         self._create_search_box()
-
-    def _create_sidebar_logo(self):
-        logo_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        self._create_buttons()
+        
+    def _create_logo(self):
+        logo_frame = ctk.CTkFrame(self, fg_color="transparent")
         logo_frame.pack(fill="x", padx=10, pady=(10, 5))
         
-        self.logo_label = ctk.CTkLabel(logo_frame, text="🪐", font=("Segoe UI", 32))
-        self.logo_label.pack()
-        
-        ctk.CTkLabel(logo_frame, text="Yardım Merkezi", font=("Segoe UI", 14, "bold")).pack()
+        ctk.CTkLabel(logo_frame, text="🪐", font=("Segoe UI", 32)).pack()
+        header_text = self.lang_manager.get("help.header", "Yardım Merkezi")
+        ctk.CTkLabel(logo_frame, text=header_text, font=("Segoe UI", 14, "bold")).pack()
 
     def _create_tutorial_button(self):
-        tutorial_btn = ctk.CTkButton(
-            self.sidebar,
-            text="🎓 İnteraktif Öğreticiyi Başlat",
+        btn_text = self.lang_manager.get("help.start_tutorial", "🎓 İnteraktif Öğreticiyi Başlat")
+        btn = ctk.CTkButton(
+            self,
+            text=btn_text,
             height=45,
             corner_radius=10,
             fg_color=("#00d4ff", "#0096c7"),
             hover_color=("#00b8e6", "#007ea7"),
             font=("Segoe UI", 13, "bold"),
-            command=self.start_tutorial
+            command=self._start_tutorial
         )
-        tutorial_btn.pack(fill="x", padx=10, pady=(10, 5))
+        btn.pack(fill="x", padx=10, pady=(10, 5))
 
     def _create_search_box(self):
+        placeholder = self.lang_manager.get("help.search_placeholder", "🔍 Ara...")
         self.search_entry = ctk.CTkEntry(
-            self.sidebar,
-            placeholder_text="🔍 Ara...",
+            self,
+            placeholder_text=placeholder,
             height=35,
             corner_radius=8
         )
         self.search_entry.pack(fill="x", padx=10, pady=10)
-        self.search_entry.bind("<KeyRelease>", self.on_search)
-        self._add_search_focus_animation()
-
-    def create_content_area(self):
-        """Sağ taraftaki içerik alanını oluşturur."""
-        self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.content_frame.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
-        self.content_frame.grid_rowconfigure(1, weight=1)
-        self.content_frame.grid_columnconfigure(0, weight=1)
+        self.search_entry.bind("<KeyRelease>", self._on_search)
         
-        self.content_title = ctk.CTkLabel(
-            self.content_frame, 
-            text="", 
-            font=("Segoe UI", 24, "bold"), 
-            anchor="w"
-        )
-        self.content_title.grid(row=0, column=0, sticky="w", pady=(0, 15))
-        
-        self.content_text = ctk.CTkTextbox(
-            self.content_frame, 
-            wrap="word", 
-            font=("Segoe UI", 13),
-            corner_radius=8,
-            border_width=1,
-            border_color=("gray80", "#404040")
-        )
-        self.content_text.grid(row=1, column=0, sticky="nsew")
+        # Focus animation
+        self.search_entry.bind("<FocusIn>", lambda e: self.search_entry.configure(border_width=2))
+        self.search_entry.bind("<FocusOut>", lambda e: self.search_entry.configure(border_width=1))
 
-    def _setup_sections(self):
-        """Bölümleri ve içerik sağlayıcıları tanımlar."""
-        self.sections = {
-            "🚀 Hızlı Başlangıç": HelpContentProvider.get_quick_start,
-            "⌨️ Klavye Kısayolları": HelpContentProvider.get_shortcuts,
-            "🖱️ Çoklu İmleç Rehberi": HelpContentProvider.get_multi_cursor_guide,
-            "🎨 Tema Rehberi": HelpContentProvider.get_theme_guide,
-            "📁 Dosya Formatları": HelpContentProvider.get_supported_formats,
-            "📄 Markdown Rehberi": HelpContentProvider.get_markdown_guide,
-            "💡 İpuçları ve Püf Noktaları": HelpContentProvider.get_tips_and_tricks,
-            "❓ SSS": HelpContentProvider.get_faq,
-            "📊 Performans Raporu": lambda: HelpContentProvider.get_performance_report(self.app),
-            "🖼️ Resim Görüntüleyici": lambda: """# Resim Görüntüleyici
-
-Memati Editör, kod dosyalarının yanı sıra resim dosyalarını da görüntüleyebilir.
-
-## Özellikler
-- **Yakınlaştırma/Uzaklaştırma:** Fare tekerleği ile resme odaklanabilirsiniz.
-- **Kaydırma:** Büyütülmüş resimlerde sürükleyerek veya yön tuşlarıyla gezinebilirsiniz.
-- **Döndürme:** 'R' ve 'L' tuşlarıyla resmi döndürebilirsiniz.
-- **Ekrana Sığdır:** 'F' tuşu veya araç çubuğundaki buton ile resmi pencereye sığdırabilirsiniz.
-
-## Desteklenen Formatlar
-- PNG, JPG, JPEG, GIF, BMP, WEBP""",
-            "🔢 Satıra Git": lambda: """# Satıra Git
-
-Büyük dosyalarda belirli bir satıra hızlıca ulaşmak için kullanılır.
-
-## Kullanım
-1. **Ctrl+G** kısayolunu kullanın veya **Düzen** menüsünden **Satıra Git**'i seçin.
-2. Açılan pencereye gitmek istediğiniz satır numarasını yazın.
-3. **Git** butonuna tıklayın veya **Enter**'a basın.
-
-Editör sizi otomatik olarak o satıra götürecek ve satırı vurgulayacaktır.""",
-            "🐛 Hata Bildir": HelpContentProvider.get_report_bug,
-            "ℹ️ Hakkında": HelpContentProvider.get_about
-        }
-        self.create_sidebar_buttons()
-
-    def create_sidebar_buttons(self):
-        """Kenar çubuğundaki navigasyon butonlarını oluşturur."""
-        for name in self.sections.keys():
+    def _create_buttons(self):
+        for key in self.sections.keys():
+            display_text = self.lang_manager.get(f"help.sections.{key}", key)
             btn = ctk.CTkButton(
-                self.sidebar, 
-                text=name, 
+                self, 
+                text=display_text, 
                 anchor="w", 
                 fg_color="transparent", 
                 text_color=("gray10", "gray90"),
@@ -225,188 +76,296 @@ Editör sizi otomatik olarak o satıra götürecek ve satırı vurgulayacaktır.
                 height=40,
                 corner_radius=8,
                 font=("Segoe UI", 12),
-                command=lambda n=name: self.select_section(n)
+                command=lambda k=key: self.on_select(k) # Trigger parent callback with internal key
             )
             btn.pack(fill="x", padx=8, pady=3)
-            self.buttons[name] = btn
-            
-            self.create_hover_effect(btn)
-            self._add_button_hover_animation(btn)
+            self.buttons[key] = btn # Store by internal key
+            self._add_hover_effect(btn)
 
-    def _select_initial_section(self, start_section):
-        """Başlangıç bölümünü belirler ve seçer."""
-        initial = "🚀 Hızlı Başlangıç"
-        for section in self.sections.keys():
-            if start_section in section:
-                initial = section
-                break
-        self.select_section(initial)
+    def _add_hover_effect(self, btn):
+        btn.bind("<Enter>", lambda e: btn.configure(cursor="hand2"))
+        btn.bind("<Leave>", lambda e: btn.configure(cursor=""))
 
-    # --- Actions ---
-
-    def start_tutorial(self):
-        """Tutorial Mode'u başlatır."""
-        from text_editor.ui.tutorial_mode import TutorialSystem
-        
-        if not hasattr(self.app, 'tutorial_system'):
-            self.app.tutorial_system = TutorialSystem(self.app)
-        
-        self.app.tutorial_system.start_tutorial()
-
-    def select_section(self, name):
-        """İlgili yardım bölümünü seçer ve gösterir."""
-        if self.history_index == -1 or self.history[self.history_index] != name:
-            self.history = self.history[:self.history_index + 1]
-            self.history.append(name)
-            self.history_index = len(self.history) - 1
-        
-        self.update_navigation_buttons()
-        self._update_ui_state(name)
-
-    def select_section_without_history(self, name):
-        """Geçmişe eklemeden bölüm seçer (Geri/İleri işlemleri için)."""
-        self._update_ui_state(name)
-
-    def _update_ui_state(self, name):
-        """UI durumunu (butonlar ve içerik) günceller."""
-        self.animation_running = True
-        self.content_offset = 30
-        
-        for btn_name, btn in self.buttons.items():
-            is_selected = (btn_name == name)
-            self.animate_button_selection(btn, is_selected)
-        
-        self._update_content_with_animation(name)
-
-    def _update_content_with_animation(self, name):
-        """İçeriği animasyonlu olarak yeniler."""
-        self.title_slide_offset = -20
-        self.content_title.configure(text=name)
-        
-        self._animate_title_slide()
-        
-        # İçeriği HelpContentProvider'dan al
-        content = self.sections[name]()
-        
-        self.content_text.configure(state="normal")
-        self.content_text.delete("1.0", "end")
-        self.content_text.insert("1.0", content)
-        self.content_text.configure(state="disabled")
-        
-        self.content_text.yview_moveto(0)
-        self.animate_content_fade_in()
-        self.animation_running = False
-
-    def go_back(self):
-        """Geri git."""
-        if self.history_index > 0:
-            self.history_index -= 1
-            section = self.history[self.history_index]
-            self.select_section_without_history(section)
-            self.update_navigation_buttons()
-
-    def go_forward(self):
-        """İleri git."""
-        if self.history_index < len(self.history) - 1:
-            self.history_index += 1
-            section = self.history[self.history_index]
-            self.select_section_without_history(section)
-            self.update_navigation_buttons()
-
-    def update_navigation_buttons(self):
-        """Geri/İleri butonlarının aktiflik durumunu günceller."""
-        self.back_btn.configure(state="normal" if self.history_index > 0 else "disabled")
-        self.forward_btn.configure(state="normal" if self.history_index < len(self.history) - 1 else "disabled")
-
-    def on_search(self, event):
-        """Arama kutusu işleyicisi."""
+    def _on_search(self, event):
         query = self.search_entry.get().lower()
-        self._animate_search_results(query=query, show_all=not query)
-
-    # --- Animations ---
-
-    def start_fade_in_animation(self):
-        """Pencere açılış fade-in animasyonu."""
-        if self.fade_alpha < 1.0:
-            self.fade_alpha += 0.1
-            self.attributes("-alpha", self.fade_alpha)
-            self.after(30, self.start_fade_in_animation)
-        else:
-            self.fade_alpha = 1.0
-            self.attributes("-alpha", 1.0)
-
-    def animate_content_fade_in(self):
-        """İçerik yukarı kayma ve belirme animasyonu."""
-        if self.content_offset > 0:
-            self.content_offset -= 3
-            # Bu metod text widget'ı kaydırmaz, sadece logic olarak offset azaltır. 
-            # Ancak orijinal kodda yview_moveto(0) çağrılıyordu her adımda.
-            # Orijinal efektin korunması için burada farklı bir işlem yapmıyoruz
-            # çünkü textbox içeriği zaten statik duruyor.
-            # Orijinal kodda bu sadece bir zamanlayıcı gibi çalışıyordu.
-            self.after(20, self.animate_content_fade_in)
-
-    def _animate_title_slide(self):
-        """Başlık kayma animasyonu."""
-        if self.title_slide_offset < 0:
-            self.title_slide_offset += 2
-            self.content_title.grid(row=0, column=0, sticky="w", 
-                                   pady=(max(0, self.title_slide_offset), 15),
-                                   padx=(max(0, -self.title_slide_offset), 0))
-            self.after(20, self._animate_title_slide)
-        else:
-            self.content_title.grid(row=0, column=0, sticky="w", pady=(0, 15), padx=0)
-
-    def animate_logo_pulse(self):
-        """Logo nabız animasyonu."""
-        if not self.winfo_exists():
-            return
-        
-        self.logo_pulse_size += self.logo_pulse_direction
-        if self.logo_pulse_size >= 36:
-            self.logo_pulse_direction = -1
-        elif self.logo_pulse_size <= 32:
-            self.logo_pulse_direction = 1
-        
-        try:
-            self.logo_label.configure(font=("Segoe UI", self.logo_pulse_size))
-        except Exception:
-            pass
-        
-        self.after(100, self.animate_logo_pulse)
-
-    def _animate_search_results(self, query=None, show_all=False):
-        """Arama sonuçlarını filtreler."""
-        for name, btn in self.buttons.items():
-            if show_all or (query and query in name.lower()):
+        for key, btn in self.buttons.items():
+            display_text = btn.cget("text").lower()
+            match = not query or query in display_text or query in key.lower()
+            if match:
                 if not btn.winfo_ismapped():
                     btn.pack(fill="x", padx=8, pady=3)
             else:
                 if btn.winfo_ismapped():
                     btn.pack_forget()
 
-    def animate_button_selection(self, button, is_selected):
-        """Buton seçili/seçili değil durumu için renk geçişi."""
-        if is_selected:
-            button.configure(fg_color=("gray85", "#404040"), font=("Segoe UI", 12, "bold"))
+    def update_selection_visuals(self, selected_key):
+        """Seçili butonun görsel durumunu günceller."""
+        for key, btn in self.buttons.items():
+            if key == selected_key:
+                btn.configure(fg_color=("gray85", "#404040"), font=("Segoe UI", 12, "bold"))
+            else:
+                btn.configure(fg_color="transparent", font=("Segoe UI", 12))
+
+    def _start_tutorial(self):
+        """Tutorial modunu başlatır."""
+        from text_editor.ui.tutorial_mode import TutorialSystem
+        if not hasattr(self.app, 'tutorial_system'):
+            self.app.tutorial_system = TutorialSystem(self.app)
+        self.app.tutorial_system.start_tutorial()
+
+
+class HelpContentDisplay(ctk.CTkFrame):
+    """
+    Yardım penceresinin sağ tarafındaki içerik görüntüleme alanını yönetir.
+    """
+    def __init__(self, master, **kwargs):
+        super().__init__(master, fg_color="transparent", **kwargs)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+        self.title_label = None
+        self.text_area = None
+        self._setup_ui()
+
+    def _setup_ui(self):
+        self.title_label = ctk.CTkLabel(
+            self, 
+            text="", 
+            font=("Segoe UI", 24, "bold"), 
+            anchor="w"
+        )
+        self.title_label.grid(row=0, column=0, sticky="w", pady=(0, 15))
+        
+        self.text_area = ctk.CTkTextbox(
+            self, 
+            wrap="word", 
+            font=("Segoe UI", 13),
+            corner_radius=8,
+            border_width=1,
+            border_color=("gray80", "#404040")
+        )
+        self.text_area.grid(row=1, column=0, sticky="nsew")
+
+    def show_content(self, title, content):
+        """İçeriği görüntüler ve stillendirir."""
+        self.title_label.configure(text=title)
+        
+        self.text_area.configure(state="normal")
+        self.text_area.delete("1.0", "end")
+        self.text_area.insert("1.0", content)
+        
+        self._apply_markdown_styling()
+        
+        self.text_area.configure(state="disabled")
+        self.text_area.yview_moveto(0)
+        
+        # Basit bir fade-in efekti için animasyon metodunu tetikle (opsiyonel)
+        # Buradaki animasyon mantığını basit tutuyoruz.
+
+    def _apply_markdown_styling(self):
+        """Metne görsel stiller uygular."""
+        # Tag tanımları
+        tb = self.text_area._textbox
+        tb.tag_config("h1", font=("Segoe UI", 22, "bold"), foreground="#3a7ebf")
+        tb.tag_config("h2", font=("Segoe UI", 16, "bold"), foreground="#61afef")
+        tb.tag_config("bold", font=("Segoe UI", 13, "bold"))
+        tb.tag_config("box", font=("Consolas", 12), foreground="#e5c07b")
+        tb.tag_config("code", font=("Consolas", 12), background="#2c313a", foreground="#abb2bf")
+        
+        content = self.text_area.get("1.0", "end")
+        lines = content.split('\n')
+        
+        for i, line in enumerate(lines):
+            line_idx = i + 1
+            if line.startswith("# "):
+                self.text_area.tag_add("h1", f"{line_idx}.0", f"{line_idx}.end")
+            elif line.startswith("## ") or "NASIL KULLANILIR?" in line:
+                self.text_area.tag_add("h2", f"{line_idx}.0", f"{line_idx}.end")
+            
+            if any( c in line for c in ["┌", "└", "│", "─"]):
+                self.text_area.tag_add("box", f"{line_idx}.0", f"{line_idx}.end")
+                
+            if line.strip().startswith("•") or line.strip().startswith("🔸"):
+                self.text_area.tag_add("bold", f"{line_idx}.0", f"{line_idx}.2")
+
+            if (line.startswith("    ") or line.startswith("\t")) and not line.strip().startswith("•"):
+                self.text_area.tag_add("code", f"{line_idx}.0", f"{line_idx}.end")
+
+
+class HelpWindow(ctk.CTkToplevel):
+    """
+    Ana yardım penceresi.
+    Bileşenleri (Sidebar, ContentDisplay) ve navigasyon mantığını yönetir.
+    """
+    def __init__(self, master, app_instance, start_section="quick_start"):
+        super().__init__(master)
+        self.app = app_instance
+        self.lang_manager = LanguageManager.get_instance()
+        
+        self.sections = self._get_sections()
+        self.history = []
+        self.history_index = -1
+        
+        self._setup_window()
+        self._setup_layout()
+        
+        # Başlangıç
+        self._select_initial_section(start_section)
+        self.after(50, self._fade_in)
+
+    def _get_sections(self):
+        return {
+            "quick_start": HelpContentProvider.get_quick_start,
+            "shortcuts": HelpContentProvider.get_shortcuts,
+            "multi_cursor": HelpContentProvider.get_multi_cursor_guide,
+            "theme_guide": HelpContentProvider.get_theme_guide,
+            "file_formats": HelpContentProvider.get_supported_formats,
+            "markdown_guide": HelpContentProvider.get_markdown_guide,
+            "tips": HelpContentProvider.get_tips_and_tricks,
+            "faq": HelpContentProvider.get_faq,
+            "performance": lambda: HelpContentProvider.get_performance_report(self.app),
+            "image_viewer": HelpContentProvider.get_image_viewer_guide,
+            "goto_line": HelpContentProvider.get_goto_line_guide,
+            "report_bug": HelpContentProvider.get_report_bug,
+            "about": HelpContentProvider.get_about
+        }
+
+    def _setup_window(self):
+        title_text = self.lang_manager.get("help.title", f"🪐 {APP_NAME} - Yardım Merkezi").format(app_name=APP_NAME)
+        self.title(title_text)
+        self.geometry("1000x700")
+        self.attributes("-alpha", 0.0)
+        self.attributes("-topmost", True)
+        self.lift()
+        self.focus()
+
+    def _setup_layout(self):
+        self.grid_columnconfigure(0, weight=0, minsize=220)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        
+        self._create_toolbar()
+        
+        # Sidebar
+        self.sidebar = HelpSidebar(
+            self, 
+            app_instance=self.app, 
+            sections=self.sections, 
+            on_selection_callback=self.select_section,
+            corner_radius=0,
+            fg_color=("gray92", "#2b2b2b"),
+            border_width=1,
+            border_color=("gray80", "#404040")
+        )
+        self.sidebar.grid(row=1, column=0, sticky="nsew", padx=(0, 1))
+        
+        # Content
+        self.content_display = HelpContentDisplay(self)
+        self.content_display.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
+
+    def _create_toolbar(self):
+        toolbar = ctk.CTkFrame(self, height=45, corner_radius=0, fg_color=("gray95", "#2b2b2b"))
+        toolbar.grid(row=0, column=0, columnspan=2, sticky="ew")
+        
+        self.back_btn = self._create_nav_button(toolbar, self.lang_manager.get("help.buttons.back", "◀ Geri"), self.go_back)
+        self.back_btn.pack(side="left", padx=(10, 5), pady=7)
+        
+        self.forward_btn = self._create_nav_button(toolbar, self.lang_manager.get("help.buttons.forward", "İleri ▶"), self.go_forward)
+        self.forward_btn.pack(side="left", padx=5, pady=7)
+        
+        ctk.CTkLabel(toolbar, text="|", text_color=("gray60", "gray50")).pack(side="left", padx=10)
+        
+        home_text = self.lang_manager.get("help.buttons.home", "🏠 Ana Sayfa")
+        home_btn = self._create_nav_button(toolbar, home_text, lambda: self.select_section("quick_start"), width=100)
+        home_btn.pack(side="left", padx=5, pady=7)
+        
+        self._update_nav_buttons_state()
+
+    def _create_nav_button(self, parent, text, command, width=80):
+        btn = ctk.CTkButton(
+            parent, text=text, width=width, height=32, corner_radius=6, command=command
+        )
+        return btn
+
+    def select_section(self, key):
+        """Bölüm seçme mantığı (Geçmiş kaydı tutar)."""
+        # Aynı sayfa kontrolü
+        if self.history_index != -1 and self.history and self.history[self.history_index] == key:
+             return
+
+        # Geçmişi güncelle (eğer geçmişin ortasındaysak ileri kısmını sil)
+        if self.history_index < len(self.history) - 1:
+            self.history = self.history[:self.history_index + 1]
+            
+        self.history.append(key)
+        self.history_index = len(self.history) - 1
+        
+        self._load_section_content(key)
+
+    def _load_section_content(self, key):
+        """İçeriği yükler (Geçmişe eklemeden)."""
+        if key not in self.sections:
+            return
+
+        # UI Güncelle
+        self.sidebar.update_selection_visuals(key)
+        
+        # İçeriği Getir (Provider metodunu çalıştır)
+        content_func = self.sections[key]
+        content = content_func() # Burası hala ContentProvider'daki hardcoded metinleri döndürüyor. Düzeltilmeli.
+        
+        # Başlık da çevrilmeli
+        display_title = self.lang_manager.get(f"help.sections.{key}", key)
+        
+        # Göster
+        self.content_display.show_content(display_title, content)
+        
+        # Navigasyon butonlarını güncelle
+        self._update_nav_buttons_state()
+
+    def go_back(self):
+        if self.history_index > 0:
+            self.history_index -= 1
+            key = self.history[self.history_index]
+            self._load_section_content(key)
+
+    def go_forward(self):
+        if self.history_index < len(self.history) - 1:
+            self.history_index += 1
+            key = self.history[self.history_index]
+            self._load_section_content(key)
+
+    def _update_nav_buttons_state(self):
+        self.back_btn.configure(state="normal" if self.history_index > 0 else "disabled")
+        self.forward_btn.configure(state="normal" if self.history_index < len(self.history) - 1 else "disabled")
+
+    def _select_initial_section(self, start_section):
+        # start_section "Hızlı Başlangıç" gibi eski bir değer olabilir veya "quick_start"
+        # Mapping yapmaya çalış
+        target = "quick_start"
+        
+        # Eğer direkt key ise
+        if start_section in self.sections:
+             target = start_section
         else:
-            button.configure(fg_color="transparent", font=("Segoe UI", 12))
+            # Belki Türkçe isimdir, tersine arama yapamayız kolayca ama basit bir kontrol:
+            pass # Varsayılan quick_start
+             
+        self.select_section(target)
 
-    def _add_button_hover_animation(self, button):
-        button.bind("<Enter>", lambda e: button.configure(cursor="hand2"), add="+")
-        button.bind("<Leave>", lambda e: button.configure(cursor=""), add="+")
-
-    def create_hover_effect(self, widget):
-        widget.bind("<Enter>", lambda e: widget.configure(cursor="hand2"))
-        widget.bind("<Leave>", lambda e: widget.configure(cursor=""))
-
-    def _add_search_focus_animation(self):
-        self.search_entry.bind("<FocusIn>", lambda e: self.search_entry.configure(border_width=2))
-        self.search_entry.bind("<FocusOut>", lambda e: self.search_entry.configure(border_width=1))
+    def _fade_in(self):
+        """Pencere açılış animasyonu."""
+        current_alpha = self.attributes("-alpha")
+        if current_alpha < 1.0:
+            new_alpha = current_alpha + 0.1
+            self.attributes("-alpha", new_alpha)
+            self.after(30, self._fade_in)
+        else:
+            self.attributes("-alpha", 1.0)
 
 
 class HelpSystem:
-    """Yardım penceresinin tekil (singleton benzeri) yönetimini sağlar."""
+    """Singleton yönetim sınıfı."""
     def __init__(self, master_window):
         self.master = master_window
         self.help_window = None
@@ -418,22 +377,19 @@ class HelpSystem:
             self.help_window.lift()
             self.help_window.focus()
             
-            # Bölüm ara ve seç
-            section_found = False
+            # Bölüm ara
+            found = False
             for sec_name in self.help_window.sections.keys():
                 if section in sec_name:
                     self.help_window.select_section(sec_name)
-                    section_found = True
+                    found = True
                     break
-            
-            if not section_found:
+            if not found:
                 self.help_window.select_section("🚀 Hızlı Başlangıç")
-    
+            
     def start_tutorial(self):
         """Tutorial Mode başlatıcı."""
         from text_editor.ui.tutorial_mode import TutorialSystem
-        
         if not hasattr(self.master, 'tutorial_system'):
             self.master.tutorial_system = TutorialSystem(self.master)
-        
         self.master.tutorial_system.start_tutorial()

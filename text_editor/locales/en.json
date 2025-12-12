@@ -1,0 +1,96 @@
+{
+    "window_title": "⚙️ Settings",
+    "panel_title": "⚙️ Settings",
+    "search_placeholder": "🔍 Search settings...",
+    "categories": {
+        "Genel": "General",
+        "Editör": "Editor",
+        "Görünüm": "Appearance",
+        "Tema": "Theme",
+        "Klavye Kısayolları": "Keyboard Shortcuts",
+        "Terminal": "Terminal",
+        "Gelişmiş": "Advanced"
+    },
+    "buttons": {
+        "reset": "🔄 Reset to Defaults",
+        "cancel": "❌ Cancel",
+        "apply": "✅ Apply",
+        "export": "📤 Export Settings",
+        "import": "📥 Import Settings",
+        "reset_shortcuts": "Reset to Defaults"
+    },
+    "messages": {
+        "no_limit": "No Changes",
+        "seconds": "seconds",
+        "selected": "✅ Selected",
+        "preview": "Preview",
+        "apply_text": "Apply",
+        "no_results": "No results found",
+        "search_results": "📊 {count} results found",
+        "goto_category": "📁 Go to {category} category →",
+        "version_text": "Memati Editor v2.0",
+        "changes_title_suffix": "({count} changes)",
+        "reset_confirm_title": "Reset to Defaults",
+        "reset_confirm_message": "All settings will be reset to default values. Are you sure?",
+        "export_success_title": "Success",
+        "export_success_message": "Settings exported successfully!",
+        "import_success_title": "Success",
+        "import_success_message": "Settings imported successfully!",
+        "error_title": "Error"
+    },
+    "settings": {
+        "app_name": {"label": "Application Name", "desc": "Application name displayed in the title bar"},
+        "font_family": {"label": "Font Family", "desc": "Font family used in the editor"},
+        "font_size": {"label": "Font Size", "desc": "Editor font size (8-32)"},
+        "language": {"label": "Dil / Language", "desc": "Application interface language"},
+        "show_line_numbers": {"label": "Line Numbers", "desc": "Show line numbers in the editor"},
+        "word_wrap": {"label": "Word Wrap", "desc": "Wrap long lines automatically"},
+        "show_minimap": {"label": "Minimap", "desc": "Show the code map"},
+        "tab_size": {"label": "Tab Size", "desc": "Number of spaces per tab character"},
+        "auto_save": {"label": "Auto Save", "desc": "Automatically save changes"},
+        "auto_save_interval": {"label": "Save Interval", "desc": "Auto save interval (seconds)"},
+        "bracket_matching": {"label": "Bracket Matching", "desc": "Highlight matching brackets under cursor"},
+        "syntax_highlighting": {"label": "Syntax Highlighting", "desc": "Enable code coloring"},
+        "show_status_bar": {"label": "Status Bar", "desc": "Show the information bar at the bottom"},
+        "show_file_explorer": {"label": "File Explorer", "desc": "Show the file tree on the left"},
+        "show_terminal": {"label": "Terminal Visibility", "desc": "Show the terminal panel at the bottom"},
+        "start_fullscreen": {"label": "Start Fullscreen", "desc": "Start the application in fullscreen mode"},
+        "theme_select": {"label": "Theme Selection", "desc": "Select the editor appearance theme"},
+        "terminal_type": {"label": "Terminal Type", "desc": "Shell type to use"},
+        "terminal_font_size": {"label": "Font Size", "desc": "Terminal font size"},
+        "terminal_history": {"label": "History Limit", "desc": "Line limit for terminal output"},
+        "performance_mode": {"label": "Performance Mode", "desc": "Disable some visual effects to improve performance"},
+        "auto_backup": {"label": "Auto Backup", "desc": "Periodically back up files to .bak files"},
+        "max_file_size": {"label": "Max File Size", "desc": "Maximum file size the editor can open (MB)"},
+        "error_reporting": {"label": "Error Reporting", "desc": "Send report to developer when an error occurs"}
+    },
+    "help": {
+        "title": "🪐 {app_name} - Help Center",
+        "header": "Help Center",
+        "search_placeholder": "🔍 Search...",
+        "start_tutorial": "🎓 Start Interactive Tutorial",
+        "sections": {
+            "quick_start": "🚀 Quick Start",
+            "shortcuts": "⌨️ Keyboard Shortcuts",
+            "multi_cursor": "🖱️ Multi-Cursor Guide",
+            "theme_guide": "🎨 Theme Guide",
+            "file_formats": "📁 Supported Formats",
+            "markdown_guide": "📄 Markdown Guide",
+            "tips": "💡 Tips and Tricks",
+            "faq": "❓ FAQ",
+            "performance": "📊 Performance Report",
+            "image_viewer": "🖼️ Image Viewer",
+            "goto_line": "🔢 Go to Line",
+            "report_bug": "🐛 Report Bug",
+            "about": "ℹ️ About"
+        },
+        "buttons": {
+            "back": "◀ Back",
+            "forward": "Forward ▶",
+            "home": "🏠 Home"
+        }
+    },
+    "help_content": {
+        "quick_start": "🎯 WELCOME TO MEMATI EDITOR!\n\nModern, powerful and user-friendly text editor is ready!\n\n┌─────────────────────────────────────────┐\n│  🎓 INTERACTIVE TUTORIAL                │\n└─────────────────────────────────────────┘\n\nNew here? Don't worry! \n\n🎓 Learn the editor in 5 minutes with the INTERACTIVE TUTORIAL!\n\n• Step-by-step guidance\n• Visual spotlight\n• Interactive tasks\n• Progress tracking\n\nTo start:\n1. Click the \"🎓 Start Interactive Tutorial\" button above\n2. Or from the menu: 🎓 Tutorial\n\n┌─────────────────────────────────────────┐\n│  FIRST STEPS                            │\n└─────────────────────────────────────────┘\n\n1️⃣  CREATE NEW FILE\n   • Press Ctrl+N\n   • Or menu: File > New Tab\n\n2️⃣  OPEN FILE\n   • Select file with Ctrl+O\n   • Or drag and drop the file\n   • To open folder: Ctrl+Shift+O\n\n3️⃣  SAVE\n   • Save current file with Ctrl+S\n   • Save as with Ctrl+Shift+S\n   • Auto save: Every 30 seconds!\n\n4️⃣  CHANGE THEME\n   • Menu: Theme > Select your desired theme\n   • 9 different, eye-catching themes available!\n\n5️⃣  TOOLS AND FEATURES\n   • Ctrl+F: Find and Replace\n   • Ctrl+G: Go to specific line\n   • Ctrl+Wheel: Zoom In/Out\n   • F11: Fullscreen mode\n\n6️⃣  MULTI CURSOR TOOLS\n   • Alt+Click: Add cursor everywhere\n   • Ctrl+D: Select and edit the same word\n   • See \"Multi-Cursor Guide\" for details!\n\n┌─────────────────────────────────────────┐\n│  QUICK TIPS                             │\n└─────────────────────────────────────────┘\n\n💡 Auto bracket closing is active!\n💡 Code folding: Click the arrows on line numbers\n💡 Minimap: Use the map on the right to navigate large files\n💡 Tabs: Advanced tab management with right click\n\n┌─────────────────────────────────────────┐\n│  NEED HELP?                             │\n└─────────────────────────────────────────┘\n\nExplore topics from the menu on the left:\n• ⌨️  Keyboard Shortcuts\n• 🖱️  Multi-Cursor Guide\n• 💡 Tips and Tricks\n• ❓ Frequently Asked Questions\n\nHappy coding! 🚀"
+    }
+}

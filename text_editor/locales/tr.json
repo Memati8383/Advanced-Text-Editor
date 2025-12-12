@@ -1,0 +1,93 @@
+{
+    "window_title": "⚙️ Ayarlar",
+    "panel_title": "⚙️ Ayarlar",
+    "search_placeholder": "🔍 Ayar ara...",
+    "categories": {
+        "Genel": "Genel",
+        "Editör": "Editör",
+        "Görünüm": "Görünüm",
+        "Tema": "Tema",
+        "Klavye Kısayolları": "Klavye Kısayolları",
+        "Terminal": "Terminal",
+        "Gelişmiş": "Gelişmiş"
+    },
+    "buttons": {
+        "reset": "🔄 Varsayılana Dön",
+        "cancel": "❌ İptal",
+        "apply": "✅ Uygula",
+        "export": "📤 Ayarları Dışa Aktar",
+        "import": "📥 Ayarları İçe Aktar",
+        "reset_shortcuts": "Varsayılanlara Sıfırla"
+    },
+    "messages": {
+        "no_limit": "Değişiklik Yok",
+        "seconds": "saniye",
+        "selected": "✅ Seçildi",
+        "preview": "Önizle",
+        "apply_text": "Uygula",
+        "no_results": "Sonuç bulunamadı",
+        "search_results": "📊 {count} sonuç bulundu",
+        "goto_category": "📁 {category} kategorisine git →",
+        "version_text": "Memati Editör v2.0",
+        "changes_title_suffix": "({count} değişiklik)",
+        "reset_confirm_title": "Varsayılana Dön",
+        "reset_confirm_message": "Tüm ayarlar varsayılan değerlere dönecek. Emin misiniz?",
+        "export_success_title": "Başarılı",
+        "export_success_message": "Ayarlar başarıyla dışa aktarıldı!",
+        "import_success_title": "Başarılı",
+        "import_success_message": "Ayarlar başarıyla içe aktarıldı!",
+        "error_title": "Hata"
+    },
+    "settings": {
+        "app_name": {"label": "Uygulama Adı", "desc": "Başlık çubuğunda görünen uygulama adı"},
+        "font_family": {"label": "Yazı Tipi", "desc": "Editörde kullanılacak yazı tipi ailesi"},
+        "font_size": {"label": "Yazı Boyutu", "desc": "Editör yazı tipi boyutu (8-32)"},
+        "language": {"label": "Dil / Language", "desc": "Uygulama arayüz dili"},
+        "show_line_numbers": {"label": "Satır Numaraları", "desc": "Editörde satır numaralarını göster"},
+        "word_wrap": {"label": "Kelime Kaydırma", "desc": "Uzun satırları otomatik olarak kaydır"},
+        "show_minimap": {"label": "Minimap", "desc": "Kod haritasını göster"},
+        "tab_size": {"label": "Tab Boyutu", "desc": "Tab karakterinin kaç boşluk genişliğinde olacağı"},
+        "auto_save": {"label": "Otomatik Kaydetme", "desc": "Değişiklikleri otomatik kaydet"},
+        "auto_save_interval": {"label": "Kaydetme Aralığı", "desc": "Otomatik kaydetme sıklığı (saniye)"},
+        "bracket_matching": {"label": "Parantez Eşleştirme", "desc": "İmleç parantez üzerindeyken eşini vurgula"},
+        "syntax_highlighting": {"label": "Sözdizimi Vurgulama", "desc": "Kod renklendirmesini etkinleştir"},
+        "show_status_bar": {"label": "Durum Çubuğu", "desc": "Alt kısımdaki bilgi çubuğunu göster"},
+        "show_file_explorer": {"label": "Dosya Gezgini", "desc": "Sol taraftaki dosya ağacını göster"},
+        "show_terminal": {"label": "Terminal Görünürlüğü", "desc": "Alt taraftaki terminal panelini göster"},
+        "start_fullscreen": {"label": "Tam Ekran Başlat", "desc": "Uygulamayı tam ekran modunda başlat"},
+        "theme_select": {"label": "Tema Seçimi", "desc": "Editör görünüm temasını seçin"},
+        "terminal_type": {"label": "Terminal Tipi", "desc": "Kullanılacak kabuk (shell) türü"},
+        "terminal_font_size": {"label": "Yazı Boyutu", "desc": "Terminal yazı tipi boyutu"},
+        "terminal_history": {"label": "Geçmiş Limiti", "desc": "Terminal çıktısı için satır limiti"},
+        "performance_mode": {"label": "Performans Modu", "desc": "Bazı görsel efektleri devre dışı bırakarak performansı artır"},
+        "auto_backup": {"label": "Otomatik Yedekleme", "desc": "Dosyaları periyodik olarak .bak dosyasına yedekle"},
+        "max_file_size": {"label": "Maksimum Dosya Boyutu", "desc": "Editörün açabileceği maksimum dosya boyutu (MB)"},
+        "error_reporting": {"label": "Hata Raporlama", "desc": "Hata oluştuğunda geliştiriciye rapor gönder"}
+    },
+    "help": {
+        "title": "🪐 {app_name} - Yardım Merkezi",
+        "header": "Yardım Merkezi",
+        "search_placeholder": "🔍 Ara...",
+        "start_tutorial": "🎓 İnteraktif Öğreticiyi Başlat",
+        "sections": {
+            "quick_start": "🚀 Hızlı Başlangıç",
+            "shortcuts": "⌨️ Klavye Kısayolları",
+            "multi_cursor": "🖱️ Çoklu İmleç Rehberi",
+            "theme_guide": "🎨 Tema Rehberi",
+            "file_formats": "📁 Dosya Formatları",
+            "markdown_guide": "📄 Markdown Rehberi",
+            "tips": "💡 İpuçları ve Püf Noktaları",
+            "faq": "❓ SSS",
+            "performance": "📊 Performans Raporu",
+            "image_viewer": "🖼️ Resim Görüntüleyici",
+            "goto_line": "🔢 Satıra Git",
+            "report_bug": "🐛 Hata Bildir",
+            "about": "ℹ️ Hakkında"
+        },
+        "buttons": {
+            "back": "◀ Geri",
+            "forward": "İleri ▶",
+            "home": "🏠 Ana Sayfa"
+        }
+    }
+}

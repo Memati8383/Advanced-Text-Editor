@@ -1,6 +1,8 @@
 from text_editor.config import APP_NAME, SUPPORTED_FILES
+from text_editor.utils.performance_monitor import PerformanceMonitor
+from text_editor.utils.language_manager import LanguageManager
+import time
 import platform
-import sys
 
 class HelpContentProvider:
     """
@@ -10,6 +12,10 @@ class HelpContentProvider:
 
     @staticmethod
     def get_quick_start():
+        lang = LanguageManager.get_instance()
+        content = lang.get("help_content.quick_start")
+        if content: return content
+        
         return """🎯 MEMATI EDITÖR'E HOŞ GELDİNİZ!
 
 Modern, güçlü ve kullanıcı dostu metin editörünüz hazır!
@@ -747,82 +753,93 @@ Topluluk desteği için forum yakında! 🚀
     @staticmethod
     def get_performance_report(app_instance):
         """Performans verilerini dinamik olarak çeker."""
-        tab_count = len(app_instance.tab_manager.editors)
-        total_lines = 0
-        total_chars = 0
         
-        for editor in app_instance.tab_manager.editors.values():
+        # 1. Veril Toplama (Separation of Concerns)
+        sys_info = PerformanceMonitor.get_system_info()
+        py_ver = PerformanceMonitor.get_python_version()
+        memory_usage = PerformanceMonitor.get_memory_usage()
+        cpu_usage = PerformanceMonitor.get_cpu_usage()
+        thread_count = PerformanceMonitor.get_thread_count()
+        uptime_str = PerformanceMonitor.get_uptime_str()
+        
+        stats = PerformanceMonitor.get_editor_stats(app_instance)
+        
+        # 2. Öneriler Logic
+        suggestions = []
+        
+        if stats["tab_count"] > 10:
+            suggestions.append("🟡 Sekme sayısı yüksek (10+). Performans düşebilir.")
+        if stats["total_lines"] > 20000:
+            suggestions.append("🟡 Toplam satır sayısı çok yüksek. Editör yavaşlayabilir.")
+            
+        # Hafıza kontrolü
+        if not memory_usage.startswith("Bilinmiyor"):
             try:
-                # end-1c boş olsa bile geçerli indeksleme almaya yardımcı olur
-                index = editor.text_area.index("end-1c")
-                if index:
-                    total_lines += int(index.split('.')[0])
-                    total_chars += len(editor.text_area.get("1.0", "end-1c"))
-            except Exception:
+                # "23.5 MB" -> 23.5
+                mem_val = float(memory_usage.split()[0])
+                if mem_val > 500:
+                    suggestions.append("🟡 Bellek kullanımı yüksek (>500MB).")
+            except ValueError:
                 pass
-        
-        sys_info = f"{platform.system()} {platform.release()}"
-        py_ver = sys.version.split()[0]
-        
-        try:
-            import psutil
-            memory_usage = f"{psutil.Process().memory_info().rss / 1024 / 1024:.1f} MB"
-        except ImportError:
-            memory_usage = "Bilinmiyor (psutil kurulu değil)"
-        except Exception:
-            memory_usage = "Bilinmiyor"
-        
-        return f"""📊 PERFORMANS RAPORU
 
-Editörünüzün anlık durumu:
+        if "Bilinmiyor (psutil gerekli)" in cpu_usage:
+             suggestions.append("🟡 Tam performans verileri için 'psutil' modülünü kurun.")
+             suggestions.append("   Komut: pip install psutil")
+
+        if not suggestions:
+            suggestions.append("✅ Tüm sistem değerleri optimal seviyede.")
+            
+        suggestions_text = "\n".join(suggestions)
+        current_theme = app_instance.settings.get("theme", "Dark")
+
+        # 3. View (Presentation)
+        return f"""📊 DETAYLI PERFORMANS RAPORU
+
+Anlık sistem ve editör durumu:
 
 ┌─────────────────────────────────────────┐
-│  💻 SİSTEM BİLGİSİ                      │
+│  💻 SİSTEM VE KAYNAKLAR                 │
 └─────────────────────────────────────────┘
 
-🖥️  İşletim Sistemi: {sys_info}
-🐍 Python Sürümü: {py_ver}
-🎨 GUI Framework: CustomTkinter
-📦 Syntax Engine: Pygments
+🖥️  OS: {sys_info}
+🐍 Python: {py_ver}
+💾 Bellek (RAM): {memory_usage}
+⚙️  CPU Kullanımı: {cpu_usage}
+🧵 Aktif İş Parçacığı: {thread_count}
+⏱️  Çalışma Süresi: {uptime_str}
 
 ┌─────────────────────────────────────────┐
-│  📈 EDITÖR İSTATİSTİKLERİ               │
+│  📈 TEKNİK İSTATİSTİKLER                │
 └─────────────────────────────────────────┘
 
-📑 Açık Sekmeler: {tab_count}
-📝 Toplam Satır: {total_lines:,}
-🔤 Toplam Karakter: {total_chars:,}
-💾 Bellek Kullanımı: {memory_usage}
+📑 Açık Dosyalar: {stats['tab_count']}
+📝 Toplam Satır: {stats['total_lines']:,}
+🔤 Toplam Karakter: {stats['total_chars']:,}
+🎨 Aktif Tema: {current_theme}
+🌐 Dil Dağılımı: {stats['languages_str']}
 
 ┌─────────────────────────────────────────┐
-│  ✅ SAĞLIK DURUMU                       │
+│  ✅ SAĞLIK KONTROLÜ                     │
 └─────────────────────────────────────────┘
 
 🟢 Arayüz Tepkisi: Optimal
-🟢 Dosya İzleyici: Aktif
-🟢 Otomatik Kayıt: Çalışıyor (30sn)
-🟢 Sözdizimi Vurgulama: Aktif
-🟢 Otomatik Tamamlama: Hazır
+🟢 Dosya İzleyici: Aktif (Watchdog)
+🟢 Auto-Save: Aktif (30sn)
+🟢 GPU Hızlandırma: {"Aktif" if app_instance.settings.get("use_gpu", True) else "Pasif"}
 
 ┌─────────────────────────────────────────┐
-│  💡 ÖNERİLER                            │
+│  💡 ANALİZ VE ÖNERİLER                  │
 └─────────────────────────────────────────┘
 
-{"🟡 10+ sekme açık, performans etkilenebilir" if tab_count > 10 else "✅ Sekme sayısı optimal"}
-
-{"🟡 Çok satır yüklü, yavaşlama olabilir" if total_lines > 10000 else "✅ Satır sayısı normal"}
-
-{"🟢 Hafıza kullanımı normal seviyede" if memory_usage != "Bilinmiyor" else ""}
+{suggestions_text}
 
 ┌─────────────────────────────────────────┐
-│  📋 RAPORU PAYLAŞ                       │
+│  📋 RAPOR BİLGİSİ                       │
 └─────────────────────────────────────────┘
 
-Bu raporu hata bildirirken kullanabilirsiniz.
-Kopyalamak için: Ctrl+A sonra Ctrl+C
-
-Sürüm: Memati Editör v1.0
-Tarih: {platform.node()}
+Sürüm: Memati Editör v1.2 (Dev)
+Node: {platform.node()}
+Zaman: {time.strftime('%Y-%m-%d %H:%M:%S')}
 """
 
     @staticmethod
@@ -1116,3 +1133,60 @@ def hello():
 
 Keyifli yazmalar! ✍️
 """
+
+    @staticmethod
+    def get_image_viewer_guide():
+        return """🖼️ RESİM GÖRÜNTÜLEYİCİ
+
+Memati Editör, kod dosyalarının yanı sıra resim dosyalarını da görüntüleyebilir.
+
+┌─────────────────────────────────────────┐
+│  ✨ ÖZELLİKLER                          │
+└─────────────────────────────────────────┘
+
+🔍 Yakınlaştırma/Uzaklaştırma:
+   Fare tekerleği ile resme odaklanabilirsiniz.
+
+✋ Kaydırma:
+   Büyütülmüş resimlerde sürükleyerek veya yön tuşlarıyla gezinebilirsiniz.
+
+🔄 Döndürme:
+   'R' (Sağ) ve 'L' (Sol) tuşlarıyla resmi döndürebilirsiniz.
+
+abc Ekrana Sığdır:
+   'F' tuşu veya araç çubuğundaki buton ile resmi pencereye sığdırabilirsiniz.
+
+┌─────────────────────────────────────────┐
+│  📁 DESTEKLENEN FORMATLAR               │
+└─────────────────────────────────────────┘
+
+• PNG
+• JPG / JPEG
+• GIF
+• BMP
+• WEBP
+"""
+
+    @staticmethod
+    def get_goto_line_guide():
+        return """🔢 SATIRA GİT
+
+Büyük dosyalarda belirli bir satıra hızlıca ulaşmak için kullanılır.
+
+┌─────────────────────────────────────────┐
+│  🚀 KULLANIM                            │
+└─────────────────────────────────────────┘
+
+1️⃣  PENCEREYİ AÇIN
+   • Kısayol: Ctrl+G
+   • Menü: Düzen > Satıra Git
+
+2️⃣  SATIR NUMARASINI GİRİN
+   • Gitmek istediğiniz satır numarasını yazın.
+
+3️⃣  GİT'E TIKLAYIN
+   • "Git" butonuna tıklayın veya Enter'a basın.
+
+Editör sizi otomatik olarak o satıra götürecek ve satırı vurgulayacaktır.
+"""
+
