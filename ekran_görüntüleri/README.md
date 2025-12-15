@@ -1,6 +1,20 @@
-# Screenshots
+# Ekran Görüntüleri
 
-This directory serves as a storage location for screenshots and visual assets related to the application.
-These images may be used in the main project `README.md` to showcase features or in documentation.
+Bu dizin, **Gelişmiş Metin Editörü** projesine ait ekran görüntülerini ve görsel materyalleri içerir.
+Bu görseller, projenin özelliklerini sergilemek, belgelendirmek ve kullanıcı arayüzü hakkında önizleme sunmak amacıyla kullanılmaktadır.
 
-*(This directory might be empty if no screenshots have been taken or moved here yet.)*
+## Mevcut Görseller
+
+Aşağıdaki ekran görüntüleri uygulamanın çeşitli menülerini ve özelliklerini göstermektedir:
+
+| Dosya Adı | Açıklama |
+|---|---|
+| `main.PNG` | **Ana Pencere:** Uygulamanın genel görünümü ve editör arayüzü. |
+| `dosya.png` | **Dosya Menüsü:** Dosya açma, kaydetme ve diğer dosya işlemleri menüsü. |
+| `düzenle.png` | **Düzenle Menüsü:** Kes, kopyala, yapıştır ve bul/değiştir gibi düzenleme araçları. |
+| `görünüm.png` | **Görünüm Menüsü:** Arayüz özelleştirme, yakınlaştırma ve kenar çubuğu seçenekleri. |
+| `tema.png` | **Tema Seçenekleri:** Farklı renk temaları ve görünüm ayarları. |
+| `yardım.png` | **Yardım Penceresi:** Kullanıcı kılavuzu, kısayollar ve hakkında bilgileri. |
+
+---
+*Not: Bu görseller projenin ana `README.md` dosyasında ve dokümantasyonunda referans olarak kullanılabilir.*
