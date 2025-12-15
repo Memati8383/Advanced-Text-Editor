@@ -6,6 +6,7 @@ Advanced Text Editor'ün tüm özelliklerini ve kullanım detaylarını içeren 
 
 Editörün çekirdek fonksiyonları ve ana arayüz elemanları.
 
+*   [**Ana Pencere (Main Window)**](main_window.md) - Uygulamanın ana iskeleti ve yönetimi.
 *   [**Editör (Editor)**](editor.md) - Kod yazma alanı, temel düzenleme özellikleri.
 *   [**Dosya Gezgini (File Explorer)**](file_explorer.md) - Dosya ve klasör yönetimi.
 *   [**Terminal**](terminal.md) - Gömülü komut satırı aracı.
@@ -22,6 +23,8 @@ Kullanıcı deneyimini iyileştiren yardımcı araçlar ve arayüz bileşenleri.
 *   [**Satıra Git (Go To Line)**](goto_line.md) - Belirli bir satıra hızlı erişim.
 *   [**Markdown Önizleme**](markdown_preview.md) - Canlı Markdown görüntüleyicisi.
 *   [**Resim Görüntüleyici (Image Viewer)**](image_viewer.md) - Dahili resim görüntüleme aracı.
+*   [**Modern Menü (Modern Menu)**](modern_menu.md) - Özelleştirilebilir menü sistemi.
+*   [**Bağlam Menüsü (Context Menu)**](context_menu.md) - Sağ tık menüsü bileşeni.
 
 ## 🧠 Gelişmiş Özellikler
 
@@ -31,6 +34,16 @@ Kod yazımını hızlandıran ve kolaylaştıran akıllı özellikler.
 *   [**Sözdizimi Vurgulayıcı (Syntax Highlighter)**](syntax_highlighter.md) - Renkli kod görünümü ve dil desteği.
 *   [**Dil Desteği (Language Support)**](languages.md) - Yeni dil ekleme ve yapılandırma.
 *   [**Dosya İzleyici (File Monitor)**](file_monitor.md) - Harici dosya değişikliklerini algılama sistemi.
+
+## ⚙️ Sistem ve Altyapı
+
+Uygulamanın arka planında çalışan yönetici sınıflar ve yapılandırmalar.
+
+*   [**Tema Yapılandırması (Theme Configuration)**](theme_config.md) - Renk temaları ve stil yönetimi.
+*   [**Kısayol Yöneticisi (Shortcut Manager)**](shortcut_manager.md) - Klavye kısayolları ve yapılandırması.
+*   [**Dil Yöneticisi (Language Manager)**](language_manager.md) - Çoklu dil desteği ve çeviri sistemi.
+*   [**Performans İzleyicisi (Performance Monitor)**](performance_monitor.md) - Sistem kaynak kullanımı ve metrikler.
+*   [**Dosya İkonları (File Icons)**](file_icons.md) - Dosya türü algılama ve ikon seti.
 
 ## 📚 Yardım ve Öğrenme
 
