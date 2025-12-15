@@ -56,6 +56,7 @@
 - **📁 Gelişmiş Dosya Gezgini**: Ağaç yapısı, her dosya için özel ikon, 100+ uzantı desteği.
 - **⌨️ Entegre Terminal**: PowerShell/Bash desteği, tema uyumu, komut geçmişi ile güçlü terminal.
 - **🎓 İnteraktif Tutorial Mode**: Yeni kullanıcılar için adım adım rehberlik, spotlight efektleri ve görev doğrulama ile interaktif öğrenme deneyimi.
+- **🌍 Çoklu Dil Desteği**: Türkçe, İngilizce ve Azerbaycan Türkçesi dil desteği ile tamamen yerelleştirilmiş arayüz.
 - **⚙️ Kapsamlı Ayarlar Sistemi**: Tüm uygulama ayarlarını tek yerden yönetin, dışa/içe aktarın, kategorilere ayrılmış modern arayüz.
 
 ### 📚 **Öğrenme ve Yardım**
@@ -175,9 +176,14 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 - 🎨 Zenginleştirilmiş temalar (accent colors)
 
 **Dosya Sistemi:**
-- 🌍 100+ dosya formatı desteği
-- 🎨 Her dosya için özel emoji ikonu
-- 📦 Özel dosyalar (package.json, Dockerfile, etc.)
+- **🌍 100+ dosya formatı desteği**
+- **🎨 Her dosya için özel emoji ikonu**
+- **📦 Özel dosyalar (package.json, Dockerfile, etc.)**
+
+**Yerelleştirme & Sistem:**
+- 🌍 Çoklu Dil Desteği (Türkçe, İngilizce, Azerbaycan Türkçesi)
+- 🛠️ Tamamen yerelleştirilmiş arayüz (Dosya Gezgini, Ayarlar, Menüler)
+- 📊 Performans İzleme (CPU, RAM ve Uptime takibi)
 
 **Yeni Özellikler:**
 - 🖱️ Çoklu imleç desteği (Alt+Click, Ctrl+D)

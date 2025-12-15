@@ -57,6 +57,8 @@ class PerformanceMonitor:
     @staticmethod
     def get_memory_usage():
         """Bellek kullanımını MB cinsinden döndürür (varsa psutil, yoksa native fallback)."""
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
         try:
             import psutil
             process = psutil.Process()
@@ -65,10 +67,12 @@ class PerformanceMonitor:
         except ImportError:
             return PerformanceMonitor._get_memory_usage_fallback()
         except Exception:
-            return "Bilinmiyor"
+            return lang.get("messages.unknown")
 
     @staticmethod
     def _get_memory_usage_fallback():
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
         if platform.system() == "Windows":
             try:
                 import ctypes
@@ -104,10 +108,12 @@ class PerformanceMonitor:
                     ctypes.windll.kernel32.CloseHandle(hProcess)
             except Exception:
                 pass
-        return "Bilinmiyor"
+        return lang.get("messages.unknown")
 
     @staticmethod
     def get_cpu_usage():
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
         try:
             import psutil
             process = psutil.Process()
@@ -115,7 +121,7 @@ class PerformanceMonitor:
             cpu_val = process.cpu_percent(interval=None)
             return f"%{cpu_val:.1f}"
         except Exception:
-            return "Bilinmiyor (psutil gerekli)"
+            return lang.get("messages.unknown_psutil")
 
     @staticmethod
     def get_thread_count():
@@ -128,6 +134,8 @@ class PerformanceMonitor:
 
     @staticmethod
     def get_uptime_str():
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
         try:
             import psutil
             process = psutil.Process()
@@ -136,12 +144,17 @@ class PerformanceMonitor:
         except (ImportError, Exception):
             # Fallback: Bunu tam olarak bilmemiz zor eğer app başlangıcını kaydetmediysek.
             # Ancak basitlik için burada "Hesaplanamadı" diyoruz.
-            return "Hesaplanamadı"
+            return lang.get("messages.calculation_failed")
             
         return PerformanceMonitor._format_duration(uptime_seconds)
 
     @staticmethod
     def _format_duration(seconds):
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
         m, s = divmod(seconds, 60)
         h, m = divmod(m, 60)
-        return f"{int(h)}s {int(m)}dk {int(s)}sn"
+        h_str = lang.get("messages.time_h")
+        m_str = lang.get("messages.time_m")
+        s_str = lang.get("messages.time_s")
+        return f"{int(h)}{h_str} {int(m)}{m_str} {int(s)}{s_str}"

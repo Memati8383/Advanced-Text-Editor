@@ -471,7 +471,7 @@ class SettingsDialog(ctk.CTkToplevel):
         label, desc = self._get_setting_info("language")
         container = self._create_row_frame(label, desc)
         ctk.CTkComboBox(
-            container, values=["Türkçe", "English"], variable=lang_var,
+            container, values=["Türkçe", "English", "Español", "Deutsch", "Azerbaycan Türkçesi"], variable=lang_var,
             width=200, command=on_lang_change
         ).pack(side="right")
 
@@ -893,6 +893,14 @@ class SettingsDialog(ctk.CTkToplevel):
             self.show_category(self._current_category or "Genel")
 
     def cancel(self):
+        # Dil değişikliğini geri al
+        orig_lang = self.original_settings.get("language", "Türkçe")
+        curr_lang = self.current_settings.get("language", "Türkçe")
+        
+        if orig_lang != curr_lang:
+            code = "tr" if orig_lang == "Türkçe" else "en"
+            self.lang_manager.load_language(code)
+            
         self.destroy()
 
     def apply_theme_integration(self):

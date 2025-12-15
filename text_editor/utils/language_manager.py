@@ -28,6 +28,9 @@ class LanguageManager:
         """Belirtilen dildeki çeviri dosyasını yükler."""
         if lang_code == "Türkçe": lang_code = "tr"
         if lang_code == "English": lang_code = "en"
+        if lang_code == "Español": lang_code = "es"
+        if lang_code == "Deutsch": lang_code = "de"
+        if lang_code == "Azerbaycan Türkçesi": lang_code = "az"
         
         file_path = os.path.join(self._locales_dir, f"{lang_code}.json")
         try:

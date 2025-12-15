@@ -3,10 +3,6 @@ from text_editor.config import APP_NAME
 from text_editor.ui.tab_manager import TabManager
 from text_editor.ui.status_bar import StatusBar
 from text_editor.ui.file_explorer import FileExplorer
-from text_editor.ui.modern_menu import ModernMenuBar
-from text_editor.ui.terminal import TerminalPanel
-from text_editor.ui.markdown_preview import MarkdownPreview
-from text_editor.ui.settings_dialog import SettingsDialog
 import tkinter as tk
 import os
 import re
@@ -22,8 +18,16 @@ class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         
+        # Dil yöneticisini başlat
+        from text_editor.utils.language_manager import LanguageManager
+        self.lang = LanguageManager.get_instance()
+        
         # Ayarları yükle
         self.settings = self.load_settings()
+        
+        # Kayıtlı dili uygula
+        saved_lang = self.settings.get("language", "Türkçe")
+        self.lang.load_language(saved_lang)
         
         # Modern menü bar (tema uygulandıktan sonra güncellenecek)
         self.modern_menu = None
@@ -105,7 +109,8 @@ class MainWindow(ctk.CTk):
         self.menu_buttons = []
         
         # Menü düğmeleri oluşturmak için yardımcı
-        def add_menu_btn(text, command, icon="", pass_widget=False):
+        def add_menu_btn(text_key, command, icon="", pass_widget=False):
+            text = self.lang.get(text_key)
             display_text = f"{icon} {text}" if icon else text
             btn = ctk.CTkButton(
                 self.menu_frame, 
@@ -138,15 +143,15 @@ class MainWindow(ctk.CTk):
         logo_label.pack(side="left", padx=(15, 30))
 
         # Menü Butonları
-        add_menu_btn("📁 Dosya", self.show_file_menu, pass_widget=True)
-        add_menu_btn("✏️ Düzenle", self.show_edit_menu, pass_widget=True)
-        add_menu_btn("👁️ Görünüm", self.show_view_menu, pass_widget=True)
-        add_menu_btn("🎨 Tema", self.show_theme_menu, pass_widget=True)
+        add_menu_btn("menu.file", self.show_file_menu, "📁", pass_widget=True)
+        add_menu_btn("menu.edit", self.show_edit_menu, "✏️", pass_widget=True)
+        add_menu_btn("menu.view", self.show_view_menu, "👁️", pass_widget=True)
+        add_menu_btn("menu.theme", self.show_theme_menu, "🎨", pass_widget=True)
         
         # Tutorial butonu - özel stil
         tutorial_btn = ctk.CTkButton(
             self.menu_frame,
-            text="🎓 Öğretici",
+            text=f"🎓 {self.lang.get('menu.tutorial')}",
             width=90,
             height=40,
             corner_radius=6,
@@ -163,7 +168,7 @@ class MainWindow(ctk.CTk):
         # Ayarlar butonu - özel stil
         settings_btn = ctk.CTkButton(
             self.menu_frame,
-            text="⚙️ Ayarlar",
+            text=f"⚙️ {self.lang.get('menu.settings')}",
             width=90,
             height=40,
             corner_radius=6,
@@ -177,7 +182,7 @@ class MainWindow(ctk.CTk):
         settings_btn.pack(side="left", padx=3, pady=2)
         self.menu_buttons.append(settings_btn)
         
-        add_menu_btn("❓ Yardım", lambda: self.help_system.open_help("Hızlı Başlangıç"), pass_widget=False)
+        add_menu_btn("menu.help", lambda: self.help_system.open_help("Hızlı Başlangıç"), "❓", pass_widget=False)
         
         # Sağ tarafta versiyon bilgisi
         version_label = ctk.CTkLabel(
@@ -233,7 +238,7 @@ class MainWindow(ctk.CTk):
         """Zen modu çıkış butonunu oluşturur."""
         self.zen_exit_btn = ctk.CTkButton(
             self,
-            text="⤣ Zen Modundan Çık",
+            text=self.lang.get("menu.items.zen_exit"),
             command=self.toggle_zen_mode,
             width=140,
             height=32,
@@ -256,52 +261,52 @@ class MainWindow(ctk.CTk):
         menu_items = [
             {
                 "icon": "📄",
-                "label": "Yeni Sekme",
+                "label": self.lang.get("menu.items.new_tab"),
                 "shortcut": fmt(shortcuts.get("new_tab")),
                 "command": self.tab_manager.add_new_tab
             },
             {
                 "icon": "📂",
-                "label": "Dosya Aç",
+                "label": self.lang.get("menu.items.open_file"),
                 "shortcut": fmt(shortcuts.get("open_file")),
                 "command": self.tab_manager.open_file
             },
             {
                 "icon": "📁",
-                "label": "Klasör Aç",
+                "label": self.lang.get("menu.items.open_folder"),
                 "shortcut": fmt(shortcuts.get("open_folder")),
                 "command": self.open_folder
             },
             {"separator": True},
             {
                 "icon": "💾",
-                "label": "Kaydet",
+                "label": self.lang.get("menu.items.save"),
                 "shortcut": fmt(shortcuts.get("save_file")),
                 "command": self.tab_manager.save_current_file
             },
             {
                 "icon": "📝",
-                "label": "Farklı Kaydet",
+                "label": self.lang.get("menu.items.save_as"),
                 "shortcut": fmt(shortcuts.get("save_as")),
                 "command": self.tab_manager.save_current_file_as
             },
             {"separator": True},
             {
                 "icon": "🔍",
-                "label": "Bul ve Değiştir",
+                "label": self.lang.get("menu.items.find_replace"),
                 "shortcut": fmt(shortcuts.get("find")),
                 "command": self.tab_manager.show_find_replace
             },
             {
                 "icon": "🎯",
-                "label": "Satıra Git",
+                "label": self.lang.get("menu.items.goto_line"),
                 "shortcut": fmt(shortcuts.get("goto_line")),
                 "command": self.tab_manager.show_goto_line
             },
             {"separator": True},
             {
                 "icon": "🚪",
-                "label": "Çıkış",
+                "label": self.lang.get("menu.items.exit"),
                 "shortcut": fmt(shortcuts.get("quit")),
                 "command": self.quit
             }
@@ -320,89 +325,89 @@ class MainWindow(ctk.CTk):
         menu_items = [
             {
                 "icon": "↶",
-                "label": "Geri Al",
+                "label": self.lang.get("menu.items.undo"),
                 "shortcut": fmt(shortcuts.get("undo")),
                 "command": lambda: self.focus_get().event_generate("<<Undo>>") if self.focus_get() else None
             },
             {
                 "icon": "↷",
-                "label": "Yinele",
+                "label": self.lang.get("menu.items.redo"),
                 "shortcut": fmt(shortcuts.get("redo")),
                 "command": lambda: self.focus_get().event_generate("<<Redo>>") if self.focus_get() else None
             },
             {"separator": True},
             {
                 "icon": "✂️",
-                "label": "Kes",
+                "label": self.lang.get("menu.items.cut"),
                 "shortcut": fmt(shortcuts.get("cut")),
                 "command": lambda: self.focus_get().event_generate("<<Cut>>") if self.focus_get() else None
             },
             {
                 "icon": "📋",
-                "label": "Kopyala",
+                "label": self.lang.get("menu.items.copy"),
                 "shortcut": fmt(shortcuts.get("copy")),
                 "command": lambda: self.focus_get().event_generate("<<Copy>>") if self.focus_get() else None
             },
             {
                 "icon": "📌",
-                "label": "Yapıştır",
+                "label": self.lang.get("menu.items.paste"),
                 "shortcut": fmt(shortcuts.get("paste")),
                 "command": lambda: self.focus_get().event_generate("<<Paste>>") if self.focus_get() else None
             },
             {"separator": True},
             {
                 "icon": "📑",
-                "label": "Satır Çoğalt",
+                "label": self.lang.get("menu.items.duplicate_line"),
                 "shortcut": fmt(shortcuts.get("duplicate_line")),
                 "command": self.tab_manager.duplicate_line
             },
             {
                 "icon": "⬆️",
-                "label": "Yukarı Taşı",
+                "label": self.lang.get("menu.items.move_up"),
                 "shortcut": fmt(shortcuts.get("move_line_up")),
                 "command": self.tab_manager.move_line_up
             },
             {
                 "icon": "⬇️",
-                "label": "Aşağı Taşı",
+                "label": self.lang.get("menu.items.move_down"),
                 "shortcut": fmt(shortcuts.get("move_line_down")),
                 "command": self.tab_manager.move_line_down
             },
             {
                 "icon": "🗑️",
-                "label": "Satır Sil",
+                "label": self.lang.get("menu.items.delete_line"),
                 "shortcut": fmt(shortcuts.get("delete_line")),
                 "command": self.tab_manager.delete_line
             },
             {
                 "icon": "🔗",
-                "label": "Satır Birleştir",
+                "label": self.lang.get("menu.items.join_lines"),
                 "shortcut": fmt(shortcuts.get("join_lines")),
                 "command": self.tab_manager.join_lines
             },
             {"separator": True},
             {
                 "icon": "🔍",
-                "label": "Bul/Değiştir",
+                "label": self.lang.get("menu.items.find_replace"),
                 "shortcut": fmt(shortcuts.get("find")),
                 "command": self.tab_manager.show_find_replace
             },
             {
                 "icon": "🎯",
-                "label": "Satıra Git",
+                "label": self.lang.get("menu.items.goto_line"),
                 "shortcut": fmt(shortcuts.get("goto_line")),
                 "command": self.tab_manager.show_goto_line
             },
             {"separator": True},
             {
                 "icon": "📋",
-                "label": "Yol Kopyala",
+                "label": self.lang.get("menu.items.copy_path"),
                 "shortcut": fmt(shortcuts.get("copy_path")),
                 "command": self.tab_manager.copy_path
             },
             {
                 "icon": "📂",
-                "label": "Göreli Yol",
+                "label": self.lang.get("menu.items.relative_path"),
                 "shortcut": fmt(shortcuts.get("copy_relative_path")),
                 "command": self.tab_manager.copy_relative_path
             }
@@ -463,6 +468,7 @@ class MainWindow(ctk.CTk):
 
     def apply_theme(self, theme_name):
         from text_editor.theme_config import get_theme
+        from text_editor.ui.modern_menu import ModernMenuBar
         theme = get_theme(theme_name)
         
         # Mevcut tema adını kaydet (terminal için)
@@ -478,7 +484,11 @@ class MainWindow(ctk.CTk):
         ctk.set_appearance_mode(theme["type"])
         
         # Pencere başlığını güncelle
-        self.title(f"🪐 Memati Editör - {theme_name} Tema")
+        # Pencere başlığını güncelle
+        theme_msg = self.lang.get("menu.theme")  # "Tema" veya "Theme"
+        # İkonu temizleyelim
+        theme_msg = theme_msg.replace("🎨", "").strip()
+        self.title(f"🪐 {APP_NAME} - {theme_name} {theme_msg}")
         
         # 1. Menü Çubuğu - Gradient efekti için border ekle
         self.menu_frame.configure(
@@ -554,57 +564,57 @@ class MainWindow(ctk.CTk):
         menu_items = [
             {
                 "icon": get_toggle_icon(view_states.get("line_numbers", True)),
-                "label": "Satır Numaraları",
+                "label": self.lang.get("menu.items.line_numbers"),
                 "shortcut": fmt(shortcuts.get("toggle_line_numbers")),
                 "command": self.toggle_line_numbers_with_feedback
             },
             {
                 "icon": get_toggle_icon(view_states.get("word_wrap", False)),
-                "label": "Satır Sarma (Word Wrap)",
+                "label": self.lang.get("menu.items.word_wrap"),
                 "shortcut": fmt(shortcuts.get("toggle_word_wrap")),
                 "command": self.toggle_word_wrap_with_feedback
             },
             {
                 "icon": get_toggle_icon(view_states.get("minimap", True)),
-                "label": "Minimap",
+                "label": self.lang.get("menu.items.minimap"),
                 "shortcut": fmt(shortcuts.get("toggle_minimap")),
                 "command": self.toggle_minimap_with_feedback
             },
             {"separator": True},
             {
                 "icon": get_toggle_icon(self._status_bar_visible),
-                "label": "Durum Çubuğu",
+                "label": self.lang.get("menu.items.status_bar"),
                 "shortcut": fmt(shortcuts.get("toggle_status_bar")),
                 "command": self.toggle_status_bar
             },
             {
                 "icon": get_toggle_icon(self._file_explorer_visible),
-                "label": "Dosya Gezgini",
+                "label": self.lang.get("menu.items.file_explorer"),
                 "shortcut": fmt(shortcuts.get("toggle_file_explorer")),
                 "command": self.toggle_file_explorer
             },
             {
                 "icon": get_toggle_icon(self._terminal_visible),
-                "label": "Terminal",
+                "label": self.lang.get("menu.items.terminal"),
                 "shortcut": fmt(shortcuts.get("toggle_terminal")),
                 "command": self.toggle_terminal
             },
             {
                 "icon": get_toggle_icon(self._markdown_preview_visible),
-                "label": "Markdown Önizleme",
+                "label": self.lang.get("menu.items.markdown_preview"),
                 "shortcut": fmt(shortcuts.get("preview_markdown")),
                 "command": self.toggle_markdown_preview
             },
             {"separator": True},
             {
                 "icon": "🧘",
-                "label": "Zen Modu",
+                "label": self.lang.get("menu.items.zen_mode"),
                 "shortcut": fmt(shortcuts.get("toggle_zen_mode")),
                 "command": self.toggle_zen_mode
             },
             {
                 "icon": "📺",
-                "label": "Tam Ekran",
+                "label": self.lang.get("menu.items.fullscreen"),
                 "shortcut": fmt(shortcuts.get("toggle_fullscreen")),
                 "command": self.toggle_fullscreen
             }
@@ -615,19 +625,19 @@ class MainWindow(ctk.CTk):
     def toggle_line_numbers_with_feedback(self):
         """Satır numaralarını toggle eder ve durum mesajı gösterir."""
         is_visible = self.tab_manager.toggle_line_numbers()
-        msg = "Satır numaraları açık" if is_visible else "Satır numaraları kapalı"
+        msg = self.lang.get("status_messages.line_numbers_on") if is_visible else self.lang.get("status_messages.line_numbers_off")
         self.status_bar.set_message(msg, "info")
     
     def toggle_word_wrap_with_feedback(self):
         """Word wrap'ı toggle eder ve durum mesajı gösterir."""
         is_enabled = self.tab_manager.toggle_word_wrap()
-        msg = "Satır sarma açık" if is_enabled else "Satır sarma kapalı"
+        msg = self.lang.get("status_messages.word_wrap_on") if is_enabled else self.lang.get("status_messages.word_wrap_off")
         self.status_bar.set_message(msg, "info")
     
     def toggle_minimap_with_feedback(self):
         """Minimap'i toggle eder ve durum mesajı gösterir."""
         is_visible = self.tab_manager.toggle_minimap()
-        msg = "Minimap açık" if is_visible else "Minimap kapalı"
+        msg = self.lang.get("status_messages.minimap_on") if is_visible else self.lang.get("status_messages.minimap_off")
         self.status_bar.set_message(msg, "info")
     
     def toggle_status_bar(self, event=None):
@@ -654,7 +664,7 @@ class MainWindow(ctk.CTk):
         
         # Durum mesajı (status bar görünürse)
         if self._status_bar_visible:
-            msg = "Dosya gezgini açık" if self._file_explorer_visible else "Dosya gezgini kapalı"
+            msg = self.lang.get("status_messages.explorer_on") if self._file_explorer_visible else self.lang.get("status_messages.explorer_off")
             self.status_bar.set_message(msg, "info")
         
         return self._file_explorer_visible
@@ -750,6 +760,7 @@ class MainWindow(ctk.CTk):
             if not self.terminal_panel:
                 # Mevcut temayı al
                 from text_editor.theme_config import get_theme
+                from text_editor.ui.terminal import TerminalPanel
                 current_theme = getattr(self, '_current_theme_name', 'Dark')
                 theme = get_theme(current_theme)
                 
@@ -768,7 +779,7 @@ class MainWindow(ctk.CTk):
             
             # Durum mesajı
             if self._status_bar_visible:
-                self.status_bar.set_message("⌨️ Terminal açıldı", "success")
+                self.status_bar.set_message(self.lang.get("status_messages.terminal_opened"), "success")
         else:
             # Terminal panelini gizle
             if self.terminal_panel:
@@ -777,7 +788,7 @@ class MainWindow(ctk.CTk):
             
             # Durum mesajı
             if self._status_bar_visible:
-                self.status_bar.set_message("Terminal kapatıldı", "info")
+                self.status_bar.set_message(self.lang.get("status_messages.terminal_closed"), "info")
         
         return self._terminal_visible
     
@@ -791,7 +802,7 @@ class MainWindow(ctk.CTk):
         editor = self.tab_manager.get_current_editor()
         if not editor:
             if self._status_bar_visible:
-                self.status_bar.set_message("⚠️ Önce bir dosya açın", "warning")
+                self.status_bar.set_message(self.lang.get("status_messages.file_needed"), "warning")
             return
         
         # Markdown dosyası mı kontrol et
@@ -810,6 +821,8 @@ class MainWindow(ctk.CTk):
         if self._markdown_preview_visible:
             # Önizleme panelini oluştur (eğer yoksa)
             if not self.markdown_preview:
+                from text_editor.ui.markdown_preview import MarkdownPreview
+                # Mevcut temayı al
                 from text_editor.theme_config import get_theme
                 current_theme = getattr(self, '_current_theme_name', 'Dark')
                 theme = get_theme(current_theme)
@@ -828,8 +841,9 @@ class MainWindow(ctk.CTk):
             self.markdown_preview.set_editor(editor)
             
             # Durum mesajı
+            # Durum mesajı
             if self._status_bar_visible:
-                self.status_bar.set_message("📄 Markdown önizleme açıldı", "success")
+                self.status_bar.set_message(self.lang.get("status_messages.preview_opened"), "success")
         else:
             # Önizleme panelini gizle
             self.close_markdown_preview()
@@ -847,8 +861,9 @@ class MainWindow(ctk.CTk):
         self.grid_columnconfigure(2, weight=0, minsize=0)
         
         # Durum mesajı
+        # Durum mesajı
         if self._status_bar_visible:
-            self.status_bar.set_message("Markdown önizleme kapatıldı", "info")
+            self.status_bar.set_message(self.lang.get("status_messages.preview_closed"), "info")
     
     def start_tutorial(self):
         """Tutorial Mode'u başlatır"""
@@ -863,6 +878,9 @@ class MainWindow(ctk.CTk):
         """Ayarlar penceresini açar."""
         def apply_settings(new_settings):
             """Ayarları uygular."""
+            # Eski dili kaydet
+            old_lang = self.settings.get("language", "Türkçe")
+
             self.settings = new_settings
             
             # Tema değişmişse uygula
@@ -903,14 +921,49 @@ class MainWindow(ctk.CTk):
                 for editor in self.tab_manager.editors.values():
                     editor.toggle_minimap(new_settings["show_minimap"])
             
+            # Dil değişmişse
+            new_lang = new_settings.get("language", "Türkçe")
+            if new_lang != old_lang:
+                # Dil dosyasını yükle (LanguageManager otomatik dönüştürür)
+                self.lang.load_language(new_lang)
+                
+                # Menüyü yeniden oluştur
+                for widget in self.menu_frame.winfo_children():
+                    widget.destroy()
+                self.menu_buttons.clear()
+                self.create_custom_menu()
+                
+                # Dosya Gezgini başlığını güncelle
+                if hasattr(self, 'file_explorer') and self.file_explorer:
+                    self.file_explorer.update_language()
+                
+                # Sekme isimlerini güncelle
+                if hasattr(self, 'tab_manager') and self.tab_manager:
+                    self.tab_manager.update_language()
+                    
+                # Pencere başlığını güncelle
+                current_tab = self.tab_manager.get_current_tab_name() or self.lang.get("menu.items.new_tab", "Yeni Dosya")
+                app_name = new_settings.get("app_name", "Memati Editör")
+                self.title(f"{app_name} - {current_tab}")
+
+                # Tema border'larını tekrar uygula
+                current_theme_name = new_settings.get("theme", getattr(self, '_current_theme_name', 'Dark'))
+                self.apply_theme(current_theme_name)
+                
+                # Durum mesajını güncelle
+                welcome_msg = self.lang.get("status_messages.ready", "Hazır")
+                self.status_bar.set_message(welcome_msg)
+
             # Ayarları kaydet
             self.save_settings()
             
             # Durum mesajı
             if self._status_bar_visible:
-                self.status_bar.set_message("✅ Ayarlar uygulandı", "success")
+                msg = "✅ Settings applied" if self.lang.current_lang == "en" else "✅ Ayarlar uygulandı"
+                self.status_bar.set_message(msg, "success")
         
         # Ayarlar penceresini aç
+        from text_editor.ui.settings_dialog import SettingsDialog
         settings_dialog = SettingsDialog(self, self.settings, apply_settings)
     
     def load_settings(self):

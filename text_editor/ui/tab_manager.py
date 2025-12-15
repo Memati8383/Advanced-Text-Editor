@@ -7,7 +7,6 @@ from typing import Optional, List, Dict, Any, Callable
 import customtkinter as ctk
 
 from text_editor.ui.editor import CodeEditor
-from text_editor.ui.image_viewer import ImageViewer
 from text_editor.utils.file_monitor import FileMonitor
 from text_editor.theme_config import DARK_THEME
 from text_editor.ui.context_menu import ModernContextMenu 
@@ -21,9 +20,9 @@ logger = logging.getLogger(__name__)
 
 # Sabitler
 AUTO_SAVE_INTERVAL_MS = 30000  # 30 seconds
-NEW_TAB_PREFIX = "Adsız"
 DEFAULT_FONT = ("Segoe UI", 13)
 IMAGE_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.webp'}
+KNOWN_TAB_PREFIXES = ["Adsız", "Untitled"]
 
 class TabManager(ctk.CTkFrame):
     """
@@ -37,6 +36,9 @@ class TabManager(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         
         self.status_callback = status_callback
+        
+        from text_editor.utils.language_manager import LanguageManager
+        self.lang = LanguageManager.get_instance()
         
         # Grid yapılandırması
         self.grid_rowconfigure(0, weight=0) # Sekme çubuğu (sabit yükseklik)
@@ -55,7 +57,6 @@ class TabManager(ctk.CTkFrame):
         """Dahili durum değişkenlerini başlatır."""
         self.editors: Dict[str, CodeEditor] = {}
         self.current_theme = DARK_THEME
-        self.untitled_count = 0
         self.context_menu_window = None
         
         # Özel sekme yönetimi için yapılar
@@ -230,6 +231,26 @@ class TabManager(ctk.CTkFrame):
         name = self.get_current_tab_name()
         return self.editors.get(name)
 
+    def get_display_name(self, tab_name: str) -> str:
+        """Sekmenin görüntülenen adını (yerelleştirilmiş) döndürür."""
+        if tab_name not in self.editors:
+            return tab_name
+            
+        editor = self.editors[tab_name]
+        if editor.file_path:
+            return os.path.basename(editor.file_path)
+            
+        # Kaydedilmemiş dosya: "Adsız-X" veya "Untitled-X" formatını kontrol et
+        if "-" in tab_name:
+            prefix, suffix = tab_name.rsplit("-", 1)
+            
+            # Eğer prefix bilinenlerden biriyse, o anki dilin karşılığına çevir
+            if prefix in KNOWN_TAB_PREFIXES:
+                current_prefix = self.lang.get("untitled_tab", "Adsız")
+                return f"{current_prefix}-{suffix}"
+                
+        return tab_name
+
     def _copy_to_clipboard(self, text: str, success_message: str):
         """Metni panoya kopyalar."""
         self.clipboard_clear()
@@ -247,11 +268,11 @@ class TabManager(ctk.CTkFrame):
         editor = self.editors[tab_name]
         
         # Görünen Adı Belirle
+        display_name = self.get_display_name(tab_name)
+        
         if editor.file_path:
-            display_name = os.path.basename(editor.file_path)
             icon = FileIcons.get_icon(display_name) if FileIcons else "📄"
         else:
-            display_name = tab_name 
             icon = "📝"
 
         # Değişiklik Göstergesi
@@ -284,8 +305,24 @@ class TabManager(ctk.CTkFrame):
     def add_new_tab(self, name: str = None) -> str:
         """Yeni sekme oluşturur ve editörü başlatır."""
         if name is None:
-            self.untitled_count += 1
-            name = f"{NEW_TAB_PREFIX}-{self.untitled_count}"
+            # En küçük numarayı bul
+            prefix = self.lang.get("untitled_tab", "Adsız")
+            
+            used_numbers = set()
+            for existing_name in self.editors:
+                if "-" in existing_name:
+                    parts = existing_name.rsplit("-", 1)
+                    if len(parts) == 2 and parts[0] in KNOWN_TAB_PREFIXES:
+                        try:
+                            used_numbers.add(int(parts[1]))
+                        except ValueError:
+                            pass
+            
+            new_number = 1
+            while new_number in used_numbers:
+                new_number += 1
+                
+            name = f"{prefix}-{new_number}"
         
         name = self._ensure_unique_name(name)
 
@@ -348,17 +385,20 @@ class TabManager(ctk.CTkFrame):
 
     def show_context_menu(self, event, tab_name: str):
         """Bir sekme için modern bağlam menüsünü gösterir."""
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
+
         if self.context_menu_window:
             self.context_menu_window.close()
             self.context_menu_window = None
 
         commands = [
-            ("Kapat", lambda: self.check_and_close_tab(tab_name)),
-            ("Diğerlerini Kapat", lambda: self.close_others(tab_name)),
-            ("Sağdakileri Kapat", lambda: self.close_right(tab_name)),
+            (lang.get("context_menu.close", "Kapat"), lambda: self.check_and_close_tab(tab_name)),
+            (lang.get("context_menu.close_others", "Diğerlerini Kapat"), lambda: self.close_others(tab_name)),
+            (lang.get("context_menu.close_right", "Sağdakileri Kapat"), lambda: self.close_right(tab_name)),
             "-",
-            ("📋 Dosya Yolunu Kopyala", lambda: self.copy_path(tab_name)),
-            ("📋 Dosya Adını Kopyala", lambda: self.copy_filename(tab_name))
+            (f"📋 {lang.get('menu.items.copy_path', 'Dosya Yolunu Kopyala')}", lambda: self.copy_path(tab_name)),
+            (f"📋 {lang.get('context_menu.copy_filename', 'Dosya Adını Kopyala')}", lambda: self.copy_filename(tab_name))
         ]
 
         menu_theme = None
@@ -394,7 +434,7 @@ class TabManager(ctk.CTkFrame):
 
         editor = self.editors[name]
         if editor.content_modified:
-            display_name = os.path.basename(editor.file_path) if editor.file_path else name
+            display_name = self.get_display_name(name)
             response = messagebox.askyesnocancel(
                 "Kaydedilmemiş Değişiklikler",
                 f"'{display_name}' dosyasında kaydedilmemiş değişiklikler var.\nKapatmadan önce kaydetmek ister misiniz?"
@@ -510,8 +550,10 @@ class TabManager(ctk.CTkFrame):
         is_image = ext in IMAGE_EXTENSIONS
         current_view = self.editors[tab_name]
         
-        if is_image and not isinstance(current_view, ImageViewer):
-            self._replace_tab_content(tab_name, ImageViewer)
+        if is_image:
+            from text_editor.ui.image_viewer import ImageViewer
+            if not isinstance(current_view, ImageViewer):
+                self._replace_tab_content(tab_name, ImageViewer)
         elif not is_image and not isinstance(current_view, CodeEditor):
             self._replace_tab_content(tab_name, CodeEditor)
             
@@ -691,3 +733,8 @@ class TabManager(ctk.CTkFrame):
     def show_find_replace(self):
         from text_editor.ui.search_dialog import SearchDialog
         SearchDialog(self)
+
+    def update_language(self):
+        """Bütün sekmelerin isimlerini o anki dile göre günceller."""
+        for name in list(self.editors.keys()):
+            self._update_tab_visuals(name)

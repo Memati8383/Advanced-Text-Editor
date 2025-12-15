@@ -85,17 +85,20 @@ class TutorialContent:
     
     @staticmethod
     def get_steps(app_instance) -> List[TutorialStep]:
+        from text_editor.utils.language_manager import LanguageManager
+        lang = LanguageManager.get_instance()
+        
         return [
             TutorialStep(
-                title="Memati Editör'e Hoş Geldiniz!", 
-                message="Merhaba! 👋\n\nEditörünüzü profesyonelce kullanmanız için hazırladığımız bu interaktif rehbere hoş geldiniz.\n\n🚀 Bu turda şunları keşfedeceksiniz:\n• Arayüzün gizli güçleri\n• Şimşek hızında kodlama teknikleri\n• Proje yönetim ipuçları\n\nHazırsanız başlayalım!", 
+                title=lang.get("tutorial.steps.welcome.title"), 
+                message=lang.get("tutorial.steps.welcome.message"), 
                 icon="🚀", 
                 auto_advance=False,
-                tips=["Öğretici penceresini ekranın rahat bir köşesine taşıyabilirsiniz."]
+                tips=lang.get("tutorial.steps.welcome.tips")
             ),
             TutorialStep(
-                title="Menüler ve Komutlar", 
-                message="Her şeyin merkezi burası.\n\nDosya işlemlerinden tema ayarlarına kadar her şeye buradan ulaşabilirsiniz.\n\n💡 Kısayolları (örn. Ctrl+N) menülerden öğrenerek zaman kazanabilirsiniz.", 
+                title=lang.get("tutorial.steps.menus.title"), 
+                message=lang.get("tutorial.steps.menus.message"), 
                 icon="🎛️",
                 target_widget=lambda: getattr(app_instance, 'menu_frame', None),
                 highlight_pos="bottom", 
@@ -103,40 +106,41 @@ class TutorialContent:
                 wait_time=6000
             ),
             TutorialStep(
-                title="Dosya Gezgini", 
-                message="Projeleriniz burada yaşar.\n\nDosyalarınızı ağaç yapısında görüntüleyin. Klasörleri açıp kapamak için çift tıklayabilirsiniz.\n\n🎯 Görev: Sol paneldeki 'Dosya Gezgini'ni inceleyin.", 
+                title=lang.get("tutorial.steps.file_explorer.title"), 
+                message=lang.get("tutorial.steps.file_explorer.message"), 
                 icon="📂",
                 target_widget=lambda: getattr(app_instance, 'file_explorer', None),
                 highlight_pos="right",
-                validation=lambda: hasattr(app_instance.file_explorer, 'root_path') and app_instance.file_explorer.root_path,
-                tips=["Ctrl+Shift+O ile yeni bir klasör açabilirsiniz.", "Paneli gizlemek için Ctrl+B'yi kullanın."]
+                # Validation kaldırıldı, kullanıcı inceleyip Next'e basacak.
+                validation=None,
+                tips=lang.get("tutorial.steps.file_explorer.tips")
             ),
             TutorialStep(
-                title="Resim Görüntüleyici", 
-                message="Editörünüz artık resim dosyalarını da açabiliyor!\n\nDesteklenen formatlar: PNG, JPG, JPEG, BMP, GIF.\n\n🎯 Görev: Dosya gezgininden bir resim dosyası açın.", 
+                title=lang.get("tutorial.steps.image_viewer.title"), 
+                message=lang.get("tutorial.steps.image_viewer.message"), 
                 icon="🖼️", 
-                validation=lambda: any(type(editor).__name__ == 'ImageViewer' for editor in app_instance.tab_manager.editors.values()),
-                tips=["Resmi yakınlaştırmak için tekerleği kullanın.", "Yön tuşları ile resim içinde gezinebilirsiniz."]
+                validation=lambda: hasattr(app_instance, 'tab_manager') and any(type(editor).__name__ == 'ImageViewer' for editor in app_instance.tab_manager.editors.values()),
+                tips=lang.get("tutorial.steps.image_viewer.tips")
             ),
             TutorialStep(
-                title="Yeni Bir Başlangıç", 
-                message="Kodlamaya başlamak için temiz bir sayfa açın.\n\n🎯 Görev: Ctrl+N kısayolunu kullanarak veya Dosya menüsünden yeni bir sekme oluşturun.", 
+                title=lang.get("tutorial.steps.new_tab.title"), 
+                message=lang.get("tutorial.steps.new_tab.message"), 
                 icon="📝",
-                validation=lambda: len(app_instance.tab_manager.editors) > 0,
-                tips=["Sekmeleri sürükleyerek sırasını değiştirebilirsiniz."]
+                validation=lambda: hasattr(app_instance, 'tab_manager') and len(app_instance.tab_manager.editors) > 0,
+                tips=lang.get("tutorial.steps.new_tab.tips")
             ),
             TutorialStep(
-                title="Editörün Kalbi", 
-                message="Burası sizin oyun alanınız.\n\n✨ Özellikler:\n• Otomatik Tamamlama (Ctrl+Space)\n• Kod Renklendirme\n• Akıllı Girinti\n\n🎯 Görev: Editöre rastgele bir şeyler yazın!", 
+                title=lang.get("tutorial.steps.editor_area.title"), 
+                message=lang.get("tutorial.steps.editor_area.message"), 
                 icon="✨", 
-                target_widget=lambda: app_instance.tab_manager.get_active_editor().text_area if app_instance.tab_manager.get_active_editor() else None,
+                target_widget=lambda: app_instance.tab_manager.get_active_editor().text_area if hasattr(app_instance, 'tab_manager') and app_instance.tab_manager.get_active_editor() else None,
                 highlight_pos="bottom",
-                validation=lambda: len(app_instance.tab_manager.get_active_editor().text_area.get("1.0", "end-1c")) > 5 if app_instance.tab_manager.get_active_editor() else False,
-                tips=["Yazı boyutunu değiştirmek için Ctrl + Tekerlek kullanın."]
+                validation=lambda: len(app_instance.tab_manager.get_active_editor().text_area.get("1.0", "end-1c")) > 5 if hasattr(app_instance, 'tab_manager') and app_instance.tab_manager.get_active_editor() else False,
+                tips=lang.get("tutorial.steps.editor_area.tips")
             ),
             TutorialStep(
-                title="Minimap (Kod Haritası)", 
-                message="Kodunuzun kuş bakışı görünümü.\n\nUzun dosyalarda hızla gezinmek için sağdaki haritayı kullanın.\n\nKlavye Kısayolu: Ctrl+M", 
+                title=lang.get("tutorial.steps.minimap.title"), 
+                message=lang.get("tutorial.steps.minimap.message"), 
                 icon="🗺️", 
                 target_widget=lambda: getattr(app_instance, 'minimap', None),
                 highlight_pos="left",
@@ -144,60 +148,91 @@ class TutorialContent:
                 wait_time=7000
             ),
             TutorialStep(
-                title="Çoklu İmleç Sihirbazlığı", 
-                message="Aynı anda birden fazla yeri düzenleyin!\n\n🎯 Görev: Klavyede 'Alt' tuşuna basılı tutarak editörde farklı yerlere tıklayın. Birden fazla imleç yanıp sönmeli!", 
+                title=lang.get("tutorial.steps.multi_cursor.title"), 
+                message=lang.get("tutorial.steps.multi_cursor.message"), 
                 icon="🖱️", 
                 auto_advance=False,
-                tips=["İmleçleri iptal etmek için 'Escape' tuşuna basın.", "Listeleri düzenlerken harikalar yaratır."]
+                tips=lang.get("tutorial.steps.multi_cursor.tips")
             ),
             TutorialStep(
-                title="Akıllı Seçim (Ctrl+D)", 
-                message="Değişken adlarını değiştirmek hiç bu kadar kolay olmamıştı.\n\n1. Bir kelimeyi seçin.\n2. Ctrl+D'ye basarak bir sonraki aynısını seçin.\n3. Yazmaya başlayın; hepsi değişecek!\n\n🎯 Görev: Bunu deneyin!", 
+                title=lang.get("tutorial.steps.smart_select.title"), 
+                message=lang.get("tutorial.steps.smart_select.message"), 
                 icon="⚡", 
                 auto_advance=False
             ),
             TutorialStep(
-                title="Bul ve Yok Et (Değiştir)", 
-                message="Güçlü arama motoru emrinizde.\n\n🎯 Görev: Ctrl+F tuşuna basarak arama panelini açın. Regex desteği bile var!", 
+                title=lang.get("tutorial.steps.find_replace.title"), 
+                message=lang.get("tutorial.steps.find_replace.message"), 
                 icon="🔍",
-                target_widget=lambda: app_instance.tab_manager.notebook, # Genel bölgeyi göster
+                target_widget=lambda: app_instance.tab_manager.notebook, 
                 highlight_pos="top",
-                                  app_instance.tab_manager.find_replace_window.winfo_exists()
+                validation=lambda: hasattr(app_instance.tab_manager, 'find_replace_window') and app_instance.tab_manager.find_replace_window and app_instance.tab_manager.find_replace_window.winfo_exists()
             ),
             TutorialStep(
-                title="Satıra Git (Ctrl+G)", 
-                message="Uzun dosyalarda kaybolmayın.\n\n🎯 Görev: Ctrl+G tuşuna basarak 'Satıra Git' penceresini açın.", 
+                title=lang.get("tutorial.steps.goto_line.title"),
+                message=lang.get("tutorial.steps.goto_line.message"), 
                 icon="🔢",
                 validation=lambda: hasattr(app_instance, 'goto_line_dialog') and app_instance.goto_line_dialog and app_instance.goto_line_dialog.winfo_exists(),
-                tips=["Sadece sayı girerek istediğiniz satıra ışınlanın."]
+                tips=lang.get("tutorial.steps.goto_line.tips")
             ),
             TutorialStep(
-                title="Terminal Entegrasyonu", 
-                message="Editörden çıkmadan komut çalıştırın.\n\n🎯 Görev: Ctrl+` (Tab'ın üstündeki tuş) ile terminali açın/kapatın.", 
+                title=lang.get("tutorial.steps.terminal.title"), 
+                message=lang.get("tutorial.steps.terminal.message"), 
                 icon="💻",
                 validation=lambda: hasattr(app_instance, '_terminal_visible') and app_instance._terminal_visible,
-                tips=["Terminali 'exit' yazarak da kapatabilirsiniz."]
+                tips=lang.get("tutorial.steps.terminal.tips")
+            ),
+             TutorialStep(
+                title=lang.get("tutorial.steps.settings.title"),
+                message=lang.get("tutorial.steps.settings.message"),
+                icon="⚙️",
+                auto_advance=True,
+                wait_time=6000
             ),
             TutorialStep(
-                title="Markdown Önizleme", 
-                message="Doküman yazarları için harika bir özellik.\n\nEğer bir .md dosyasındaysanız, Ctrl+Shift+V ile canlı önizlemeyi açabilirsiniz.\n\n💡 Editörde kaydırdıkça önizleme de kayar (Sync Scroll).", 
+                title=lang.get("tutorial.steps.theme.title"),
+                message=lang.get("tutorial.steps.theme.message"),
+                icon="🎨",
+                tips=lang.get("tutorial.steps.theme.tips"),
+                auto_advance=True,
+                wait_time=6000
+            ),
+            TutorialStep(
+                title=lang.get("tutorial.steps.code_folding.title"),
+                message=lang.get("tutorial.steps.code_folding.message"),
+                icon="📁",
+                auto_advance=True,
+                wait_time=6000
+            ),
+            TutorialStep(
+                title=lang.get("tutorial.steps.status_bar.title"),
+                message=lang.get("tutorial.steps.status_bar.message"),
+                icon="ℹ️",
+                target_widget=lambda: getattr(app_instance, 'status_bar', None),
+                highlight_pos="top",
+                auto_advance=True,
+                wait_time=6000
+            ),
+            TutorialStep(
+                title=lang.get("tutorial.steps.markdown.title"), 
+                message=lang.get("tutorial.steps.markdown.message"), 
                 icon="eye", 
                 auto_advance=True, 
                 wait_time=8000
             ),
             TutorialStep(
-                title="Zen Modu", 
-                message="Sadece koda odaklanmak istediğinizde...\n\n🧘 Ctrl+K, ardından Z tuşuna basın.\n\nTüm paneller gizlenir, sadece kod kalır. Geri dönmek için aynısı.", 
+                title=lang.get("tutorial.steps.zen_mode.title"), 
+                message=lang.get("tutorial.steps.zen_mode.message"), 
                 icon="🧘", 
                 auto_advance=True, 
                 wait_time=8000
             ),
             TutorialStep(
-                title="Tebrikler! 🎉", 
-                message="Temel eğitimi başarıyla tamamladınız!\n\nArtık Memati Editör'ün gücü parmaklarınızın ucunda. Keşfedilecek daha çok özellik var (Temalar, Git entegrasyonu, vb.).\n\nİyi kodlamalar!", 
+                title=lang.get("tutorial.steps.congrats.title"), 
+                message=lang.get("tutorial.steps.congrats.message"), 
                 icon="🏆", 
                 auto_advance=False,
-                tips=["Bu tura istediğiniz zaman Yardım menüsünden ulaşabilirsiniz."]
+                tips=lang.get("tutorial.steps.congrats.tips")
             )
         ]
 
@@ -265,77 +300,79 @@ class ModernSpotlight(ctk.CTkToplevel):
             return None
 
     def draw_spotlight(self):
-        self.canvas.delete("all")
         rect = self._get_target_rect()
-        
-        # Tüm ekranı kapsayan yarı saydam siyah (Canvas bg zaten black, ama delik açacağız)
-        # Transparan key yönteminde: Tüm ekranı boya, deliği KEY rengi ile boya.
-        
-        # 1. Arka plan dolgusu (Siyah - ama alpha ile dimmed görünecek)
         w_screen = self.winfo_screenwidth()
         h_screen = self.winfo_screenheight()
         
-        self.canvas.create_rectangle(0, 0, w_screen, h_screen, fill="black", outline="")
+        # Öğeler henüz yoksa oluştur
+        if not self.canvas.find_withtag("overlay"):
+            self.canvas.create_rectangle(0, 0, w_screen, h_screen, fill="black", outline="", tags="overlay")
+        else:
+            self.canvas.coords("overlay", 0, 0, w_screen, h_screen)
         
         if rect:
             x, y, w, h = rect
             pad = 5
-            
-            # 2. Deliği aç (Windows transparent key rengi ile)
-            # Bu renk, pencere alpha değerinden bağımsız olarak %100 şeffaf ve TIKLANABİLİR olur.
             key_color = TutorialConfig.COLORS["transparent_key"]
-            self.canvas.create_rectangle(
-                x - pad, y - pad, x + w + pad, y + h + pad, 
-                fill=key_color, outline=""
-            )
             
-            # 3. Vurgu Çerçevesi (Glow efekti için birden fazla katman)
+            # --- Delik ---
+            if not self.canvas.find_withtag("hole"):
+                self.canvas.create_rectangle(0, 0, 0, 0, fill=key_color, outline="", tags="hole")
+            self.canvas.coords("hole", x - pad, y - pad, x + w + pad, y + h + pad)
+            
+            # --- Glow/Pulse ---
             pulse_offset = self.pulse_val
+            pulse_color = TutorialConfig.COLORS["primary"][0]
             
-            # Dış glow
-            self.canvas.create_rectangle(
+            if not self.canvas.find_withtag("pulse_rect"):
+                self.canvas.create_rectangle(0, 0, 0, 0, outline=pulse_color, width=2, tags="pulse_rect")
+            
+            self.canvas.coords(
+                "pulse_rect", 
                 x - pad - pulse_offset, y - pad - pulse_offset, 
-                x + w + pad + pulse_offset, y + h + pad + pulse_offset,
-                outline=TutorialConfig.COLORS["primary"][0], width=2,
-                tags="pulse_rect"
+                x + w + pad + pulse_offset, y + h + pad + pulse_offset
             )
             
-            # İç keskin kenar
-            self.canvas.create_rectangle(
-                x - pad, y - pad, x + w + pad, y + h + pad,
-                outline="white", width=1
-            )
+            # --- İç Çerçeve ---
+            if not self.canvas.find_withtag("inner_rect"):
+                self.canvas.create_rectangle(0, 0, 0, 0, outline="white", width=1, tags="inner_rect")
+            self.canvas.coords("inner_rect", x - pad, y - pad, x + w + pad, y + h + pad)
             
-            # Başlık etiketi (Spotlight'ın neyi gösterdiğini belirtmek için)
+            # --- Etiket ---
             label_y = y - 40 if y > 50 else y + h + 20
             
-            # Etiket arka planı
-            text_id = self.canvas.create_text(
-                x, label_y, 
-                text=self.title_text, 
-                fill="white", 
-                anchor="w",
-                font=("Segoe UI", 12, "bold")
-            )
-            bbox = self.canvas.bbox(text_id)
+            # Metin
+            if not self.canvas.find_withtag("label_text"):
+                self.canvas.create_text(0, 0, text=self.title_text, fill="white", anchor="w", font=("Segoe UI", 12, "bold"), tags="label_text")
+            
+            self.canvas.itemconfigure("label_text", text=self.title_text)
+            self.canvas.coords("label_text", x, label_y)
+            
+            # Metin Arka Planı (bbox'a göre güncelle)
+            bbox = self.canvas.bbox("label_text")
             if bbox:
-                # Metnin arkasına şık bir kutu
                 padding_x = 10
                 padding_y = 5
-                self.canvas.create_rectangle(
+                
+                if not self.canvas.find_withtag("label_bg"):
+                    self.canvas.create_rectangle(0, 0, 0, 0, fill=TutorialConfig.COLORS["primary"][1], outline="white", width=1, tags="label_bg")
+                    self.canvas.tag_lower("label_bg", "label_text")
+                
+                self.canvas.coords(
+                    "label_bg",
                     bbox[0] - padding_x, bbox[1] - padding_y,
-                    bbox[2] + padding_x, bbox[3] + padding_y,
-                    fill=TutorialConfig.COLORS["primary"][1],
-                    outline="white",
-                    width=1
+                    bbox[2] + padding_x, bbox[3] + padding_y
                 )
-                self.canvas.tag_raise(text_id) # Metni üste çıkar
+        else:
+            # Hedef yoksa diğer her şeyi gizle (overlay hariç)
+            # Koordinatları ekran dışına atabiliriz
+            for tag in ["hole", "pulse_rect", "inner_rect", "label_bg", "label_text"]:
+                self.canvas.coords(tag, -500, -500, -500, -500)
 
     def pulse(self):
         if not self.winfo_exists():
             return
             
-        # Basit nefes alma efekti
         anim = TutorialConfig.ANIMATION
         self.pulse_val += self.pulse_dir * anim["pulse_speed"]
         
@@ -349,7 +386,7 @@ class ModernSpotlight(ctk.CTkToplevel):
         # veya tag tabanlı optimize edebiliriz. Basit olması için redraw (target hareket edebilir).
         self.draw_spotlight()
         
-        self.after(30, self.pulse)
+        self.after(50, self.pulse)
     
     def fade_out(self, callback: Optional[Callable] = None):
         self.destroy()
@@ -362,6 +399,9 @@ class ModernTutorialWindow(ctk.CTkToplevel):
     
     def __init__(self, parent, app_instance):
         super().__init__(parent)
+        from text_editor.utils.language_manager import LanguageManager
+        self.lang = LanguageManager.get_instance()
+        
         self.app = app_instance
         self.current_step_index = 0
         self.spotlight = None
@@ -380,7 +420,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         self.after(300, self.show_step)
 
     def _setup_window(self):
-        self.title("Memati Editör - Öğretici")
+        self.title(self.lang.get("tutorial.title"))
         self.geometry(TutorialConfig.DIMENSIONS["window_size"])
         self.attributes("-alpha", 0.0)
         self.attributes("-topmost", True)
@@ -458,7 +498,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         head_top.pack(fill="x")
         
         self.title_lbl = ctk.CTkLabel(
-            head_top, text="Hoş Geldiniz!", 
+            head_top, text=self.lang.get("tutorial.header_welcome"), 
             font=TutorialConfig.FONTS["header_title"], 
             text_color=TutorialConfig.COLORS["text_main"],
             anchor="w"
@@ -505,7 +545,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         )
         
         ctk.CTkLabel(
-            self.task_card, text="GÖREV", 
+            self.task_card, text=self.lang.get("tutorial.labels.task"), 
             font=TutorialConfig.FONTS["ui_small"],
             text_color=TutorialConfig.COLORS["task_border"]
         ).pack(anchor="w", padx=20, pady=(15, 0))
@@ -525,7 +565,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         )
         
         ctk.CTkLabel(
-            self.tips_card, text="İPUCU", 
+            self.tips_card, text=self.lang.get("tutorial.labels.tip"), 
             font=TutorialConfig.FONTS["ui_small"],
             text_color=TutorialConfig.COLORS["tips_border"]
         ).pack(anchor="w", padx=20, pady=(15, 0))
@@ -547,7 +587,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         btn_container.pack(expand=True, fill="both", padx=30, pady=20)
         
         self.prev_btn = ctk.CTkButton(
-            btn_container, text="Geri", width=100, height=45, corner_radius=8,
+            btn_container, text=self.lang.get("tutorial.buttons.back"), width=100, height=45, corner_radius=8,
             font=TutorialConfig.FONTS["button_bold"], 
             fg_color="transparent", border_width=1, border_color=TutorialConfig.COLORS["text_sub"],
             text_color=TutorialConfig.COLORS["text_main"], hover_color=("gray85", "gray25"),
@@ -556,7 +596,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         self.prev_btn.pack(side="left", padx=0)
         
         self.pause_btn = ctk.CTkButton(
-            btn_container, text="Duraklat", width=120, height=45, corner_radius=8,
+            btn_container, text=self.lang.get("tutorial.buttons.pause"), width=120, height=45, corner_radius=8,
             font=TutorialConfig.FONTS["button_bold"], 
             fg_color=TutorialConfig.COLORS["warning"], hover_color="#d97706", 
             text_color="white",
@@ -565,7 +605,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         self.pause_btn.pack(side="left", padx=15)
         
         self.next_btn = ctk.CTkButton(
-            btn_container, text="Devam Et", width=160, height=45, corner_radius=8,
+            btn_container, text=self.lang.get("tutorial.buttons.next"), width=160, height=45, corner_radius=8,
             font=TutorialConfig.FONTS["button_bold"], 
             fg_color=TutorialConfig.COLORS["primary"], hover_color=TutorialConfig.COLORS["primary_dark"], 
             text_color="white",
@@ -574,7 +614,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         self.next_btn.pack(side="right", padx=0)
         
         self.skip_btn = ctk.CTkButton(
-            btn_container, text="Öğreticiyi Atla", width=100,
+            btn_container, text=self.lang.get("tutorial.buttons.skip"), width=100,
             font=TutorialConfig.FONTS["ui_small"],
             fg_color="transparent", hover_color=("gray90", "gray25"),
             text_color=TutorialConfig.COLORS["text_sub"],
@@ -611,7 +651,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         
         if step.validation:
             self.task_card.pack(fill="x", padx=10, pady=(0, 20))
-            self.task_lbl.configure(text="İlerlemek için yukarıdaki görevi tamamlayın.")
+            self.task_lbl.configure(text=self.lang.get("tutorial.labels.task_pending"))
             self.check_validation_loop()
         
         if step.tips:
@@ -634,9 +674,9 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         self.prev_btn.configure(state="normal" if self.current_step_index > 0 else "disabled")
         
         if self.current_step_index == len(self.steps) - 1:
-            self.next_btn.configure(text="Tamamla 🎉", command=self.finish)
+            self.next_btn.configure(text=self.lang.get("tutorial.buttons.complete"), command=self.finish)
         else:
-            self.next_btn.configure(text="Devam Et", command=self.next_step)
+            self.next_btn.configure(text=self.lang.get("tutorial.buttons.next"), command=self.next_step)
 
     def show_spotlight(self, step: TutorialStep):
         self.hide_spotlight()
@@ -669,7 +709,7 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         step = self.steps[self.current_step_index]
         if step.validation:
             if step.validation():
-                self.task_lbl.configure(text="✅ Harika! Görev tamamlandı!", text_color=TutorialConfig.COLORS["success"])
+                self.task_lbl.configure(text=self.lang.get("tutorial.labels.task_completed"), text_color=TutorialConfig.COLORS["success"])
                 self.completed_steps.add(self.current_step_index)
                 self.after(1500, self.next_step)
             else:
@@ -688,14 +728,14 @@ class ModernTutorialWindow(ctk.CTkToplevel):
     def toggle_pause(self):
         self.is_paused = not self.is_paused
         if self.is_paused:
-            self.pause_btn.configure(text="Devam", fg_color=TutorialConfig.COLORS["success"])
+            self.pause_btn.configure(text=self.lang.get("tutorial.buttons.resume"), fg_color=TutorialConfig.COLORS["success"])
             self.hide_spotlight()
         else:
-            self.pause_btn.configure(text="Duraklat", fg_color=TutorialConfig.COLORS["warning"])
+            self.pause_btn.configure(text=self.lang.get("tutorial.buttons.pause"), fg_color=TutorialConfig.COLORS["warning"])
             self.show_step()
 
     def skip_tutorial(self):
-        if tk.messagebox.askyesno("Atla", "Öğreticiyi kapatmak istediğinizden emin misiniz?", parent=self):
+        if tk.messagebox.askyesno(self.lang.get("tutorial.messages.skip_confirm_title"), self.lang.get("tutorial.messages.skip_confirm_msg"), parent=self):
             self.finish()
 
     def finish(self):
@@ -703,8 +743,8 @@ class ModernTutorialWindow(ctk.CTkToplevel):
         if self.current_step_index == len(self.steps) - 1:
             validation_count = sum(1 for s in self.steps if s.validation)
             tk.messagebox.showinfo(
-                "Tamamlandı", 
-                f"🎉 Tebrikler!\n\nTutorial tamamlandı!\nGörevler: {len(self.completed_steps)}/{validation_count}", 
+                self.lang.get("tutorial.messages.completed_title"), 
+                self.lang.get("tutorial.messages.completed_msg").format(completed=len(self.completed_steps), total=validation_count), 
                 parent=self
             )
         self.fade_out()

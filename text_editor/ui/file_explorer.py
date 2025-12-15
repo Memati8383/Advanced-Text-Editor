@@ -9,6 +9,7 @@ from typing import Callable, Optional, Tuple, List, Dict, Any, Union
 from text_editor.utils.file_icons import FileIcons
 
 from text_editor.ui.context_menu import ModernContextMenu
+from text_editor.utils.language_manager import LanguageManager
 
 class FileSystemManager:
     """
@@ -97,6 +98,8 @@ class FileExplorer(ctk.CTkFrame):
         self.root_path: Optional[str] = None
         self.search_var = tk.StringVar()
         
+        self.lang = LanguageManager.get_instance()
+        
         # Arayüz Kurulumu
         self._configure_grid()
         self._create_widgets()
@@ -115,7 +118,7 @@ class FileExplorer(ctk.CTkFrame):
         # Başlık Etiketi
         self.title_label = ctk.CTkLabel(
             self, 
-            text="Dosya Gezgini", 
+            text=self.lang.get("file_explorer_title", "Dosya Gezgini"), 
             font=("Segoe UI", 13, "bold"), 
             anchor="w"
         )
@@ -558,6 +561,10 @@ class FileExplorer(ctk.CTkFrame):
         sel_fg = theme.get("fg", "#ffffff")
         
         self._apply_theme_colors(bg, fg, sel_bg, sel_fg)
+
+    def update_language(self):
+        """Dil değiştiğinde metinleri günceller."""
+        self.title_label.configure(text=self.lang.get("file_explorer_title", "Dosya Gezgini"))
 
 
 

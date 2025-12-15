@@ -32,6 +32,9 @@ class StatusBar(ctk.CTkFrame):
     def __init__(self, master: Any, **kwargs):
         super().__init__(master, height=self.HEIGHT, corner_radius=0, **kwargs)
         
+        from text_editor.utils.language_manager import LanguageManager
+        self.lang = LanguageManager.get_instance()
+        
         self.type_to_icon: Dict[str, str] = {}
         self._init_type_mapping()
         
@@ -40,7 +43,7 @@ class StatusBar(ctk.CTkFrame):
         self._setup_right_panel()
         
         # Başlangıç durumu
-        self.set_message("Hazır")
+        self.set_message(self.lang.get("status_messages.ready", "Hazır"))
 
     def _setup_layout(self):
         """Ana ızgara (grid) düzenini yapılandırır."""
@@ -150,7 +153,9 @@ class StatusBar(ctk.CTkFrame):
 
     def set_cursor_info(self, line: int, col: int, total_lines: int = 0):
         """İmleç konumu göstergesini günceller."""
-        self.cursor_info.configure(text=f"Ln {line}, Col {col}")
+        ln_text = self.lang.get("status_bar.ln", "Ln")
+        col_text = self.lang.get("status_bar.col", "Col")
+        self.cursor_info.configure(text=f"{ln_text} {line}, {col_text} {col}")
 
     def set_file_info(self, file_type: str = "Metin", encoding: str = "UTF-8", lines: int = 0):
         """Dosya türü ve kodlama bilgisini günceller."""
