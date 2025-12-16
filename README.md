@@ -18,7 +18,7 @@
   <i>Sadece kod yazmayın, kodun sanatını icra edin.</i>
 </p>
 
-![Ekran Görüntüsü](ekran_görüntüleri/screenshot.png)
+![Ekran Görüntüsü](ekran_görüntüleri/main.PNG)
 
 ---
 
@@ -124,3 +124,4 @@ Detaylı kullanım rehberleri için `docs/` klasörüne göz atın:
   <p><sub>Bu proje <b>MIT Lisansı</b> altında lisanslanmıştır.</sub></p>
   <p>Copyright © 2025 Memati. Tüm Hakları Saklıdır.</p>
 </div>
+
