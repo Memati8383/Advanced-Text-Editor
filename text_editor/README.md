@@ -57,6 +57,7 @@
 - **⌨️ Entegre Terminal**: PowerShell/Bash desteği, tema uyumu, komut geçmişi ile güçlü terminal.
 - **🎓 İnteraktif Tutorial Mode**: Yeni kullanıcılar için adım adım rehberlik, spotlight efektleri ve görev doğrulama ile interaktif öğrenme deneyimi.
 - **🌍 Çoklu Dil Desteği**: Türkçe, İngilizce ve Azerbaycan Türkçesi dil desteği ile tamamen yerelleştirilmiş arayüz.
+- **🕒 Son Kullanılan Dosyalar**: Son açtığınız dosyalara hızlı erişim, liste temizleme ve tekli silme desteği.
 - **⚙️ Kapsamlı Ayarlar Sistemi**: Tüm uygulama ayarlarını tek yerden yönetin, dışa/içe aktarın, kategorilere ayrılmış modern arayüz.
 
 ### 📚 **Öğrenme ve Yardım**
@@ -136,6 +137,7 @@ Aşağıdaki adımları takiperek geliştirme ortamınızı 1 dakika içinde haz
 | | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd> | Klasör (Proje) Aç |
 | | <kbd>Ctrl</kbd> + <kbd>S</kbd> | Kaydet |
 | | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | Farklı Kaydet |
+| | - | Son Kullanılan Dosyalar |
 | **✏️ Düzenleme** | <kbd>Ctrl</kbd> + <kbd>F</kbd> | Bul ve Değiştir |
 | | <kbd>Ctrl</kbd> + <kbd>G</kbd> | Satıra Git |
 | **🔢 Satır İşlemleri** | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd> | Satırı Çoğalt (Alta Kopyala) |

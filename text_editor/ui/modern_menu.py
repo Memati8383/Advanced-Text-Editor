@@ -93,6 +93,7 @@ class ModernDropdownMenu(ctk.CTkToplevel):
         btn_frame.grid_columnconfigure(0, weight=0)  # İkon
         btn_frame.grid_columnconfigure(1, weight=1)  # Etiket
         btn_frame.grid_columnconfigure(2, weight=0)  # Kısayol
+        btn_frame.grid_columnconfigure(3, weight=0)  # Sil / Alt Menü
         
         # İkon - daha küçük
         if icon:
@@ -134,21 +135,56 @@ class ModernDropdownMenu(ctk.CTkToplevel):
                 width=16
             )
             arrow_label.grid(row=0, column=3, padx=(0, 6), pady=4, sticky="e")
+            
+        # Silme / Eylem butonu
+        on_delete = item.get("on_delete")
+        if on_delete:
+            delete_icon = item.get("delete_icon", "✕")
+            delete_hover = item.get("delete_hover", ("#ff4d4d", "#cc0000"))
+            
+            delete_btn = ctk.CTkButton(
+                btn_frame,
+                text=delete_icon,
+                width=18,
+                height=18,
+                corner_radius=4,
+                fg_color="transparent",
+                hover_color=delete_hover,
+                text_color=("gray50", "white"),
+                font=("Segoe UI", 8, "bold"),
+                command=lambda: (self.destroy_menu(), on_delete())
+            )
+            delete_btn.grid(row=0, column=3, padx=(0, 6), pady=2, sticky="e")
         
         # Hover efektleri
         def on_enter(e):
-            btn_frame.configure(fg_color=self.theme.get("menu_hover", "#404040"))
-            if submenu:
-                # Alt menüyü göster
-                self.show_submenu(btn_frame, submenu)
+            if item.get("enabled", True) and not item.get("is_header", False):
+                btn_frame.configure(fg_color=self.theme.get("menu_hover", "#404040"))
+                if submenu:
+                    # Alt menüyü göster
+                    self.show_submenu(btn_frame, submenu)
         
         def on_leave(e):
-            btn_frame.configure(fg_color="transparent")
+            if not item.get("is_header", False):
+                btn_frame.configure(fg_color="transparent")
+                
+        # Header stili
+        if item.get("is_header"):
+            btn_frame.configure(fg_color=self.theme.get("menu_hover", "#404040"), height=32)
+            label_widget.configure(font=("Segoe UI", 11, "bold"), text_color=self.theme.get("accent_color", "#00d4ff"))
+            if icon:
+                icon_label.configure(text_color=self.theme.get("accent_color", "#00d4ff"))
         
         def on_click(e):
-            if command:
+            if item.get("enabled", True) and command:
                 self.destroy_menu()
                 command()
+        
+        # Devre dışı kalmış görünümü
+        if not item.get("enabled", True):
+            label_widget.configure(text_color=("gray60", "gray40"))
+            if icon:
+                icon_label.configure(text_color=("gray60", "gray40"))
         
         # Tüm widget'lara event bind et
         for widget in [btn_frame, label_widget]:

@@ -1,304 +1,410 @@
 {
-    "window_title": "⚙️ Einstellungen",
-    "panel_title": "⚙️ Einstellungen",
-    "search_placeholder": "🔍 Einstellungen suchen...",
-    "categories": {
-        "Genel": "Allgemein",
-        "Editör": "Editor",
-        "Görünüm": "Aussehen",
-        "Tema": "Thema",
-        "Klavye Kısayolları": "Tastenkombinationen",
-        "Terminal": "Terminal",
-        "Gelişmiş": "Erweitert"
-    },
     "buttons": {
-        "reset": "🔄 Auf Standard zurücksetzen",
-        "cancel": "❌ Abbrechen",
         "apply": "✅ Übernehmen",
+        "cancel": "❌ Abbrechen",
         "export": "📤 Einstellungen exportieren",
         "import": "📥 Einstellungen importieren",
+        "reset": "🔄 Auf Standard zurücksetzen",
         "reset_shortcuts": "Verknüpfungen zurücksetzen"
     },
-    "messages": {
-        "active": "Aktiv",
-        "passive": "Deaktiviert",
-        "unknown": "Unbekannt",
-        "unknown_psutil": "Unbekannt (psutil erforderlich)",
-        "calculation_failed": "Berechnung fehlgeschlagen",
-        "time_h": "h",
-        "time_m": "m",
-        "time_s": "s",
-        "no_limit": "Keine Änderungen",
-        "seconds": "Sekunden",
-        "selected": "✅ Ausgewählt",
-        "preview": "Vorschau",
-        "apply_text": "Übernehmen",
-        "no_results": "Keine Ergebnisse gefunden",
-        "search_results": "📊 {count} Ergebnisse gefunden",
-        "goto_category": "📁 Gehe zu Kategorie {category} →",
-        "version_text": "Memati Editor v2.0",
-        "changes_title_suffix": "({count} Änderungen)",
-        "reset_confirm_title": "Auf Standard zurücksetzen",
-        "reset_confirm_message": "Alle Einstellungen werden auf die Standardwerte zurückgesetzt. Sind Sie sicher?",
-        "export_success_title": "Erfolg",
-        "export_success_message": "Einstellungen erfolgreich exportiert!",
-        "import_success_title": "Erfolg",
-        "import_success_message": "Einstellungen erfolgreich importiert!",
-        "error_title": "Fehler"
+    "categories": {
+        "Editör": "Editor",
+        "Gelişmiş": "Erweitert",
+        "Genel": "Allgemein",
+        "Görünüm": "Aussehen",
+        "Klavye Kısayolları": "Tastenkombinationen",
+        "Tema": "Thema",
+        "Terminal": "Terminal"
     },
-    "settings": {
-        "app_name": {"label": "Anwendungsname", "desc": "Name der Anwendung, der in der Titelleiste angezeigt wird"},
-        "font_family": {"label": "Schriftart", "desc": "Im Editor verwendete Schriftart"},
-        "font_size": {"label": "Schriftgröße", "desc": "Schriftgröße des Editors (8-32)"},
-        "language": {"label": "Sprache / Language", "desc": "Sprache der Benutzeroberfläche"},
-        "show_line_numbers": {"label": "Zeilennummern", "desc": "Zeilennummern im Editor anzeigen"},
-        "word_wrap": {"label": "Zeilenumbruch", "desc": "Lange Zeilen automatisch umbrechen"},
-        "show_minimap": {"label": "Minimap", "desc": "Code-Karte anzeigen"},
-        "tab_size": {"label": "Tabulatorgröße", "desc": "Anzahl der Leerzeichen pro Tabulatorzeichen"},
-        "auto_save": {"label": "Automatisches Speichern", "desc": "Änderungen automatisch speichern"},
-        "auto_save_interval": {"label": "Speicherintervall", "desc": "Intervall für automatisches Speichern (Sekunden)"},
-        "bracket_matching": {"label": "Klammerübereinstimmung", "desc": "Übereinstimmende Klammern unter dem Cursor hervorheben"},
-        "syntax_highlighting": {"label": "Syntax-Hervorhebung", "desc": "Code-Einfärbung aktivieren"},
-        "show_status_bar": {"label": "Statusleiste", "desc": "Informationsleiste unten anzeigen"},
-        "show_file_explorer": {"label": "Datei-Explorer", "desc": "Dateibaum links anzeigen"},
-        "show_terminal": {"label": "Terminal-Sichtbarkeit", "desc": "Terminal-Panel unten anzeigen"},
-        "start_fullscreen": {"label": "Im Vollbildmodus starten", "desc": "Anwendung im Vollbildmodus starten"},
-        "theme_select": {"label": "Themenauswahl", "desc": "Aussehen des Editors auswählen"},
-        "terminal_type": {"label": "Terminal-Typ", "desc": "Zu verwendender Shell-Typ"},
-        "terminal_font_size": {"label": "Schriftgröße", "desc": "Schriftgröße des Terminals"},
-        "terminal_history": {"label": "Verlaufslimit", "desc": "Zeilenlimit für die Terminalausgabe"},
-        "performance_mode": {"label": "Leistungsmodus", "desc": "Einige visuelle Effekte deaktivieren, um die Leistung zu verbessern"},
-        "auto_backup": {"label": "Automatische Sicherung", "desc": "Dateien regelmäßig als .bak sichern"},
-        "max_file_size": {"label": "Maximale Dateigröße", "desc": "Maximale Dateigröße, die der Editor öffnen kann (MB)"},
-        "error_reporting": {"label": "Fehlerberichterstattung", "desc": "Bericht an den Entwickler senden, wenn ein Fehler auftritt"}
+    "context_menu": {
+        "close": "Kapat",
+        "close_others": "Diğerlerini Kapat",
+        "close_right": "Sağdakileri Kapat",
+        "copy_filename": "Dosya Adını Kopyala"
     },
+    "file_explorer_title": "Explorer",
     "help": {
-        "title": "🪐 {app_name} - Hilfezentrum",
-        "header": "Hilfezentrum",
-        "search_placeholder": "🔍 Suchen...",
-        "start_tutorial": "🎓 Interaktives Tutorial starten",
-        "sections": {
-            "quick_start": "🚀 Schnellstart",
-            "shortcuts": "⌨️ Tastenkombinationen",
-            "multi_cursor": "🖱️ Multi-Cursor-Anleitung",
-            "theme_guide": "🎨 Themen-Anleitung",
-            "file_formats": "📁 Unterstützte Formate",
-            "markdown_guide": "📄 Markdown-Anleitung",
-            "tips": "💡 Tipps und Tricks",
-            "faq": "❓ FAQ",
-            "performance": "📊 Leistungsbericht",
-            "image_viewer": "🖼️ Bildbetrachter",
-            "goto_line": "🔢 Gehe zu Zeile",
-            "report_bug": "🐛 Fehler melden",
-            "about": "ℹ️ Über"
-        },
         "buttons": {
             "back": "◀ Zurück",
             "forward": "Vorwärts ▶",
             "home": "🏠 Startseite"
-        }
+        },
+        "header": "Hilfezentrum",
+        "search_placeholder": "🔍 Suchen...",
+        "sections": {
+            "about": "ℹ️ Über",
+            "faq": "❓ FAQ",
+            "file_formats": "📁 Unterstützte Formate",
+            "goto_line": "🔢 Gehe zu Zeile",
+            "image_viewer": "🖼️ Bildbetrachter",
+            "markdown_guide": "📄 Markdown-Anleitung",
+            "multi_cursor": "🖱️ Multi-Cursor-Anleitung",
+            "performance": "📊 Leistungsbericht",
+            "quick_start": "🚀 Schnellstart",
+            "report_bug": "🐛 Fehler melden",
+            "shortcuts": "⌨️ Tastenkombinationen",
+            "theme_guide": "🎨 Themen-Anleitung",
+            "tips": "💡 Tipps und Tricks"
+        },
+        "start_tutorial": "🎓 Interaktives Tutorial starten",
+        "title": "🪐 {app_name} - Hilfezentrum"
     },
     "help_content": {
-        "quick_start": "🎯 WILLKOMMEN BEIM MEMATI EDITOR!\n\nEin moderner, leistungsstarker und benutzerfreundlicher Texteditor steht bereit!\n\n┌─────────────────────────────────────────┐\n│  🎓 INTERAKTIVES TUTORIAL                │\n└─────────────────────────────────────────┘\n\nNeu hier? Keine Sorge!\n\n🎓 Lernen Sie den Editor in 5 Minuten mit dem INTERAKTIVEN TUTORIAL kennen!\n\n• Schritt-für-Schritt-Anleitung\n• Visuelle Highlights\n• Interaktive Aufgaben\n• Fortschrittsverfolgung\n\nUm zu beginnen:\n1. Klicken Sie oben auf die Schaltfläche \"🎓 Interaktives Tutorial starten\"\n2. Oder über das Menü: 🎓 Tutorial\n\n┌─────────────────────────────────────────┐\n│  ERSTE SCHRITTE                         │\n└─────────────────────────────────────────┘\n\n1️⃣  NEUE DATEI ERSTELLEN\n   • Drücken Sie Strg+N\n   • Oder Menü: Datei > Neuer Tab\n\n2️⃣  DATEI ÖFFNEN\n   • Datei auswählen mit Strg+O\n   • Oder Datei ziehen und ablegen\n   • Ordner öffnen: Strg+Umschalt+O\n\n3️⃣  SPEICHERN\n   • Aktuelle Datei speichern mit Strg+S\n   • Speichern unter mit Strg+Umschalt+S\n   • Automatisches Speichern: Alle 30 Sekunden!\n\n4️⃣  THEMA ÄNDERN\n   • Menü: Thema > Wählen Sie Ihr gewünschtes Thema\n   • 9 verschiedene, ansprechende Themen verfügbar!\n\n5️⃣  WERKZEUGE UND FUNKTIONEN\n   • Strg+F: Suchen und Ersetzen\n   • Strg+G: Zu bestimmter Zeile gehen\n   • Strg+Rad: Vergrößern/Verkleinern\n   • F11: Vollbildmodus\n\n6️⃣  MULTI-CURSOR-WERKZEUGE\n   • Alt+Klick: Cursor überall hinzufügen\n   • Strg+D: Das gleiche Wort auswählen und bearbeiten\n   • Siehe \"Multi-Cursor-Anleitung\" für Details!\n\nViel Spaß beim Programmieren! 🚀",
-        "shortcuts": "⌨️ TASTENKOMBINATIONEN\n\nSteuern Sie den Memati Editor mit Ihrer Tastatur!\n\n┌─────────────────────────────────────────┐\n│  📁 DATEIOPERATIONEN                    │\n└─────────────────────────────────────────┘\n\n{new_tab: <16} →  Neuer Tab\n{open_file: <16} →  Datei öffnen\n{open_folder: <16} →  Ordner öffnen\n{save_file: <16} →  Speichern\n{save_as: <16} →  Speichern unter\n{close_tab: <16} →  Tab schließen\n\n┌─────────────────────────────────────────┐\n│  ✏️ BEARBEITEN                          │\n└─────────────────────────────────────────┘\n\n{undo: <16} →  Rückgängig\n{redo: <16} →  Wiederholen\n{cut: <16} →  Ausschneiden\n{copy: <16} →  Kopieren\n{paste: <16} →  Einfügen\n{select_all: <16} →  Alles auswählen\n{find: <16} →  Suchen und Ersetzen\n{goto_line: <16} →  Gehe zu Zeile\n{duplicate_line: <16} →  Zeile duplizieren\n\n┌─────────────────────────────────────────┐\n│  👀 ANSICHT                             │\n└─────────────────────────────────────────┘\n\nStrg + Rad       →  Zoom\n{zoom_reset: <16} →  Zoom zurücksetzen\n{toggle_fullscreen: <16} →  Vollbild umschalten\n{toggle_file_explorer: <16} →  Explorer umschalten\n{toggle_minimap: <16} →  Minimap umschalten",
-        "multi_cursor": "🖱️ MULTI-CURSOR-ANLEITUNG\n\nBearbeiten Sie an mehreren Stellen gleichzeitig!",
-        "theme_guide": "🎨 THEMEN-ANLEITUNG\n\nWählen Sie das Thema, das am besten zu Ihren Augen passt!",
-        "tips": "💡 TIPPS UND TRICKS\n\nNutzen Sie den Editor effizienter!",
-        "supported_formats": "📁 UNTERSTÜTZTE FORMATE\n\nMemati Editor unterstützt viele Dateiformate!",
-        "faq": "❓ HÄUFIG GESTELLTE FRAGEN\n\nAntworten auf Ihre Fragen finden Sie hier!",
-        "markdown_guide": "📄 MARKDOWN-ANLEITUNG\n\nVorschau Ihrer Markdown-Dateien live!",
-        "image_viewer": "🖼️ BILDBETRACHTER\n\nMemati Editor kann Bilddateien zusammen mit Codedateien anzeigen.",
-        "goto_line": "🔢 GEHE ZU ZEILE\n\nWird verwendet, um schnell eine bestimmte Zeile in großen Dateien zu erreichen.",
-        "report_bug": "🐛 FEHLER MELDEN\n\nEinen Fehler gefunden? Lassen Sie es uns wissen!",
         "about": "ℹ️ ÜBER {app_name}\n\nModerne, leichte und leistungsstarke Python-IDE\n\n(Übersetzung für Info...)",
+        "faq": "❓ HÄUFIG GESTELLTE FRAGEN\n\nAntworten auf Ihre Fragen finden Sie hier!",
+        "goto_line": "🔢 GEHE ZU ZEILE\n\nWird verwendet, um schnell eine bestimmte Zeile in großen Dateien zu erreichen.",
+        "image_viewer": "🖼️ BILDBETRACHTER\n\nMemati Editor kann Bilddateien zusammen mit Codedateien anzeigen.",
+        "markdown_guide": "📄 MARKDOWN-ANLEITUNG\n\nVorschau Ihrer Markdown-Dateien live!",
+        "multi_cursor": "🖱️ MULTI-CURSOR-ANLEITUNG\n\nBearbeiten Sie an mehreren Stellen gleichzeitig!",
         "performance_report": "📊 DETAILLIERTER LEISTUNGSBERICHT\n\nAktueller System- und Editorstatus:\n\n{sys_info}\n...",
         "performance_suggestions": {
-            "high_tab_count": "🟡 Hohe Tab-Anzahl (10+). Leistung kann sinken.",
+            "all_good": "✅ Alle Systemwerte sind auf optimalem Niveau.",
             "high_line_count": "🟡 Gesamtzahl der Zeilen ist sehr hoch. Editor könnte langsamer werden.",
             "high_memory": "🟡 Hohe Speichernutzung (>500MB).",
-            "install_psutil": "🟡 Installieren Sie das Modul 'psutil' für vollständige Leistungsdaten.",
-            "all_good": "✅ Alle Systemwerte sind auf optimalem Niveau."
-        }
-    },
-    "tutorial": {
-        "title": "Memati Editor - Tutorial",
-        "header_welcome": "Willkommen!",
-        "buttons": {
-            "back": "Zurück",
-            "pause": "Pause",
-            "resume": "Fortsetzen",
-            "next": "Weiter",
-            "skip": "Tutorial überspringen",
-            "complete": "Fertig 🎉"
+            "high_tab_count": "🟡 Hohe Tab-Anzahl (10+). Leistung kann sinken.",
+            "install_psutil": "🟡 Installieren Sie das Modul 'psutil' für vollständige Leistungsdaten."
         },
-        "labels": {
-            "task": "AUFGABE",
-            "tip": "TIPP",
-            "task_pending": "Schließen Sie die obige Aufgabe ab, um fortzufahren.",
-            "task_completed": "✅ Großartig! Aufgabe erledigt!"
-        },
-        "messages": {
-             "skip_confirm_title": "Überspringen",
-             "skip_confirm_msg": "Sind Sie sicher, dass Sie das Tutorial schließen möchten?",
-             "completed_title": "Abgeschlossen",
-             "completed_msg": "🎉 Herzlichen Glückwunsch!\n\nTutorial abgeschlossen!\nAufgaben: {completed}/{total}"
-        },
-        "steps": {
-            "welcome": {
-                "title": "Willkommen beim Memati Editor!",
-                "message": "Hallo! 👋\n\nWillkommen zu dieser interaktiven Anleitung.",
-                "tips": ["Sie können das Tutorial-Fenster verschieben."]
-            },
-            "menus": {
-                "title": "Menüs und Befehle",
-                "message": "Dies ist das Zentrum von allem.",
-                "tips": []
-            },
-            "file_explorer": {
-                "title": "Datei-Explorer",
-                "message": "Hier leben Ihre Projekte.",
-                "tips": ["Neuen Ordner mit Strg+Umschalt+O öffnen."]
-            },
-            "image_viewer": {
-                "title": "Bildbetrachter",
-                "message": "Ihr Editor kann jetzt auch Bilder öffnen!",
-                "tips": ["Mausrad zum Zoomen verwenden."]
-            },
-             "new_tab": {
-                "title": "Ein Neuanfang",
-                "message": "Öffnen Sie ein leeres Blatt zum Coden.",
-                "tips": ["Tabs durch Ziehen neu anordnen."]
-            },
-            "editor_area": {
-                "title": "Herz des Editors",
-                "message": "Das ist Ihr Spielplatz.",
-                "tips": ["Strg + Rad für Schriftgröße."]
-            },
-            "minimap": {
-                "title": "Minimap (Code-Karte)",
-                "message": "Vogelperspektive Ihres Codes.",
-                "tips": []
-            },
-            "multi_cursor": {
-                "title": "Multi-Cursor Magie",
-                "message": "Bearbeiten Sie mehrere Stellen gleichzeitig!",
-                "tips": ["'Escape' zum Abbrechen."]
-            },
-            "smart_select": {
-                "title": "Intelligente Auswahl (Strg+D)",
-                "message": "Variablennamen ändern war noch nie so einfach.",
-                "tips": []
-            },
-            "find_replace": {
-                "title": "Suchen und Zerstören (Ersetzen)",
-                "message": "Leistungsstarke Suchmaschine.",
-                "tips": []
-            },
-            "goto_line": {
-                "title": "Gehe zu Zeile (Strg+G)",
-                "message": "Verlieren Sie sich nicht in langen Dateien.",
-                "tips": ["Teleportieren Sie sich zu jeder Zeile."]
-            },
-            "terminal": {
-                "title": "Terminal-Integration",
-                "message": "Befehle ausführen ohne den Editor zu verlassen.",
-                "tips": ["Mit 'exit' schließen."]
-            },
-            "markdown": {
-                "title": "Markdown-Vorschau",
-                "message": "Tolles Feature für Autoren.",
-                "tips": []
-            },
-            "zen_mode": {
-                "title": "Zen-Modus",
-                "message": "Wenn Sie sich nur auf den Code konzentrieren wollen...",
-                "tips": []
-            },
-            "settings": {
-                "title": "Einstellungsmenü",
-                "message": "Detaillierte Anpassung.",
-                "tips": []
-            },
-            "theme": {
-                "title": "Themen",
-                "message": "Wählen Sie Ihren Look.",
-                "tips": ["Wir empfehlen 'Dracula' oder 'Dark' für nachts."]
-            },
-            "code_folding": {
-                "title": "Code-Faltung",
-                "message": "Fokus durch Ausblenden von Blöcken.",
-                "tips": []
-            },
-            "status_bar": {
-                "title": "Statusleiste",
-                "message": "Alles über Ihre Datei.",
-                "tips": []
-            },
-            "congrats": {
-                "title": "Herzlichen Glückwunsch! 🎉",
-                "message": "Grundlagentraining abgeschlossen!",
-                "tips": ["Jederzeit über Hilfe-Menü abrufbar."]
-            }
-        }
+        "quick_start": "🎯 WILLKOMMEN BEIM MEMATI EDITOR!\n\nEin moderner, leistungsstarker und benutzerfreundlicher Texteditor steht bereit!\n\n┌─────────────────────────────────────────┐\n│  🎓 INTERAKTIVES TUTORIAL                │\n└─────────────────────────────────────────┘\n\nNeu hier? Keine Sorge!\n\n🎓 Lernen Sie den Editor in 5 Minuten mit dem INTERAKTIVEN TUTORIAL kennen!\n\n• Schritt-für-Schritt-Anleitung\n• Visuelle Highlights\n• Interaktive Aufgaben\n• Fortschrittsverfolgung\n\nUm zu beginnen:\n1. Klicken Sie oben auf die Schaltfläche \"🎓 Interaktives Tutorial starten\"\n2. Oder über das Menü: 🎓 Tutorial\n\n┌─────────────────────────────────────────┐\n│  ERSTE SCHRITTE                         │\n└─────────────────────────────────────────┘\n\n1️⃣  NEUE DATEI ERSTELLEN\n   • Drücken Sie Strg+N\n   • Oder Menü: Datei > Neuer Tab\n\n2️⃣  DATEI ÖFFNEN\n   • Datei auswählen mit Strg+O\n   • Oder Datei ziehen und ablegen\n   • Ordner öffnen: Strg+Umschalt+O\n\n3️⃣  SPEICHERN\n   • Aktuelle Datei speichern mit Strg+S\n   • Speichern unter mit Strg+Umschalt+S\n   • Automatisches Speichern: Alle 30 Sekunden!\n\n4️⃣  THEMA ÄNDERN\n   • Menü: Thema > Wählen Sie Ihr gewünschtes Thema\n   • 9 verschiedene, ansprechende Themen verfügbar!\n\n5️⃣  WERKZEUGE UND FUNKTIONEN\n   • Strg+F: Suchen und Ersetzen\n   • Strg+G: Zu bestimmter Zeile gehen\n   • Strg+Rad: Vergrößern/Verkleinern\n   • F11: Vollbildmodus\n\n6️⃣  MULTI-CURSOR-WERKZEUGE\n   • Alt+Klick: Cursor überall hinzufügen\n   • Strg+D: Das gleiche Wort auswählen und bearbeiten\n   • Siehe \"Multi-Cursor-Anleitung\" für Details!\n\nViel Spaß beim Programmieren! 🚀",
+        "report_bug": "🐛 FEHLER MELDEN\n\nEinen Fehler gefunden? Lassen Sie es uns wissen!",
+        "shortcuts": "⌨️ TASTENKOMBINATIONEN\n\nSteuern Sie den Memati Editor mit Ihrer Tastatur!\n\n┌─────────────────────────────────────────┐\n│  📁 DATEIOPERATIONEN                    │\n└─────────────────────────────────────────┘\n\n{new_tab: <16} →  Neuer Tab\n{open_file: <16} →  Datei öffnen\n{open_folder: <16} →  Ordner öffnen\n{save_file: <16} →  Speichern\n{save_as: <16} →  Speichern unter\n{close_tab: <16} →  Tab schließen\n\n┌─────────────────────────────────────────┐\n│  ✏️ BEARBEITEN                          │\n└─────────────────────────────────────────┘\n\n{undo: <16} →  Rückgängig\n{redo: <16} →  Wiederholen\n{cut: <16} →  Ausschneiden\n{copy: <16} →  Kopieren\n{paste: <16} →  Einfügen\n{select_all: <16} →  Alles auswählen\n{find: <16} →  Suchen und Ersetzen\n{goto_line: <16} →  Gehe zu Zeile\n{duplicate_line: <16} →  Zeile duplizieren\n\n┌─────────────────────────────────────────┐\n│  👀 ANSICHT                             │\n└─────────────────────────────────────────┘\n\nStrg + Rad       →  Zoom\n{zoom_reset: <16} →  Zoom zurücksetzen\n{toggle_fullscreen: <16} →  Vollbild umschalten\n{toggle_file_explorer: <16} →  Explorer umschalten\n{toggle_minimap: <16} →  Minimap umschalten",
+        "supported_formats": "📁 UNTERSTÜTZTE FORMATE\n\nMemati Editor unterstützt viele Dateiformate!",
+        "theme_guide": "🎨 THEMEN-ANLEITUNG\n\nWählen Sie das Thema, das am besten zu Ihren Augen passt!",
+        "tips": "💡 TIPPS UND TRICKS\n\nNutzen Sie den Editor effizienter!"
     },
     "menu": {
-        "file": "Datei",
         "edit": "Bearbeiten",
-        "view": "Ansicht",
-        "theme": "Thema",
+        "file": "Datei",
         "help": "Hilfe",
-        "tutorial": "Tutorial",
-        "settings": "Einstellungen",
         "items": {
+            "copy": "Kopieren",
+            "copy_path": "Pfad kopieren",
+            "cut": "Ausschneiden",
+            "delete_line": "Zeile löschen",
+            "duplicate_line": "Zeile duplizieren",
+            "exit": "Beenden",
+            "file_explorer": "Datei-Explorer",
+            "find_replace": "Suchen & Ersetzen",
+            "fullscreen": "Vollbild",
+            "goto_line": "Gehe zu Zeile",
+            "join_lines": "Zeilen verbinden",
+            "line_numbers": "Zeilennummern",
+            "markdown_preview": "Markdown-Vorschau",
+            "minimap": "Minimap",
+            "move_down": "Nach unten",
+            "move_up": "Nach oben",
             "new_tab": "Neuer Tab",
             "open_file": "Datei öffnen",
             "open_folder": "Ordner öffnen",
+            "recent_files": "Zuletzt geöffnete Dateien",
+            "clear_recent": "Liste leeren",
+            "no_recent": "(Leer)",
+            "paste": "Einfügen",
+            "redo": "Wiederholen",
+            "relative_path": "Relativer Pfad",
             "save": "Speichern",
             "save_as": "Speichern unter",
-            "find_replace": "Suchen & Ersetzen",
-            "goto_line": "Gehe zu Zeile",
-            "exit": "Beenden",
-            "undo": "Rückgängig",
-            "redo": "Wiederholen",
-            "cut": "Ausschneiden",
-            "copy": "Kopieren",
-            "paste": "Einfügen",
-            "duplicate_line": "Zeile duplizieren",
-            "move_up": "Nach oben",
-            "move_down": "Nach unten",
-            "delete_line": "Zeile löschen",
-            "join_lines": "Zeilen verbinden",
-            "copy_path": "Pfad kopieren",
-            "relative_path": "Relativer Pfad",
-            "line_numbers": "Zeilennummern",
-            "word_wrap": "Zeilenumbruch",
-            "minimap": "Minimap",
             "status_bar": "Statusleiste",
-            "file_explorer": "Datei-Explorer",
             "terminal": "Terminal",
-            "markdown_preview": "Markdown-Vorschau",
-            "zen_mode": "Zen-Modus",
+            "undo": "Rückgängig",
+            "word_wrap": "Zeilenumbruch",
             "zen_exit": "⤣ Zen-Modus beenden",
-            "fullscreen": "Vollbild"
+            "zen_mode": "Zen-Modus"
+        },
+        "settings": "Einstellungen",
+        "theme": "Thema",
+        "tutorial": "Tutorial",
+        "view": "Ansicht"
+    },
+    "messages": {
+        "active": "Aktiv",
+        "apply_text": "Übernehmen",
+        "calculation_failed": "Berechnung fehlgeschlagen",
+        "changes_title_suffix": "({count} Änderungen)",
+        "error_title": "Fehler",
+        "export_success_message": "Einstellungen erfolgreich exportiert!",
+        "export_success_title": "Erfolg",
+        "goto_category": "📁 Gehe zu Kategorie {category} →",
+        "import_success_message": "Einstellungen erfolgreich importiert!",
+        "import_success_title": "Erfolg",
+        "no_limit": "Keine Änderungen",
+        "no_results": "Keine Ergebnisse gefunden",
+        "passive": "Deaktiviert",
+        "preview": "Vorschau",
+        "reset_confirm_message": "Alle Einstellungen werden auf die Standardwerte zurückgesetzt. Sind Sie sicher?",
+        "reset_confirm_title": "Auf Standard zurücksetzen",
+        "search_results": "📊 {count} Ergebnisse gefunden",
+        "seconds": "Sekunden",
+        "selected": "✅ Ausgewählt",
+        "time_h": "h",
+        "time_m": "m",
+        "time_s": "s",
+        "unknown": "Unbekannt",
+        "unknown_psutil": "Unbekannt (psutil erforderlich)",
+        "version_text": "Memati Editor v2.0"
+    },
+    "panel_title": "⚙️ Einstellungen",
+    "search_placeholder": "🔍 Einstellungen suchen...",
+    "settings": {
+        "app_name": {
+            "desc": "Name der Anwendung, der in der Titelleiste angezeigt wird",
+            "label": "Anwendungsname"
+        },
+        "auto_backup": {
+            "desc": "Dateien regelmäßig als .bak sichern",
+            "label": "Automatische Sicherung"
+        },
+        "auto_save": {
+            "desc": "Änderungen automatisch speichern",
+            "label": "Automatisches Speichern"
+        },
+        "auto_save_interval": {
+            "desc": "Intervall für automatisches Speichern (Sekunden)",
+            "label": "Speicherintervall"
+        },
+        "bracket_matching": {
+            "desc": "Übereinstimmende Klammern unter dem Cursor hervorheben",
+            "label": "Klammerübereinstimmung"
+        },
+        "error_reporting": {
+            "desc": "Bericht an den Entwickler senden, wenn ein Fehler auftritt",
+            "label": "Fehlerberichterstattung"
+        },
+        "font_family": {
+            "desc": "Im Editor verwendete Schriftart",
+            "label": "Schriftart"
+        },
+        "font_size": {
+            "desc": "Schriftgröße des Editors (8-32)",
+            "label": "Schriftgröße"
+        },
+        "language": {
+            "desc": "Sprache der Benutzeroberfläche",
+            "label": "Sprache / Language"
+        },
+        "max_file_size": {
+            "desc": "Maximale Dateigröße, die der Editor öffnen kann (MB)",
+            "label": "Maximale Dateigröße"
+        },
+        "performance_mode": {
+            "desc": "Einige visuelle Effekte deaktivieren, um die Leistung zu verbessern",
+            "label": "Leistungsmodus"
+        },
+        "show_file_explorer": {
+            "desc": "Dateibaum links anzeigen",
+            "label": "Datei-Explorer"
+        },
+        "show_line_numbers": {
+            "desc": "Zeilennummern im Editor anzeigen",
+            "label": "Zeilennummern"
+        },
+        "show_minimap": {
+            "desc": "Code-Karte anzeigen",
+            "label": "Minimap"
+        },
+        "show_status_bar": {
+            "desc": "Informationsleiste unten anzeigen",
+            "label": "Statusleiste"
+        },
+        "show_terminal": {
+            "desc": "Terminal-Panel unten anzeigen",
+            "label": "Terminal-Sichtbarkeit"
+        },
+        "start_fullscreen": {
+            "desc": "Anwendung im Vollbildmodus starten",
+            "label": "Im Vollbildmodus starten"
+        },
+        "syntax_highlighting": {
+            "desc": "Code-Einfärbung aktivieren",
+            "label": "Syntax-Hervorhebung"
+        },
+        "tab_size": {
+            "desc": "Anzahl der Leerzeichen pro Tabulatorzeichen",
+            "label": "Tabulatorgröße"
+        },
+        "terminal_font_size": {
+            "desc": "Schriftgröße des Terminals",
+            "label": "Schriftgröße"
+        },
+        "terminal_history": {
+            "desc": "Zeilenlimit für die Terminalausgabe",
+            "label": "Verlaufslimit"
+        },
+        "terminal_type": {
+            "desc": "Zu verwendender Shell-Typ",
+            "label": "Terminal-Typ"
+        },
+        "theme_select": {
+            "desc": "Aussehen des Editors auswählen",
+            "label": "Themenauswahl"
+        },
+        "word_wrap": {
+            "desc": "Lange Zeilen automatisch umbrechen",
+            "label": "Zeilenumbruch"
         }
     },
-    "status_messages": {
-        "line_numbers_on": "Zeilennummern an",
-        "line_numbers_off": "Zeilennummern aus",
-        "word_wrap_on": "Zeilenumbruch an",
-        "word_wrap_off": "Zeilenumbruch aus",
-        "minimap_on": "Minimap an",
-        "minimap_off": "Minimap aus",
-        "explorer_on": "Datei-Explorer an",
-        "explorer_off": "Datei-Explorer aus",
-        "terminal_opened": "⌨️ Terminal geöffnet",
-        "terminal_closed": "Terminal geschlossen",
-        "file_needed": "⚠️ Zuerst Datei öffnen",
-        "markdown_error": "⚠️ Nur .md Dateien",
-        "preview_opened": "Vorschau geöffnet",
-        "preview_closed": "Vorschau geschlossen",
-        "preview_failed": "❌ Vorschau fehlgeschlagen"
+    "status_bar": {
+        "ln": "Satır",
+        "col": "Sütun"
     },
-    "file_explorer_title": "Explorer",
-    "untitled_tab": "Unbenannt"
+    "status_messages": {
+        "explorer_off": "Datei-Explorer aus",
+        "explorer_on": "Datei-Explorer an",
+        "file_needed": "⚠️ Zuerst Datei öffnen",
+        "line_numbers_off": "Zeilennummern aus",
+        "line_numbers_on": "Zeilennummern an",
+        "markdown_error": "⚠️ Nur .md Dateien",
+        "minimap_off": "Minimap aus",
+        "minimap_on": "Minimap an",
+        "preview_closed": "Vorschau geschlossen",
+        "preview_failed": "❌ Vorschau fehlgeschlagen",
+        "preview_opened": "Vorschau geöffnet",
+        "ready": "Hazır",
+        "terminal_closed": "Terminal geschlossen",
+        "terminal_opened": "⌨️ Terminal geöffnet",
+        "word_wrap_off": "Zeilenumbruch aus",
+        "word_wrap_on": "Zeilenumbruch an"
+    },
+    "tutorial": {
+        "buttons": {
+            "back": "Zurück",
+            "complete": "Fertig 🎉",
+            "next": "Weiter",
+            "pause": "Pause",
+            "resume": "Fortsetzen",
+            "skip": "Tutorial überspringen"
+        },
+        "header_welcome": "Willkommen!",
+        "labels": {
+            "task": "AUFGABE",
+            "task_completed": "✅ Großartig! Aufgabe erledigt!",
+            "task_pending": "Schließen Sie die obige Aufgabe ab, um fortzufahren.",
+            "tip": "TIPP"
+        },
+        "messages": {
+            "completed_msg": "🎉 Herzlichen Glückwunsch!\n\nTutorial abgeschlossen!\nAufgaben: {completed}/{total}",
+            "completed_title": "Abgeschlossen",
+            "skip_confirm_msg": "Sind Sie sicher, dass Sie das Tutorial schließen möchten?",
+            "skip_confirm_title": "Überspringen"
+        },
+        "steps": {
+            "code_folding": {
+                "message": "Fokus durch Ausblenden von Blöcken.",
+                "tips": [],
+                "title": "Code-Faltung"
+            },
+            "congrats": {
+                "message": "Grundlagentraining abgeschlossen!",
+                "tips": [
+                    "Jederzeit über Hilfe-Menü abrufbar."
+                ],
+                "title": "Herzlichen Glückwunsch! 🎉"
+            },
+            "editor_area": {
+                "message": "Das ist Ihr Spielplatz.",
+                "tips": [
+                    "Strg + Rad für Schriftgröße."
+                ],
+                "title": "Herz des Editors"
+            },
+            "file_explorer": {
+                "message": "Hier leben Ihre Projekte.",
+                "tips": [
+                    "Neuen Ordner mit Strg+Umschalt+O öffnen."
+                ],
+                "title": "Datei-Explorer"
+            },
+            "find_replace": {
+                "message": "Leistungsstarke Suchmaschine.",
+                "tips": [],
+                "title": "Suchen und Zerstören (Ersetzen)"
+            },
+            "goto_line": {
+                "message": "Verlieren Sie sich nicht in langen Dateien.",
+                "tips": [
+                    "Teleportieren Sie sich zu jeder Zeile."
+                ],
+                "title": "Gehe zu Zeile (Strg+G)"
+            },
+            "image_viewer": {
+                "message": "Ihr Editor kann jetzt auch Bilder öffnen!",
+                "tips": [
+                    "Mausrad zum Zoomen verwenden."
+                ],
+                "title": "Bildbetrachter"
+            },
+            "markdown": {
+                "message": "Tolles Feature für Autoren.",
+                "tips": [],
+                "title": "Markdown-Vorschau"
+            },
+            "menus": {
+                "message": "Dies ist das Zentrum von allem.",
+                "tips": [],
+                "title": "Menüs und Befehle"
+            },
+            "minimap": {
+                "message": "Vogelperspektive Ihres Codes.",
+                "tips": [],
+                "title": "Minimap (Code-Karte)"
+            },
+            "multi_cursor": {
+                "message": "Bearbeiten Sie mehrere Stellen gleichzeitig!",
+                "tips": [
+                    "'Escape' zum Abbrechen."
+                ],
+                "title": "Multi-Cursor Magie"
+            },
+            "new_tab": {
+                "message": "Öffnen Sie ein leeres Blatt zum Coden.",
+                "tips": [
+                    "Tabs durch Ziehen neu anordnen."
+                ],
+                "title": "Ein Neuanfang"
+            },
+            "settings": {
+                "message": "Detaillierte Anpassung.",
+                "tips": [],
+                "title": "Einstellungsmenü"
+            },
+            "smart_select": {
+                "message": "Variablennamen ändern war noch nie so einfach.",
+                "tips": [],
+                "title": "Intelligente Auswahl (Strg+D)"
+            },
+            "status_bar": {
+                "message": "Alles über Ihre Datei.",
+                "tips": [],
+                "title": "Statusleiste"
+            },
+            "terminal": {
+                "message": "Befehle ausführen ohne den Editor zu verlassen.",
+                "tips": [
+                    "Mit 'exit' schließen."
+                ],
+                "title": "Terminal-Integration"
+            },
+            "theme": {
+                "message": "Wählen Sie Ihren Look.",
+                "tips": [
+                    "Wir empfehlen 'Dracula' oder 'Dark' für nachts."
+                ],
+                "title": "Themen"
+            },
+            "welcome": {
+                "message": "Hallo! 👋\n\nWillkommen zu dieser interaktiven Anleitung.",
+                "tips": [
+                    "Sie können das Tutorial-Fenster verschieben."
+                ],
+                "title": "Willkommen beim Memati Editor!"
+            },
+            "zen_mode": {
+                "message": "Wenn Sie sich nur auf den Code konzentrieren wollen...",
+                "tips": [],
+                "title": "Zen-Modus"
+            }
+        },
+        "title": "Memati Editor - Tutorial"
+    },
+    "untitled_tab": "Unbenannt",
+    "window_title": "⚙️ Einstellungen"
 }

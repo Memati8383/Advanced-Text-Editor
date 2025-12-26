@@ -289,7 +289,15 @@
         {"word": "SUM", "type": "function"},
         {"word": "AVG", "type": "function"},
         {"word": "MAX", "type": "function"},
-        {"word": "MIN", "type": "function"}
+        {"word": "MIN", "type": "function"},
+        {"word": "ORDER BY", "type": "keyword"},
+        {"word": "GROUP BY", "type": "keyword"},
+        {"word": "HAVING", "type": "keyword"},
+        {"word": "UNION", "type": "keyword"},
+        {"word": "ALL", "type": "keyword"},
+        {"word": "INDEX", "type": "keyword"},
+        {"word": "VIEW", "type": "keyword"},
+        {"word": "TRIGGER", "type": "keyword"}
     ],
     "typescript": [
         {"word": "interface", "type": "keyword"},
@@ -456,5 +464,55 @@
         {"word": "public", "type": "keyword"},
         {"word": "puts", "type": "function"},
         {"word": "print", "type": "function"}
+    ],
+    "markdown": [
+        {"word": "# Başlık 1", "type": "header"},
+        {"word": "## Başlık 2", "type": "header"},
+        {"word": "### Başlık 3", "type": "header"},
+        {"word": "**Kalın Yazı**", "type": "style"},
+        {"word": "*İtalik Yazı*", "type": "style"},
+        {"word": "~~Üzeri Çizili~~", "type": "style"},
+        {"word": "[Link Metni](url)", "type": "link"},
+        {"word": "![Resim Alt Yazısı](resim_yolu)", "type": "image"},
+        {"word": "- Liste Öğesi", "type": "list"},
+        {"word": "1. Numaralı Liste", "type": "list"},
+        {"word": "> Alıntı", "type": "quote"},
+        {"word": "```python\n\n```", "type": "code_block"},
+        {"word": "```javascript\n\n```", "type": "code_block"},
+        {"word": "---", "type": "separator"}
+    ],
+    "json": [
+        {"word": "true", "type": "value"},
+        {"word": "false", "type": "value"},
+        {"word": "null", "type": "value"}
+    ],
+    "yaml": [
+        {"word": "version", "type": "keyword"},
+        {"word": "services", "type": "keyword"},
+        {"word": "image", "type": "keyword"},
+        {"word": "ports", "type": "keyword"},
+        {"word": "environment", "type": "keyword"},
+        {"word": "volumes", "type": "keyword"},
+        {"word": "networks", "type": "keyword"},
+        {"word": "build", "type": "keyword"}
+    ],
+    "bash": [
+        {"word": "if", "type": "keyword"},
+        {"word": "then", "type": "keyword"},
+        {"word": "else", "type": "keyword"},
+        {"word": "fi", "type": "keyword"},
+        {"word": "for", "type": "keyword"},
+        {"word": "while", "type": "keyword"},
+        {"word": "do", "type": "keyword"},
+        {"word": "done", "type": "keyword"},
+        {"word": "case", "type": "keyword"},
+        {"word": "esac", "type": "keyword"},
+        {"word": "function", "type": "keyword"},
+        {"word": "return", "type": "keyword"},
+        {"word": "exit", "type": "keyword"},
+        {"word": "echo", "type": "function"},
+        {"word": "grep", "type": "function"},
+        {"word": "awk", "type": "function"},
+        {"word": "sed", "type": "function"}
     ]
 }

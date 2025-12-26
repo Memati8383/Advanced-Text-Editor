@@ -30,3 +30,5 @@ This directory contains the User Interface components for the Advanced Text Edit
 
 ### Sub-packages
 - **`markdown/`**: Contains specialized classes for the Markdown rendering engine.
+- **`settings/`**: Modular setting panels for the settings dialog.
+- **`features/`**: Modular editor features like code folding and multi-cursor support.

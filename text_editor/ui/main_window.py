@@ -5,11 +5,16 @@ from text_editor.ui.status_bar import StatusBar
 from text_editor.ui.file_explorer import FileExplorer
 import tkinter as tk
 import os
-import re
 import json
+import re
 from text_editor.utils.shortcut_manager import ShortcutManager
+from text_editor.utils.settings_manager import SettingsManager
 
-class MainWindow(ctk.CTk):
+from text_editor.ui.menu_bar import MenuBar
+from text_editor.ui.drop_zone import DragDropManager
+from tkinterdnd2 import TkinterDnD, DND_FILES
+
+class MainWindow(ctk.CTk, TkinterDnD.DnDWrapper):
     """
     Uygulamanın ana penceresi. 
     Tüm üst düzey bileşenleri (Menü, Dosya Gezgini, Sekmeler, Durum Çubuğu) barındırır
@@ -17,27 +22,26 @@ class MainWindow(ctk.CTk):
     """
     def __init__(self):
         super().__init__()
+        self.TkdndVersion = TkinterDnD._require(self)
         
         # Dil yöneticisini başlat
         from text_editor.utils.language_manager import LanguageManager
         self.lang = LanguageManager.get_instance()
         
-        # Ayarları yükle
-        self.settings = self.load_settings()
+        # Ayarlar yöneticisini başlat
+        self.settings_manager = SettingsManager.get_instance()
+        self.settings = self.settings_manager.settings
         
         # Kayıtlı dili uygula
-        saved_lang = self.settings.get("language", "Türkçe")
+        saved_lang = self.settings_manager.get("language", "Türkçe")
         self.lang.load_language(saved_lang)
         
-        # Modern menü bar (tema uygulandıktan sonra güncellenecek)
-        self.modern_menu = None
-        
         # Görünüm durumları
-        self._status_bar_visible = self.settings.get("show_status_bar", True)
-        self._file_explorer_visible = self.settings.get("show_file_explorer", True)
+        self._status_bar_visible = self.settings_manager.get("show_status_bar", True)
+        self._file_explorer_visible = self.settings_manager.get("show_file_explorer", True)
         self._menu_visible = True
         self._zen_mode = False
-        self._terminal_visible = self.settings.get("show_terminal", False)
+        self._terminal_visible = self.settings_manager.get("show_terminal", False)
         self.terminal_panel = None  # Terminal paneli referansı
         self._markdown_preview_visible = False  # Markdown preview başlangıçta kapalı
         self.markdown_preview = None  # Markdown preview referansı
@@ -53,12 +57,12 @@ class MainWindow(ctk.CTk):
         self.tab_manager = TabManager(self)
         
         # Dosya Gezgini
-        # Önemli: open yöntemini sarmalamak için bir lambda iletin veya open_file'ın bağımsız değişkenleri işlediğinden emin olun
         self.file_explorer = FileExplorer(self, open_file_callback=self.open_file_from_explorer)
 
         # 2. Düzeni Oluştur
         # Menü Çubuğu (Satır 0)
-        self.create_custom_menu()
+        self.menu_bar = MenuBar(self)
+        self.menu_bar.grid(row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0)
         
         # Dosya Gezgini (Satır 1, Sütun 0)
         self.file_explorer.grid(row=1, column=0, sticky="nsew", padx=(0, 5), pady=(10, 0))
@@ -69,9 +73,84 @@ class MainWindow(ctk.CTk):
         # Durum Çubuğu (Satır 3, tümünü kapsayan)
         self.status_bar.grid(row=3, column=0, columnspan=2, sticky="ew", padx=10, pady=5)
         
-        # Ağırlıkları güncelle (Sütun 0: Kenar Çubuğu, Sütun 1: Ana)
-        self.grid_columnconfigure(0, weight=0, minsize=200) # Kenar çubuğu başlangıçta sabit genişlikte mi? yoksa yeniden boyutlandırılabilir mi
+        # Ağırlıkları güncelle
+        self.grid_columnconfigure(0, weight=0, minsize=200)
         self.grid_columnconfigure(1, weight=1)
+        
+        # Yardım Sistemini Başlat
+        from text_editor.ui.help_system import HelpSystem
+        self.help_system = HelpSystem(self)
+        
+        # Kısayolları ve olayları ayarla
+        self._setup_global_events()
+        
+        # Başlangıç temasını uygula
+        saved_theme = self.settings_manager.get("theme", "Dark")
+        self.after(100, lambda: self.apply_theme(saved_theme))
+
+        # Tam ekran başlat (ayar varsa)
+        if self.settings_manager.get("start_fullscreen", False):
+            self.after(200, lambda: self.attributes("-fullscreen", True))
+
+        # Sürükle Bırak Yöneticisi
+        self._setup_drag_drop()
+
+    def _setup_drag_drop(self):
+        """Gelişmiş sürükle-bırak sistemini yapılandırır."""
+        # DragDropManager oluştur
+        self.drag_drop_manager = DragDropManager(
+            self,
+            on_file_open=self._handle_file_drop,
+            on_folder_open=self._handle_folder_drop
+        )
+        
+        # TkinterDnD2 event'lerini bağla
+        self.drop_target_register(DND_FILES)
+        self.dnd_bind('<<Drop>>', self._on_drop)
+        # Not: TkinterDnD2'de DragEnter/DragLeave event'leri için farklı syntax'lar deneniyor
+        # Bazı Windows sistemlerinde bu event'ler çalışmayabiliyor
+        try:
+            # Önce standart syntax dene
+            self.dnd_bind('<<DragEnter>>', self._on_drag_enter)
+            self.dnd_bind('<<DragLeave>>', self._on_drag_leave)
+        except Exception:
+            pass
+        
+        # Alternatif event adlarını da dene
+        try:
+            self.dnd_bind('<DragEnter>', self._on_drag_enter)
+            self.dnd_bind('<DragLeave>', self._on_drag_leave)
+        except Exception:
+            pass
+        
+        # DropEnter/DropLeave event'lerini de dene (bazı versiyonlarda bu isimler kullanılıyor)
+        try:
+            self.dnd_bind('<<DropEnter>>', self._on_drag_enter)
+            self.dnd_bind('<<DropLeave>>', self._on_drag_leave)
+        except Exception:
+            pass
+    
+    def _on_drag_enter(self, event):
+        """Dosya sürüklenip pencereye girdiğinde çağrılır."""
+        self.drag_drop_manager.on_drag_enter(event)
+        return event.action
+    
+    def _on_drag_leave(self, event):
+        """Dosya sürüklenip pencereden çıktığında çağrılır."""
+        self.drag_drop_manager.on_drag_leave(event)
+        return event.action
+    
+    def _on_drop(self, event):
+        """Dosya bırakıldığında çağrılır."""
+        return self.drag_drop_manager.on_drop(event)
+    
+    def _handle_file_drop(self, file_path: str):
+        """Sürükle-bırak ile gelen dosyayı açar."""
+        self.tab_manager.open_file(path=file_path)
+    
+    def _handle_folder_drop(self, folder_path: str):
+        """Sürükle-bırak ile gelen klasörü açar."""
+        self.open_folder_path(folder_path)
 
     def open_file_from_explorer(self, file_path):
         """
@@ -86,118 +165,16 @@ class MainWindow(ctk.CTk):
     def open_folder(self):
         folder_path = tk.filedialog.askdirectory()
         if folder_path:
+            self.open_folder_path(folder_path)
+
+    def open_folder_path(self, folder_path):
+        """Verilen klasör yolunu açar."""
+        if folder_path:
             self.file_explorer.set_root_path(folder_path)
             self.title(f"{APP_NAME} - {os.path.basename(folder_path)}")
 
-    def create_custom_menu(self):
-        """
-        Özel başlık çubuğu/menü çubuğunu ve uygulama menülerini oluşturur.
-        Ayrıca klavye kısayollarını (Ctrl+N, Ctrl+S vb.) tanımlar.
-        Modern, estetik bir tasarıma sahip.
-        """
-        # Menü çubuğu için çerçeve - daha yüksek ve stilize
-        self.menu_frame = ctk.CTkFrame(
-            self, 
-            height=45, 
-            corner_radius=0, 
-            fg_color=("white", "#2b2b2b"),
-            border_width=0
-        )
-        self.menu_frame.grid(row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0)
-        
-        # Menü düğmeleri için liste
-        self.menu_buttons = []
-        
-        # Menü düğmeleri oluşturmak için yardımcı
-        def add_menu_btn(text_key, command, icon="", pass_widget=False):
-            text = self.lang.get(text_key)
-            display_text = f"{icon} {text}" if icon else text
-            btn = ctk.CTkButton(
-                self.menu_frame, 
-                text=display_text,
-                width=80, 
-                height=40,
-                corner_radius=6,
-                fg_color="transparent", 
-                hover_color=("gray75", "gray25"),
-                font=("Segoe UI", 12, "bold"),
-                anchor="center",
-                border_width=0
-            )
-            if pass_widget:
-                btn.configure(command=lambda: command(btn))
-            else:
-                btn.configure(command=command)
-                
-            btn.pack(side="left", padx=3, pady=2)
-            self.menu_buttons.append(btn)
-            return btn
-
-        # Logo/Başlık
-        logo_label = ctk.CTkLabel(
-            self.menu_frame,
-            text="🪐 Memati Editör",
-            font=("Segoe UI", 14, "bold"),
-            text_color=("gray20", "#00d4ff")
-        )
-        logo_label.pack(side="left", padx=(15, 30))
-
-        # Menü Butonları
-        add_menu_btn("menu.file", self.show_file_menu, "📁", pass_widget=True)
-        add_menu_btn("menu.edit", self.show_edit_menu, "✏️", pass_widget=True)
-        add_menu_btn("menu.view", self.show_view_menu, "👁️", pass_widget=True)
-        add_menu_btn("menu.theme", self.show_theme_menu, "🎨", pass_widget=True)
-        
-        # Tutorial butonu - özel stil
-        tutorial_btn = ctk.CTkButton(
-            self.menu_frame,
-            text=f"🎓 {self.lang.get('menu.tutorial')}",
-            width=90,
-            height=40,
-            corner_radius=6,
-            fg_color=("#00d4ff", "#0096c7"),
-            hover_color=("#00b8e6", "#007ea7"),
-            font=("Segoe UI", 12, "bold"),
-            anchor="center",
-            border_width=0,
-            command=self.start_tutorial
-        )
-        tutorial_btn.pack(side="left", padx=3, pady=2)
-        self.menu_buttons.append(tutorial_btn)
-        
-        # Ayarlar butonu - özel stil
-        settings_btn = ctk.CTkButton(
-            self.menu_frame,
-            text=f"⚙️ {self.lang.get('menu.settings')}",
-            width=90,
-            height=40,
-            corner_radius=6,
-            fg_color="transparent",
-            hover_color=("gray75", "gray25"),
-            font=("Segoe UI", 12, "bold"),
-            anchor="center",
-            border_width=0,
-            command=self.open_settings
-        )
-        settings_btn.pack(side="left", padx=3, pady=2)
-        self.menu_buttons.append(settings_btn)
-        
-        add_menu_btn("menu.help", lambda: self.help_system.open_help("Hızlı Başlangıç"), "❓", pass_widget=False)
-        
-        # Sağ tarafta versiyon bilgisi
-        version_label = ctk.CTkLabel(
-            self.menu_frame,
-            text="v1.0",
-            font=("Segoe UI", 9),
-            text_color=("gray50", "gray60")
-        )
-        version_label.pack(side="right", padx=15)
-        
-        # Yardım Sistemini Başlat
-        from text_editor.ui.help_system import HelpSystem
-        self.help_system = HelpSystem(self)
-
-        # Klavye Kısayolları (ShortcutManager üzerinden)
+    def _setup_global_events(self):
+        """Uygulama genelindeki olayları ve kısayolları bağlar."""
         self.shortcut_manager = ShortcutManager.get_instance()
         shortcuts = self.shortcut_manager
         
@@ -223,16 +200,12 @@ class MainWindow(ctk.CTk):
         # Zen Mode
         self.bind(shortcuts.get("toggle_zen_mode"), self.toggle_zen_mode)
         
-        # Kopyalama Kısayolları (Henüz manager'da yoksa ekleyelim veya varsayılan bırakalım)
+        # Kopyalama Kısayolları
         self.bind("<Control-Shift-C>", lambda e: self.tab_manager.copy_path())
         self.bind("<Control-Alt-c>", lambda e: self.tab_manager.copy_relative_path())
         
         # Ayarlar kısayolu
         self.bind("<Control-comma>", lambda e: self.open_settings())
-        
-        # Başlangıç temasını uygula
-        saved_theme = self.settings.get("theme", "Dark")
-        self.after(100, lambda: self.apply_theme(saved_theme))
 
     def create_zen_exit_button(self):
         """Zen modu çıkış butonunu oluşturur."""
@@ -250,258 +223,28 @@ class MainWindow(ctk.CTk):
         # Sağ üst köşeye yerleştir
         self.zen_exit_btn.place(relx=0.98, rely=0.02, anchor="ne")
 
-    def show_file_menu(self, button):
-        """Dosya menüsünü gösterir - modern, stilize dropdown"""
-        if not self.modern_menu:
-            return
-        
-        shortcuts = self.shortcut_manager
-        fmt = shortcuts.get_display_string
-        
-        menu_items = [
-            {
-                "icon": "📄",
-                "label": self.lang.get("menu.items.new_tab"),
-                "shortcut": fmt(shortcuts.get("new_tab")),
-                "command": self.tab_manager.add_new_tab
-            },
-            {
-                "icon": "📂",
-                "label": self.lang.get("menu.items.open_file"),
-                "shortcut": fmt(shortcuts.get("open_file")),
-                "command": self.tab_manager.open_file
-            },
-            {
-                "icon": "📁",
-                "label": self.lang.get("menu.items.open_folder"),
-                "shortcut": fmt(shortcuts.get("open_folder")),
-                "command": self.open_folder
-            },
-            {"separator": True},
-            {
-                "icon": "💾",
-                "label": self.lang.get("menu.items.save"),
-                "shortcut": fmt(shortcuts.get("save_file")),
-                "command": self.tab_manager.save_current_file
-            },
-            {
-                "icon": "📝",
-                "label": self.lang.get("menu.items.save_as"),
-                "shortcut": fmt(shortcuts.get("save_as")),
-                "command": self.tab_manager.save_current_file_as
-            },
-            {"separator": True},
-            {
-                "icon": "🔍",
-                "label": self.lang.get("menu.items.find_replace"),
-                "shortcut": fmt(shortcuts.get("find")),
-                "command": self.tab_manager.show_find_replace
-            },
-            {
-                "icon": "🎯",
-                "label": self.lang.get("menu.items.goto_line"),
-                "shortcut": fmt(shortcuts.get("goto_line")),
-                "command": self.tab_manager.show_goto_line
-            },
-            {"separator": True},
-            {
-                "icon": "🚪",
-                "label": self.lang.get("menu.items.exit"),
-                "shortcut": fmt(shortcuts.get("quit")),
-                "command": self.quit
-            }
-        ]
-        
-        self.modern_menu.show_dropdown(button, menu_items)
-
-    def show_edit_menu(self, button):
-        """Düzenle menüsünü gösterir - modern, stilize dropdown"""
-        if not self.modern_menu:
-            return
-        
-        shortcuts = self.shortcut_manager
-        fmt = shortcuts.get_display_string
-        
-        menu_items = [
-            {
-                "icon": "↶",
-                "label": self.lang.get("menu.items.undo"),
-                "shortcut": fmt(shortcuts.get("undo")),
-                "command": lambda: self.focus_get().event_generate("<<Undo>>") if self.focus_get() else None
-            },
-            {
-                "icon": "↷",
-                "label": self.lang.get("menu.items.redo"),
-                "shortcut": fmt(shortcuts.get("redo")),
-                "command": lambda: self.focus_get().event_generate("<<Redo>>") if self.focus_get() else None
-            },
-            {"separator": True},
-            {
-                "icon": "✂️",
-                "label": self.lang.get("menu.items.cut"),
-                "shortcut": fmt(shortcuts.get("cut")),
-                "command": lambda: self.focus_get().event_generate("<<Cut>>") if self.focus_get() else None
-            },
-            {
-                "icon": "📋",
-                "label": self.lang.get("menu.items.copy"),
-                "shortcut": fmt(shortcuts.get("copy")),
-                "command": lambda: self.focus_get().event_generate("<<Copy>>") if self.focus_get() else None
-            },
-            {
-                "icon": "📌",
-                "label": self.lang.get("menu.items.paste"),
-                "shortcut": fmt(shortcuts.get("paste")),
-                "command": lambda: self.focus_get().event_generate("<<Paste>>") if self.focus_get() else None
-            },
-            {"separator": True},
-            {
-                "icon": "📑",
-                "label": self.lang.get("menu.items.duplicate_line"),
-                "shortcut": fmt(shortcuts.get("duplicate_line")),
-                "command": self.tab_manager.duplicate_line
-            },
-            {
-                "icon": "⬆️",
-                "label": self.lang.get("menu.items.move_up"),
-                "shortcut": fmt(shortcuts.get("move_line_up")),
-                "command": self.tab_manager.move_line_up
-            },
-            {
-                "icon": "⬇️",
-                "label": self.lang.get("menu.items.move_down"),
-                "shortcut": fmt(shortcuts.get("move_line_down")),
-                "command": self.tab_manager.move_line_down
-            },
-            {
-                "icon": "🗑️",
-                "label": self.lang.get("menu.items.delete_line"),
-                "shortcut": fmt(shortcuts.get("delete_line")),
-                "command": self.tab_manager.delete_line
-            },
-            {
-                "icon": "🔗",
-                "label": self.lang.get("menu.items.join_lines"),
-                "shortcut": fmt(shortcuts.get("join_lines")),
-                "command": self.tab_manager.join_lines
-            },
-            {"separator": True},
-            {
-                "icon": "🔍",
-                "label": self.lang.get("menu.items.find_replace"),
-                "shortcut": fmt(shortcuts.get("find")),
-                "command": self.tab_manager.show_find_replace
-            },
-            {
-                "icon": "🎯",
-                "label": self.lang.get("menu.items.goto_line"),
-                "shortcut": fmt(shortcuts.get("goto_line")),
-                "command": self.tab_manager.show_goto_line
-            },
-            {"separator": True},
-            {
-                "icon": "📋",
-                "label": self.lang.get("menu.items.copy_path"),
-                "shortcut": fmt(shortcuts.get("copy_path")),
-                "command": self.tab_manager.copy_path
-            },
-            {
-                "icon": "📂",
-                "label": self.lang.get("menu.items.relative_path"),
-                "shortcut": fmt(shortcuts.get("copy_relative_path")),
-                "command": self.tab_manager.copy_relative_path
-            }
-        ]
-        
-        self.modern_menu.show_dropdown(button, menu_items)
-
-    def popup_menu(self, menu, button):
-        """Eski tkinter menü sistemi için geriye dönük uyumluluk"""
-        x = button.winfo_rootx()
-        y = button.winfo_rooty() + button.winfo_height()
-        try:
-            menu.tk_popup(x, y)
-        finally:
-            menu.grab_release()
-
-    def show_theme_menu(self, button):
-        """Tema menüsünü gösterir - modern, ikonlu dropdown"""
-        if not self.modern_menu:
-            return
-        
-        from text_editor.theme_config import get_available_themes
-        
-        # Temalar için ikonlar
-        theme_icons = {
-            "Dark": "🌑",
-            "Light": "☀️",
-            "Dracula": "🧛",
-            "Solarized Light": "🌅",
-            "Monokai": "🔥",
-            "Nord": "❄️",
-            "Gruvbox": "🍂",
-            "One Dark Pro": "⚫",
-            "GitHub Dark": "🐙",
-            "Synthwave 84": "🌃",
-            "Solarized Dark": "🌘",
-            "Night Owl": "🦉",
-            "Tokyo Night": "🗼",
-            "Cobalt2": "🔵",
-            "Material Palenight": "👾",
-            "Ayu Dark": "🦈",
-            "Shades of Purple": "💜"
-        }
-        
-        menu_items = []
-        for theme_name in get_available_themes():
-            icon = theme_icons.get(theme_name, "🎨")
-            menu_items.append({
-                "icon": icon,
-                "label": theme_name,
-                "command": lambda t=theme_name: self.change_theme(t)
-            })
-        
-        self.modern_menu.show_dropdown(button, menu_items)
+    # change_theme and apply_theme below
 
     def change_theme(self, theme_name):
         self.apply_theme(theme_name)
 
     def apply_theme(self, theme_name):
         from text_editor.theme_config import get_theme
-        from text_editor.ui.modern_menu import ModernMenuBar
         theme = get_theme(theme_name)
         
         # Mevcut tema adını kaydet (terminal için)
         self._current_theme_name = theme_name
         
-        # Modern menü bar'ı ilk kez oluştur veya tema bilgisini güncelle
-        if not self.modern_menu:
-            self.modern_menu = ModernMenuBar(self, theme)
-        else:
-            self.modern_menu.theme = theme
-        
         # Temel görünüm modunu ayarla (Açık/Koyu)
         ctk.set_appearance_mode(theme["type"])
         
         # Pencere başlığını güncelle
-        # Pencere başlığını güncelle
         theme_msg = self.lang.get("menu.theme")  # "Tema" veya "Theme"
-        # İkonu temizleyelim
         theme_msg = theme_msg.replace("🎨", "").strip()
         self.title(f"🪐 {APP_NAME} - {theme_name} {theme_msg}")
         
-        # 1. Menü Çubuğu - Gradient efekti için border ekle
-        self.menu_frame.configure(
-            fg_color=theme["menu_bg"],
-            border_color=theme.get("accent_color", theme["status_bg"]),
-            border_width=2
-        )
-        for btn in self.menu_buttons:
-            btn.configure(
-                text_color=theme["menu_fg"], 
-                hover_color=theme["menu_hover"],
-                border_color=theme.get("accent_color", "transparent")
-            )
+        # 1. Menü Çubuğu
+        self.menu_bar.apply_theme(theme)
 
         # 2. Durum Çubuğu - Yeni yapıya göre
         self.status_bar.configure(
@@ -539,7 +282,11 @@ class MainWindow(ctk.CTk):
         if self.markdown_preview:
             self.markdown_preview.update_theme(theme)
         
-        # 7. Ana pencere arka planı
+        # 7. Sürükle-Bırak Overlay (varsa)
+        if hasattr(self, 'drag_drop_manager'):
+            self.drag_drop_manager.update_theme(theme)
+        
+        # 8. Ana pencere arka planı
         self.configure(fg_color=theme.get("bg", "#1e1e1e"))
 
     def toggle_fullscreen(self, event=None):
@@ -547,80 +294,7 @@ class MainWindow(ctk.CTk):
 
     # === Görünüm Ayarları ===
     
-    def show_view_menu(self, button):
-        """Görünüm menüsünü gösterir - toggle seçenekleri ile"""
-        if not self.modern_menu:
-            return
-        
-        # Mevcut durumları al
-        view_states = self.tab_manager.get_view_states()
-        
-        shortcuts = self.shortcut_manager
-        fmt = shortcuts.get_display_string
-        
-        def get_toggle_icon(is_on):
-            return "✅" if is_on else "⬜"
-        
-        menu_items = [
-            {
-                "icon": get_toggle_icon(view_states.get("line_numbers", True)),
-                "label": self.lang.get("menu.items.line_numbers"),
-                "shortcut": fmt(shortcuts.get("toggle_line_numbers")),
-                "command": self.toggle_line_numbers_with_feedback
-            },
-            {
-                "icon": get_toggle_icon(view_states.get("word_wrap", False)),
-                "label": self.lang.get("menu.items.word_wrap"),
-                "shortcut": fmt(shortcuts.get("toggle_word_wrap")),
-                "command": self.toggle_word_wrap_with_feedback
-            },
-            {
-                "icon": get_toggle_icon(view_states.get("minimap", True)),
-                "label": self.lang.get("menu.items.minimap"),
-                "shortcut": fmt(shortcuts.get("toggle_minimap")),
-                "command": self.toggle_minimap_with_feedback
-            },
-            {"separator": True},
-            {
-                "icon": get_toggle_icon(self._status_bar_visible),
-                "label": self.lang.get("menu.items.status_bar"),
-                "shortcut": fmt(shortcuts.get("toggle_status_bar")),
-                "command": self.toggle_status_bar
-            },
-            {
-                "icon": get_toggle_icon(self._file_explorer_visible),
-                "label": self.lang.get("menu.items.file_explorer"),
-                "shortcut": fmt(shortcuts.get("toggle_file_explorer")),
-                "command": self.toggle_file_explorer
-            },
-            {
-                "icon": get_toggle_icon(self._terminal_visible),
-                "label": self.lang.get("menu.items.terminal"),
-                "shortcut": fmt(shortcuts.get("toggle_terminal")),
-                "command": self.toggle_terminal
-            },
-            {
-                "icon": get_toggle_icon(self._markdown_preview_visible),
-                "label": self.lang.get("menu.items.markdown_preview"),
-                "shortcut": fmt(shortcuts.get("preview_markdown")),
-                "command": self.toggle_markdown_preview
-            },
-            {"separator": True},
-            {
-                "icon": "🧘",
-                "label": self.lang.get("menu.items.zen_mode"),
-                "shortcut": fmt(shortcuts.get("toggle_zen_mode")),
-                "command": self.toggle_zen_mode
-            },
-            {
-                "icon": "📺",
-                "label": self.lang.get("menu.items.fullscreen"),
-                "shortcut": fmt(shortcuts.get("toggle_fullscreen")),
-                "command": self.toggle_fullscreen
-            }
-        ]
-        
-        self.modern_menu.show_dropdown(button, menu_items)
+    # show_view_menu removed (managed by MenuBar)
     
     def toggle_line_numbers_with_feedback(self):
         """Satır numaralarını toggle eder ve durum mesajı gösterir."""
@@ -699,7 +373,8 @@ class MainWindow(ctk.CTk):
             self._pre_zen_minimap = self.tab_manager.get_view_states().get("minimap", True)
             
             # Tüm panelleri gizle
-            self.menu_frame.grid_remove()
+            # Tüm panelleri gizle
+            self.menu_bar.grid_remove()
             self.status_bar.grid_remove()
             self.file_explorer.grid_remove()
             self.grid_columnconfigure(0, weight=0, minsize=0)
@@ -728,7 +403,8 @@ class MainWindow(ctk.CTk):
                 self.zen_exit_btn.destroy()
             
             # Menüyü geri getir
-            self.menu_frame.grid(row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0)
+            # Menüyü geri getir
+            self.menu_bar.grid(row=0, column=0, columnspan=2, sticky="ew", padx=0, pady=0)
             self._menu_visible = True
             
             # Önceki durumları geri yükle
@@ -927,11 +603,9 @@ class MainWindow(ctk.CTk):
                 # Dil dosyasını yükle (LanguageManager otomatik dönüştürür)
                 self.lang.load_language(new_lang)
                 
-                # Menüyü yeniden oluştur
-                for widget in self.menu_frame.winfo_children():
-                    widget.destroy()
-                self.menu_buttons.clear()
-                self.create_custom_menu()
+                # Menüyü güncelle (MenuBar kendi dilini günceller)
+                if hasattr(self, 'menu_bar') and self.menu_bar:
+                    self.menu_bar.update_language()
                 
                 # Dosya Gezgini başlığını güncelle
                 if hasattr(self, 'file_explorer') and self.file_explorer:
@@ -955,7 +629,7 @@ class MainWindow(ctk.CTk):
                 self.status_bar.set_message(welcome_msg)
 
             # Ayarları kaydet
-            self.save_settings()
+            self.settings_manager.update_multiple(new_settings)
             
             # Durum mesajı
             if self._status_bar_visible:
@@ -965,63 +639,3 @@ class MainWindow(ctk.CTk):
         # Ayarlar penceresini aç
         from text_editor.ui.settings_dialog import SettingsDialog
         settings_dialog = SettingsDialog(self, self.settings, apply_settings)
-    
-    def load_settings(self):
-        """Ayarları dosyadan yükler."""
-        settings_file = os.path.join(
-            os.path.expanduser("~"),
-            ".memati_editor",
-            "settings.json"
-        )
-        
-        # Varsayılan ayarlar
-        default_settings = {
-            "app_name": "Memati Editör",
-            "font_family": "Consolas",
-            "font_size": 14,
-            "language": "Türkçe",
-            "show_line_numbers": True,
-            "word_wrap": False,
-            "show_minimap": True,
-            "tab_size": 4,
-            "auto_save": True,
-            "auto_save_interval": 30,
-            "bracket_matching": True,
-            "syntax_highlighting": True,
-            "show_status_bar": True,
-            "show_file_explorer": True,
-            "show_terminal": False,
-            "start_fullscreen": False,
-            "theme": "Dark",
-            "terminal_type": "PowerShell",
-            "terminal_font_size": 12,
-            "terminal_history": 1000,
-            "performance_mode": False,
-            "auto_backup": True,
-            "max_file_size": 10,
-            "error_reporting": True
-        }
-        
-        if os.path.exists(settings_file):
-            try:
-                with open(settings_file, "r", encoding="utf-8") as f:
-                    loaded_settings = json.load(f)
-                    # Varsayılan ayarları güncelle
-                    default_settings.update(loaded_settings)
-            except Exception as e:
-                print(f"Ayarlar yüklenemedi: {e}")
-        
-        return default_settings
-    
-    def save_settings(self):
-        """Ayarları dosyaya kaydeder."""
-        settings_dir = os.path.join(os.path.expanduser("~"), ".memati_editor")
-        os.makedirs(settings_dir, exist_ok=True)
-        
-        settings_file = os.path.join(settings_dir, "settings.json")
-        
-        try:
-            with open(settings_file, "w", encoding="utf-8") as f:
-                json.dump(self.settings, f, indent=4, ensure_ascii=False)
-        except Exception as e:
-            print(f"Ayarlar kaydedilemedi: {e}")

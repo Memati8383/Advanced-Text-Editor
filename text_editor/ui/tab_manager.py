@@ -1,5 +1,6 @@
 import logging
 import os
+import queue
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from typing import Optional, List, Dict, Any, Callable
@@ -10,10 +11,13 @@ from text_editor.ui.editor import CodeEditor
 from text_editor.utils.file_monitor import FileMonitor
 from text_editor.theme_config import DARK_THEME
 from text_editor.ui.context_menu import ModernContextMenu 
+from text_editor.utils.settings_manager import SettingsManager
 try:
     from text_editor.utils.file_icons import FileIcons
 except ImportError:
     FileIcons = None
+
+from text_editor.utils.session_manager import SessionManager
 
 # Günlüğe kaydetmeyi yapılandır
 logger = logging.getLogger(__name__)
@@ -48,19 +52,23 @@ class TabManager(ctk.CTkFrame):
         self._init_state()
         self._setup_ui()
 
-        # İlk sekmeyi oluştur
-        self.add_new_tab()
+        # Oturum yöneticisini başlat
+        self.session_manager = SessionManager.get_instance()
         
+        # Servisleri başlat (Dosya izleyici vb. restorasyon için gerekli)
         self._start_services()
+        
+        # Oturumu geri yükle
+        self._restore_session()
 
     def _init_state(self):
         """Dahili durum değişkenlerini başlatır."""
         self.editors: Dict[str, CodeEditor] = {}
+        self._message_queue = queue.Queue()
         self.current_theme = DARK_THEME
         self.context_menu_window = None
         
         # Özel sekme yönetimi için yapılar
-        self._tab_buttons: Dict[str, ctk.CTkButton] = {}
         self._tab_frames: Dict[str, ctk.CTkFrame] = {}
         self._current_name: Optional[str] = None
         
@@ -79,15 +87,10 @@ class TabManager(ctk.CTkFrame):
         # Kendisi şeffaf olabilir veya arka plan rengi alabilir
         self.configure(fg_color="transparent")
 
-        # 1. Kaydırılabilir Sekme Çubuğu
-        self._tab_bar = ctk.CTkScrollableFrame(
-            self,
-            orientation="horizontal",
-            height=32, # Buton yüksekliğine uygun
-            fg_color=self.style_config["bar_bg"],
-            corner_radius=0
-        )
-        self._tab_bar.grid(row=0, column=0, sticky="ew", padx=0, pady=(0, 2))
+        # 1. Kaydırılabilir Sekme Çubuğu - TabBar bileşeni
+        from text_editor.ui.tab_bar import TabBar
+        self.tab_bar = TabBar(self, on_tab_click=self.set)
+        self.tab_bar.grid(row=0, column=0, sticky="ew", padx=0, pady=(0, 2))
         
         # 2. İçerik Alanı
         self._content_area = ctk.CTkFrame(
@@ -103,6 +106,7 @@ class TabManager(ctk.CTkFrame):
         """Arka plan hizmetlerini başlatır (Dosya izleyici, Otomatik kaydetme)."""
         self.file_monitor = FileMonitor(self.on_file_changed)
         self.after(AUTO_SAVE_INTERVAL_MS, self.auto_save_loop)
+        self._process_message_queue()
 
     # === CTkTabview Uyumluluk Yöntemleri ===
 
@@ -116,26 +120,13 @@ class TabManager(ctk.CTkFrame):
         self._tab_frames[name] = frame
         
         # 2. Sekme Butonu
-        btn = ctk.CTkButton(
-            self._tab_bar,
-            text=name,
-            font=DEFAULT_FONT,
-            width=120, # Genişlik, yazıya göre değişebilir aslında ama sabit iyidir
-            height=30,
-            corner_radius=6,
-            fg_color=self.style_config["tab_bg"],
-            hover_color=self.style_config["tab_hover"],
-            text_color=self.style_config["tab_text"],
-            command=lambda n=name: self.set(n)
-        )
-        btn.pack(side="left", padx=2, pady=2)
-        self._tab_buttons[name] = btn
+        self.tab_bar.add_tab_button(name, font=DEFAULT_FONT)
         
         return name
 
     def _get_tab_order(self) -> List[str]:
         """Sekmelerin görsel sırasını döndürür."""
-        return list(self._tab_buttons.keys())
+        return list(self.tab_bar.tab_buttons.keys())
 
     def delete(self, name: str):
         """Sekmeyi, butonunu ve içeriğini siler."""
@@ -147,8 +138,8 @@ class TabManager(ctk.CTkFrame):
         del self._tab_frames[name]
 
         # Butonu temizle
-        self._tab_buttons[name].destroy()
-        del self._tab_buttons[name]
+        # Butonu temizle
+        self.tab_bar.remove_tab_button(name)
 
         # Editörü temizle (TabManager maintainerı olarak)
         if name in self.editors:
@@ -164,6 +155,9 @@ class TabManager(ctk.CTkFrame):
             else:
                 # Hiç sekme kalmadıysa yeni oluştur
                 self.add_new_tab()
+        
+        # Oturumu kaydet
+        self._save_session_state()
 
     def set(self, name: str):
         """Aktif sekmeyi değiştirir."""
@@ -173,24 +167,16 @@ class TabManager(ctk.CTkFrame):
         # Eski sekmeyi gizle
         if self._current_name and self._current_name in self._tab_frames:
             self._tab_frames[self._current_name].grid_forget()
-            # Eski butonu pasif renge döndür
-            if self._current_name in self._tab_buttons:
-                self._tab_buttons[self._current_name].configure(
-                    fg_color=self.style_config["tab_bg"],
-                    border_width=0
-                )
 
         # Yeni sekmeyi göster
         self._current_name = name
         self._tab_frames[name].grid(row=0, column=0, sticky="nsew")
         
-        # Yeni butonu aktif renge döndür
-        if name in self._tab_buttons:
-            self._tab_buttons[name].configure(
-                fg_color=self.style_config["tab_selected"],
-                border_width=2,
-                border_color=self.style_config.get("accent_color", "#007acc")
-            )
+        # TabBar görselini güncelle
+        self.tab_bar.set_active_tab(name)
+        
+        # Oturumu kaydet (aktif sekme değişti)
+        self._save_session_state()
 
     def get(self) -> str:
         """Aktif sekmenin adını döndürür."""
@@ -282,8 +268,8 @@ class TabManager(ctk.CTkFrame):
         final_text = f"{icon} {display_name}{dirty_marker}"
         
         # Buton metnini güncelle
-        if tab_name in self._tab_buttons:
-            self._tab_buttons[tab_name].configure(text=final_text)
+        # Buton metnini güncelle
+        self.tab_bar.update_tab_text(tab_name, final_text)
 
     # === Çekirdek Mantık ===
 
@@ -341,6 +327,9 @@ class TabManager(ctk.CTkFrame):
         # Sekmeyi aktif yap
         self.set(name)
         
+        # Oturumu kaydet
+        self._save_session_state()
+        
         return name
 
     def _ensure_unique_name(self, name: str) -> str:
@@ -354,8 +343,9 @@ class TabManager(ctk.CTkFrame):
 
     def _bind_tab_events(self, tab_name: str):
         """Fare olaylarını sekme butonuna bağlar."""
-        if tab_name in self._tab_buttons:
-            btn = self._tab_buttons[tab_name]
+        """Fare olaylarını sekme butonuna bağlar."""
+        if tab_name in self.tab_bar.tab_buttons:
+            btn = self.tab_bar.tab_buttons[tab_name]
             
             # Sağ tık - Bağlam Menüsü
             btn.bind("<Button-3>", lambda e, n=tab_name: self.show_context_menu(e, n))
@@ -540,7 +530,10 @@ class TabManager(ctk.CTkFrame):
     def _should_use_current_tab(self) -> bool:
         current_name = self.get_current_tab_name()
         current_editor = self.get_current_editor()
-        return (NEW_TAB_PREFIX in current_name and 
+        
+        is_untitled = any(prefix in current_name for prefix in KNOWN_TAB_PREFIXES)
+        
+        return (is_untitled and 
                 current_editor and 
                 not current_editor.content_modified and 
                 len(current_editor.text_area.get("1.0", "end-1c")) == 0)
@@ -562,6 +555,10 @@ class TabManager(ctk.CTkFrame):
         editor.file_path = file_path
         editor.set_lexer_from_file(file_path)
         self.file_monitor.add_file(file_path)
+        
+        # Son kullanılanlara ekle
+        SettingsManager.get_instance().add_recent_file(file_path)
+        
         self._update_tab_visuals(tab_name)
 
     def _replace_tab_content(self, tab_name: str, view_class):
@@ -585,6 +582,52 @@ class TabManager(ctk.CTkFrame):
         filename = os.path.basename(file_path)
         tab_name = self.add_new_tab(filename)
         self._load_file_into_tab(tab_name, file_path)
+        # Oturumu kaydet
+        self._save_session_state()
+
+    def _restore_session(self):
+        """Önceki oturumu geri yükler."""
+        last_files = self.session_manager.get_last_files()
+        last_active = self.session_manager.get_last_active_tab()
+        
+        if not last_files:
+            self.add_new_tab()
+            return
+
+        # Dosyaları aç
+        opened_tabs = []
+        for file_path in last_files:
+            if os.path.exists(file_path):
+                filename = os.path.basename(file_path)
+                tab_name = self.add_new_tab(filename)
+                self._load_file_into_tab(tab_name, file_path)
+                opened_tabs.append(tab_name)
+        
+        if not opened_tabs:
+            self.add_new_tab()
+            return
+            
+        # Son aktif sekmeyi geri yükle
+        if last_active and any(os.path.abspath(editor.file_path) == os.path.abspath(last_active) 
+                              for editor in self.editors.values() if editor.file_path):
+            # Tab name bul
+            for name, editor in self.editors.items():
+                if editor.file_path and os.path.abspath(editor.file_path) == os.path.abspath(last_active):
+                    self.set(name)
+                    break
+
+    def _save_session_state(self):
+        """Mevcut durumu SessionManager ile kaydeder."""
+        open_files = []
+        for editor in self.editors.values():
+            if editor.file_path:
+                open_files.append(os.path.abspath(editor.file_path))
+        
+        current_editor = self.get_current_editor()
+        active_file = os.path.abspath(current_editor.file_path) if current_editor and current_editor.file_path else None
+        
+        # SessionManager tekil (singleton) olduğu için doğrudan çağırabiliriz
+        self.session_manager.save_session(open_files, active_file)
 
     def save_current_file(self):
         editor = self.get_current_editor()
@@ -622,7 +665,24 @@ class TabManager(ctk.CTkFrame):
             self._update_status(f"Farklı kaydedildi: {os.path.basename(file_path)}", "success")
 
     def on_file_changed(self, path: str):
-        self.after(0, lambda: self.handle_file_change(path))
+        """Arka plan thread'inden gelen dosya değişikliğini kuyruğa ekler."""
+        self._message_queue.put(('file_change', path))
+
+    def _process_message_queue(self):
+        """Kuyruktaki mesajları ana döngüde işler."""
+        try:
+            while True:
+                try:
+                    msg_type, data = self._message_queue.get_nowait()
+                    if msg_type == 'file_change':
+                        self.handle_file_change(data)
+                except queue.Empty:
+                    break
+        except Exception as e:
+            logger.error(f"Mesaj kuyruğu işleme hatası: {e}")
+        finally:
+            # Polling'e devam et
+            self.after(200, self._process_message_queue)
 
     def handle_file_change(self, path: str):
         if not os.path.exists(path):
@@ -659,28 +719,9 @@ class TabManager(ctk.CTkFrame):
 
         self.configure(fg_color="transparent")
         
-        if hasattr(self, "_tab_bar"):
-            self._tab_bar.configure(fg_color=self.style_config["bar_bg"])
-        
-        # Mevcut butonları güncelle
-        for name, btn in self._tab_buttons.items():
-            is_active = (name == self._current_name)
-            
-            if is_active:
-                btn.configure(
-                    text_color=self.style_config["tab_text"],
-                    hover_color=self.style_config["tab_selected"],
-                    fg_color=self.style_config["tab_selected"],
-                    border_width=2,
-                    border_color=self.style_config["accent_color"]
-                )
-            else:
-                btn.configure(
-                    text_color=self.style_config["tab_text"],
-                    hover_color=self.style_config["tab_hover"],
-                    fg_color=self.style_config["tab_bg"],
-                    border_width=0
-                )
+        if hasattr(self, "tab_bar"):
+            self.tab_bar.apply_theme(theme)
+            self.tab_bar.set_active_tab(self._current_name)
         
         # Editörleri güncelle
         for editor in self.editors.values():

@@ -11,3 +11,5 @@ This directory contains utility modules that provide core functionality, logic, 
 - **`language_manager.py`**: Manages internationalization (i18n). Loads JSON translation files and provides a static `get()` method for localized strings.
 - **`performance_monitor.py`**: Monitors system resources (CPU, RAM) and internal application metrics for the debug/performance report.
 - **`shortcut_manager.py`**: Central registry for keyboard shortcuts. Handles binding creation and looking up active keymaps.
+- **`session_manager.py`**: Manages editor sessions, including open tabs and UI state for restoring previous work.
+- **`settings_manager.py`**: Handles persistent application settings, saving/loading from disk, and providing default values.

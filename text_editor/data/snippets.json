@@ -1,0 +1,587 @@
+{
+    "python": [
+        {
+            "prefix": "main",
+            "body": "def main() -> None:\n    ${0:pass}\n\nif __name__ == \"__main__\":\n    main()",
+            "description": "Main block with main() function"
+        },
+        {
+            "prefix": "def",
+            "body": "def ${1:fname}(${2:params}) -> ${3:None}:\n    \"\"\"${4:Description}\"\"\"\n    ${0:pass}",
+            "description": "Function with type hints"
+        },
+        {
+            "prefix": "adef",
+            "body": "async def ${1:fname}(${2:params}) -> ${3:None}:\n    ${0:pass}",
+            "description": "Async function"
+        },
+        {
+            "prefix": "class",
+            "body": "class ${1:ClassName}:\n    \"\"\"${2:Docstring}\"\"\"\n    def __init__(self, ${3:params}) -> None:\n        ${0:pass}",
+            "description": "Class with type hints"
+        },
+        {
+            "prefix": "super",
+            "body": "super().__init__(${0:params})",
+            "description": "Super init call"
+        },
+        {
+            "prefix": "lambda",
+            "body": "lambda ${1:params}: ${0:expression}",
+            "description": "Lambda function"
+        },
+        {
+            "prefix": "decorator",
+            "body": "from functools import wraps\n\ndef ${1:decorator_name}(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        ${2:# pre-execution}\n        result = func(*args, **kwargs)\n        ${3:# post-execution}\n        return result\n    return wrapper",
+            "description": "Function decorator"
+        },
+        {
+            "prefix": "contextmanager",
+            "body": "from contextlib import contextmanager\n\n@contextmanager\ndef ${1:manager_name}():\n    ${2:# setup}\n    try:\n        yield ${3:resource}\n    finally:\n        ${4:# teardown}",
+            "description": "Context manager snippet"
+        },
+        {
+            "prefix": "fastapi",
+            "body": "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/${1:path}\")\nasync def read_${1:path}():\n    return {\"message\": \"Hello World\"}\n\nif __name__ == \"__main__\":\n    import uvicorn\n    uvicorn.run(app, host=\"0.0.0.0\", port=${2:8000})",
+            "description": "FastAPI basic app"
+        },
+        {
+            "prefix": "flask",
+            "body": "from flask import Flask\n\napp = Flask(__name__)\n\n@app.route(\"/${1:/}\")\ndef ${2:index}():\n    return \"${3:Hello World}\"\n\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+            "description": "Flask basic app"
+        },
+        {
+            "prefix": "property",
+            "body": "@property\ndef ${1:name}(self):\n    return self._${1:name}\n\n@${1:name}.setter\ndef ${1:name}(self, value):\n    self._${1:name} = value",
+            "description": "Property getter and setter"
+        },
+        {
+            "prefix": "match",
+            "body": "match ${1:variable}:\n    case ${2:pattern}:\n        ${3:pass}\n    case _:\n        ${0:pass}",
+            "description": "Match statement (Python 3.10+)"
+        },
+        {
+            "prefix": "if",
+            "body": "if ${1:condition}:\n    ${0:pass}",
+            "description": "If statement"
+        },
+        {
+            "prefix": "ife",
+            "body": "if ${1:condition}:\n    ${2:pass}\nelse:\n    ${0:pass}",
+            "description": "If-else statement"
+        },
+        {
+            "prefix": "for",
+            "body": "for ${1:item} in ${2:iterable}:\n    ${0:pass}",
+            "description": "For loop"
+        },
+        {
+            "prefix": "while",
+            "body": "while ${1:condition}:\n    ${0:pass}",
+            "description": "While loop"
+        },
+        {
+            "prefix": "lc",
+            "body": "[${1:item} for ${1:item} in ${2:iterable} if ${3:condition}]",
+            "description": "List comprehension"
+        },
+        {
+            "prefix": "dc",
+            "body": "{${1:key}: ${2:value} for ${3:item} in ${4:iterable}}",
+            "description": "Dict comprehension"
+        },
+        {
+            "prefix": "try",
+            "body": "try:\n    ${1:pass}\nexcept ${2:Exception} as e:\n    ${0:print(f\"Error: {e}\")}",
+            "description": "Try-except block"
+        },
+        {
+            "prefix": "trye",
+            "body": "try:\n    ${1:pass}\nexcept ${2:Exception} as e:\n    ${3:print(f\"Error: {e}\")}\nelse:\n    ${4:pass}\nfinally:\n    ${0:pass}",
+            "description": "Full try-except-else-finally"
+        },
+        {
+            "prefix": "json_read",
+            "body": "import json\nwith open(${1:filename}, 'r', encoding='utf-8') as f:\n    ${0:data = json.load(f)}",
+            "description": "Read JSON file"
+        },
+        {
+            "prefix": "json_write",
+            "body": "import json\nwith open(${1:filename}, 'w', encoding='utf-8') as f:\n    json.dump(${2:data}, f, indent=${3:4}, ensure_ascii=False)",
+            "description": "Write JSON file"
+        },
+        {
+            "prefix": "argparse",
+            "body": "import argparse\n\nparser = argparse.ArgumentParser(description='${1:description}')\nparser.add_argument('${2:--name}', type=${3:str}, help='${4:help}')\nargs = parser.parse_args()\n\n${0}",
+            "description": "Argparse boilerplate"
+        },
+        {
+            "prefix": "timeit",
+            "body": "import time\nstart_time = time.perf_counter()\n${1:pass}\nend_time = time.perf_counter()\nprint(f\"Execution time: {end_time - start_time:.4f}s\")",
+            "description": "Measure execution time"
+        },
+        {
+            "prefix": "logging",
+            "body": "import logging\nlogging.basicConfig(level=logging.${1:INFO}, format='%(asctime)s - %(levelname)s - %(message)s')\nlogger = logging.getLogger(__name__)\n\nlogger.info(\"${0:Message}\")",
+            "description": "Logging setup"
+        },
+        {
+            "prefix": "pytest",
+            "body": "import pytest\n\ndef test_${1:feature}() -> None:\n    # Arrange\n    ${2:pass}\n    # Act\n    ${3:pass}\n    # Assert\n    assert ${0:True}",
+            "description": "Pytest template"
+        },
+        {
+            "prefix": "dataclass",
+            "body": "from dataclasses import dataclass\n\n@dataclass\nclass ${1:Name}:\n    ${2:field}: ${3:str}\n    ${0}",
+            "description": "Dataclass snippet"
+        },
+        {
+            "prefix": "pydantic",
+            "body": "from pydantic import BaseModel\n\nclass ${1:ModelName}(BaseModel):\n    ${2:id}: int\n    ${3:name}: str",
+            "description": "Pydantic model"
+        },
+        {
+            "prefix": "enum",
+            "body": "from enum import Enum, auto\n\nclass ${1:Name}(Enum):\n    ${2:MEMBER} = auto()",
+            "description": "Enum class"
+        },
+        {
+            "prefix": "tkapp",
+            "body": "import tkinter as tk\nfrom tkinter import ttk\n\nclass App(tk.Tk):\n    def __init__(self) -> None:\n        super().__init__()\n        self.title(\"${1:App}\")\n        self.geometry(\"${2:800x600}\")\n        ${0}\n\nif __name__ == \"__main__\":\n    App().mainloop()",
+            "description": "Minimal Tkinter App"
+        }
+    ],
+    "javascript": [
+        {
+            "prefix": "clg",
+            "body": "console.log(${0:obj});",
+            "description": "Console log"
+        },
+        {
+            "prefix": "func",
+            "body": "function ${1:name}(${2:params}) {\n    ${0:// code}\n}",
+            "description": "Function declaration"
+        },
+        {
+            "prefix": "afunc",
+            "body": "async function ${1:name}(${2:params}) {\n    ${0:// code}\n}",
+            "description": "Async Function"
+        },
+        {
+            "prefix": "arrow",
+            "body": "const ${1:name} = (${2:params}) => {\n    ${0:// code}\n};",
+            "description": "Arrow function"
+        },
+        {
+            "prefix": "for",
+            "body": "for (let i = 0; i < ${1:array}.length; i++) {\n    const element = ${1:array}[i];\n    ${0}\n}",
+            "description": "Standard for loop"
+        },
+        {
+            "prefix": "foreach",
+            "body": "${1:array}.forEach(${2:item} => {\n    ${0}\n});",
+            "description": "forEach"
+        },
+        {
+            "prefix": "map",
+            "body": "const ${1:newArray} = ${2:array}.map(${3:item} => {\n    return ${0:item};\n});",
+            "description": "Array.map"
+        },
+        {
+            "prefix": "import",
+            "body": "import { ${1:name} } from '${2:module}';",
+            "description": "ESM Import"
+        },
+        {
+            "prefix": "export",
+            "body": "export const ${1:name} = ${2:value};",
+            "description": "ESM Export"
+        },
+        {
+            "prefix": "fetch",
+            "body": "const response = await fetch('${1:url}');\nconst data = await response.json();\n${0:console.log(data);}",
+            "description": "Async Fetch"
+        },
+        {
+            "prefix": "react_comp",
+            "body": "import React from 'react';\n\nconst ${1:ComponentName} = () => {\n    return (\n        <div className=\"${2:container}\">\n            ${0:${1:ComponentName}}\n        </div>\n    );\n};\n\nexport default ${1:ComponentName};",
+            "description": "React Component"
+        },
+        {
+            "prefix": "useeffect",
+            "body": "useEffect(() => {\n    ${1:}\n}, [${2:dependencies}]);",
+            "description": "React useEffect"
+        },
+        {
+            "prefix": "usestate",
+            "body": "const [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:initialValue});",
+            "description": "React useState"
+        }
+    ],
+    "typescript": [
+        {
+            "prefix": "interface",
+            "body": "interface ${1:Name} {\n    ${2:prop}: ${3:string};\n    ${0}\n}",
+            "description": "Interface"
+        },
+        {
+            "prefix": "type",
+            "body": "type ${1:Name} = {\n    ${2:prop}: ${3:string};\n    ${0}\n};",
+            "description": "Type definition"
+        },
+        {
+            "prefix": "enum",
+            "body": "enum ${1:Name} {\n    ${2:Value} = '${2:Value}',\n    ${0}\n}",
+            "description": "Enum"
+        }
+    ],
+    "html": [
+        {
+            "prefix": "html5",
+            "body": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>${1:Document}</title>\n</head>\n<body>\n    ${0}\n</body>\n</html>",
+            "description": "HTML5 Skeleton"
+        },
+        {
+            "prefix": "div",
+            "body": "<div class=\"${1:class}\">\n    ${0}\n</div>",
+            "description": "Div with class"
+        },
+        {
+            "prefix": "btn",
+            "body": "<button type=\"${1:button}\" class=\"${2:btn}\">${3:Click}</button>",
+            "description": "Button"
+        },
+        {
+            "prefix": "script",
+            "body": "<script src=\"${1:main.js}\"></script>",
+            "description": "Script tag"
+        },
+        {
+            "prefix": "link",
+            "body": "<link rel=\"stylesheet\" href=\"${1:style.css}\">",
+            "description": "Link tag"
+        },
+        {
+            "prefix": "meta_seo",
+            "body": "<meta name=\"description\" content=\"${1:description}\">\n<meta name=\"keywords\" content=\"${2:keywords}\">\n<meta name=\"author\" content=\"${3:author}\">",
+            "description": "SEO Meta tags"
+        }
+    ],
+    "css": [
+        {
+            "prefix": "flex",
+            "body": "display: flex;\njustify-content: ${1:center};\nalign-items: ${2:center};",
+            "description": "Flexbox center"
+        },
+        {
+            "prefix": "grid",
+            "body": "display: grid;\ngrid-template-columns: repeat(${1:3}, 1fr);\ngap: ${2:1rem};",
+            "description": "Grid layout"
+        },
+        {
+            "prefix": "glass",
+            "body": "background: rgba(255, 255, 255, 0.1);\nbackdrop-filter: blur(${1:10}px);\nborder: 1px solid rgba(255, 255, 255, 0.1);\nborder-radius: ${2:10}px;",
+            "description": "Glassmorphism"
+        },
+        {
+            "prefix": "media",
+            "body": "@media (max-width: ${1:768}px) {\n    ${0}\n}",
+            "description": "Media query"
+        },
+        {
+            "prefix": "reset",
+            "body": "* {\n    margin: 0;\n    padding: 0;\n    box-sizing: border-box;\n}",
+            "description": "CSS Reset"
+        }
+    ],
+    "java": [
+        {
+            "prefix": "main",
+            "body": "public class ${1:Main} {\n    public static void main(String[] args) {\n        ${0:System.out.println(\"Hello World\");}\n    }\n}",
+            "description": "Java Main class"
+        },
+        {
+            "prefix": "sout",
+            "body": "System.out.println(${1:\"message\"});",
+            "description": "Print to console"
+        },
+        {
+            "prefix": "for",
+            "body": "for (int i = 0; i < ${1:10}; i++) {\n    ${0}\n}",
+            "description": "For loop"
+        }
+    ],
+    "cpp": [
+        {
+            "prefix": "main",
+            "body": "#include <iostream>\n\nint main() {\n    ${0:std::cout << \"Hello World\" << std::endl;}\n    return 0;\n}",
+            "description": "C++ Main function"
+        },
+        {
+            "prefix": "cout",
+            "body": "std::cout << ${1:\"message\" } << std::endl;",
+            "description": "cout"
+        }
+    ],
+    "rust": [
+        {
+            "prefix": "fn",
+            "body": "fn ${1:name}(${2:params}) -> ${3:ReturnType} {\n    ${0}\n}",
+            "description": "Rust function"
+        },
+        {
+            "prefix": "main",
+            "body": "fn main() {\n    ${0:println!(\"Hello World\");}\n}",
+            "description": "Rust main"
+        },
+        {
+            "prefix": "println",
+            "body": "println!(\"${1:{:?}}\", ${2:val});",
+            "description": "println macro"
+        }
+    ],
+    "go": [
+        {
+            "prefix": "main",
+            "body": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t${0:fmt.Println(\"Hello World\")}\n}",
+            "description": "Go main"
+        },
+        {
+            "prefix": "func",
+            "body": "func ${1:name}(${2:params}) ${3:error} {\n\t${0}\n}",
+            "description": "Go function"
+        }
+    ],
+    "sql": [
+        {
+            "prefix": "select",
+            "body": "SELECT ${1:*} FROM ${2:table} WHERE ${3:condition};",
+            "description": "SELECT statement"
+        },
+        {
+            "prefix": "create",
+            "body": "CREATE TABLE ${1:table_name} (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    ${2:column} ${3:VARCHAR(255)}\n);",
+            "description": "CREATE TABLE"
+        }
+    ],
+    "json": [
+        {
+            "prefix": "item",
+            "body": "\"${1:key}\": \"${2:value}\",${0}",
+            "description": "JSON Key-Value"
+        }
+    ],
+    "yaml": [
+        {
+            "prefix": "docker",
+            "body": "version: '3.8'\nservices:\n  ${1:app}:\n    build: .\n    ports:\n      - \"${2:8000}:${2:8000}\"\n    environment:\n      - ${3:KEY=VALUE}",
+            "description": "Docker Compose"
+        }
+    ],
+    "bash": [
+        {
+            "prefix": "shebang",
+            "body": "#!/bin/bash\n\n${0}",
+            "description": "Bash shebang"
+        }
+    ],
+    "docker": [
+        {
+            "prefix": "dockerfile",
+            "body": "FROM ${1:python:3.9-slim}\n\nWORKDIR /app\n\nCOPY requirements.txt .\nRUN pip install -r requirements.txt\n\nCOPY . .\n\nCMD [\"python\", \"${2:app.py}\"]",
+            "description": "Dockerfile boilerplate"
+        }
+    ],
+    "markdown": [
+        {
+            "prefix": "h1",
+            "body": "# ${1:Heading 1}",
+            "description": "Heading 1"
+        },
+        {
+            "prefix": "h2",
+            "body": "## ${1:Heading 2}",
+            "description": "Heading 2"
+        },
+        {
+            "prefix": "h3",
+            "body": "### ${1:Heading 3}",
+            "description": "Heading 3"
+        },
+        {
+            "prefix": "h4",
+            "body": "#### ${1:Heading 4}",
+            "description": "Heading 4"
+        },
+        {
+            "prefix": "h5",
+            "body": "##### ${1:Heading 5}",
+            "description": "Heading 5"
+        },
+        {
+            "prefix": "h6",
+            "body": "###### ${1:Heading 6}",
+            "description": "Heading 6"
+        },
+        {
+            "prefix": "bold",
+            "body": "**${1:text}**",
+            "description": "Bold text"
+        },
+        {
+            "prefix": "italic",
+            "body": "*${1:text}*",
+            "description": "Italic text"
+        },
+        {
+            "prefix": "strike",
+            "body": "~~${1:text}~~",
+            "description": "Strikethrough"
+        },
+        {
+            "prefix": "ic",
+            "body": "`${1:code}`",
+            "description": "Inline code"
+        },
+        {
+            "prefix": "code",
+            "body": "```${1:python}\n${0}\n```",
+            "description": "Code block"
+        },
+        {
+            "prefix": "link",
+            "body": "[${1:Text}](${2:url})",
+            "description": "Markdown link"
+        },
+        {
+            "prefix": "img",
+            "body": "![${1:alt text}](${2:url})",
+            "description": "Image"
+        },
+        {
+            "prefix": "ul",
+            "body": "- ${1:item}",
+            "description": "Unordered list"
+        },
+        {
+            "prefix": "ol",
+            "body": "1. ${1:item}",
+            "description": "Ordered list"
+        },
+        {
+            "prefix": "task",
+            "body": "- [ ] ${1:task}",
+            "description": "Task list item"
+        },
+        {
+            "prefix": "taskdone",
+            "body": "- [x] ${1:task}",
+            "description": "Completed task"
+        },
+        {
+            "prefix": "todo",
+            "body": "- [ ] ${1:task}",
+            "description": "To-do item"
+        },
+        {
+            "prefix": "quote",
+            "body": "> ${1:quote}",
+            "description": "Blockquote"
+        },
+        {
+            "prefix": "hr",
+            "body": "---\n",
+            "description": "Horizontal rule"
+        },
+        {
+            "prefix": "table",
+            "body": "| ${1:Header} | ${2:Header} |\n| --- | --- |\n| ${3:Value} | ${4:Value} |",
+            "description": "Markdown table"
+        },
+        {
+            "prefix": "details",
+            "body": "<details>\n<summary>${1:Summary}</summary>\n\n${0:Content}\n</details>",
+            "description": "Details / Summary toggle"
+        },
+        {
+            "prefix": "mermaid",
+            "body": "```mermaid\ngraph TD\n    A[${1:Start}] --> B{${2:Decision}}\n    B -->|${3:Yes}| C[${4:End}]\n    B -->|${5:No}| D[${6:Retry}]\n```",
+            "description": "Mermaid diagram"
+        },
+        {
+            "prefix": "footnote",
+            "body": "[^${1:1}]\n\n[^${1:1}]: ${2:Footnote content}",
+            "description": "Markdown footnote"
+        },
+        {
+            "prefix": "math",
+            "body": "$$\n${1:e^{i\\pi} + 1 = 0}\n$$",
+            "description": "Math block (LaTeX)"
+        },
+        {
+            "prefix": "imath",
+            "body": "$${1:a^2 + b^2 = c^2}$",
+            "description": "Inline math (LaTeX)"
+        },
+        {
+            "prefix": "note",
+            "body": "> [!NOTE]\n> ${1:Informational note}",
+            "description": "Note admonition (GitHub style)"
+        },
+        {
+            "prefix": "tip",
+            "body": "> [!TIP]\n> ${1:Helpful tip}",
+            "description": "Tip admonition (GitHub style)"
+        },
+        {
+            "prefix": "important",
+            "body": "> [!IMPORTANT]\n> ${1:Crucial information}",
+            "description": "Important admonition (GitHub style)"
+        },
+        {
+            "prefix": "warning",
+            "body": "> [!WARNING]\n> ${1:Warning message}",
+            "description": "Warning admonition (GitHub style)"
+        },
+        {
+            "prefix": "caution",
+            "body": "> [!CAUTION]\n> ${1:Negative consequences}",
+            "description": "Caution admonition (GitHub style)"
+        },
+        {
+            "prefix": "kbd",
+            "body": "<kbd>${1:key}</kbd>",
+            "description": "Keyboard key tag"
+        },
+        {
+            "prefix": "badge",
+            "body": "[![${1:alt}](https://img.shields.io/badge/${2:label}-${3:message}-${4:color})](${5:url})",
+            "description": "Shields.io Badge"
+        },
+        {
+            "prefix": "toc",
+            "body": "## Table of Contents\n\n- [${1:Introduction}](#${2:introduction})\n- [${3:Installation}](#${4:installation})\n- [${5:Usage}](#${6:usage})",
+            "description": "Table of Contents template"
+        },
+        {
+            "prefix": "comment",
+            "body": "<!-- ${1:TODO: content} -->",
+            "description": "HTML Comment"
+        },
+        {
+            "prefix": "anchor",
+            "body": "<a name=\"${1:anchor-name}\"></a>",
+            "description": "HTML Anchor"
+        },
+        {
+            "prefix": "def",
+            "body": "${1:Term}\n: ${2:Definition}",
+            "description": "Definition list"
+        },
+        {
+            "prefix": "abbr",
+            "body": "*[${1:ABBR}]: ${2:Full Description}",
+            "description": "Abbreviation"
+        }
+    ]
+}

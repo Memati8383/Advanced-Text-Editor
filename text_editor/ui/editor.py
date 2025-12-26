@@ -7,105 +7,15 @@ from text_editor.utils.highlighter import SyntaxHighlighter
 from text_editor.utils.autocompleter import AutoCompleter
 from text_editor.ui.minimap import Minimap
 from pygments.lexers import get_lexer_for_filename, get_lexer_by_name, TextLexer
+from text_editor.ui.line_numbers import LineNumbers
+# Clean Code: Feature Extentions
+from text_editor.ui.features.folding import CodeFolder
+from text_editor.ui.features.multi_cursor import MultiCursorManager
+# Clean Code: Feature Extentions
+from text_editor.ui.features.folding import CodeFolder
+from text_editor.ui.features.multi_cursor import MultiCursorManager
 
-class LineNumbers(tk.Text):
-    """
-    Ana metin editörünün sol tarafında satır numaralarını gösteren bileşen.
-    Metin editörü ile senkronize çalışır ve sadece görünür satırları çizer.
-    Ayrıca kod katlama (folding) işaretçilerini de gösterir.
-    """
-    def __init__(self, master, text_widget, **kwargs):
-        super().__init__(master, width=8, padx=4, pady=5, highlightthickness=0, bd=0, 
-                         font=(FONT_FAMILY, FONT_SIZE), state="disabled", cursor="arrow", wrap="none", **kwargs)
-        self.text_widget = text_widget
-        self.text_widget.bind("<<Change>>", self.redraw)
-        self.text_widget.bind("<Configure>", self.redraw)
-        self.bind("<Button-1>", self.on_click)
 
-    def redraw(self, *args):
-        """
-        Satır numaralarını yeniden çizer.
-        Tüm dosyayı işler ve text_widget ile senkronize scrolling sağlar.
-        """
-        self.configure(state="normal")
-        self.delete("1.0", "end")
-        
-        # Metin içeriğini al
-        full_content = self.text_widget.get("1.0", "end-1c")
-        lines = full_content.split('\n')
-        total_lines = len(lines)
-        
-        # Katlanmış satırları belirle
-        folded_lines = set()
-        for tag in self.text_widget.tag_names():
-            if tag.startswith("fold_"):
-                try:
-                    line_num = int(tag.split('_')[1])
-                    folded_lines.add(line_num)
-                except:
-                    pass
-        
-        # Girinti hesaplama yardımcısı
-        def get_indent(s):
-            return len(s) - len(s.lstrip())
-            
-        buffer = []
-        
-        for i, line_content in enumerate(lines):
-            linenum = i + 1
-            marker = "  " # Varsayılan: 2 boşluk
-            
-            # Katlanabilirlik kontrolü
-            if line_content.strip():
-                curr_indent = get_indent(line_content)
-                
-                # Sonraki satırları kontrol et
-                for j in range(i + 1, total_lines):
-                    next_line = lines[j]
-                    if next_line.strip():
-                        # İlk dolu satırı bulduk
-                        if get_indent(next_line) > curr_indent:
-                            if linenum in folded_lines:
-                                marker = "▶ "
-                            else:
-                                marker = "▼ "
-                        break
-            
-            buffer.append(f"{marker}{linenum:>4}\n")
-        
-        self.insert("1.0", "".join(buffer))
-        
-        # Katlama etiketlerini uygula
-        for tag in self.text_widget.tag_names():
-            if tag.startswith("fold_"):
-                ranges = self.text_widget.tag_ranges(tag)
-                if ranges:
-                    self.tag_add(tag, *ranges)
-                    self.tag_config(tag, elide=True)
-
-        # Scrolling'i senkronize et (Async yap ki render tamamlansın)
-        def sync_scroll():
-            try:
-                self.yview_moveto(self.text_widget.yview()[0])
-            except:
-                pass
-                
-        self.after_idle(sync_scroll)
-            
-        self.configure(state="disabled")
-
-    def on_click(self, event):
-        """
-        Satır numaraları alanına tıklama olayını işler.
-        """
-        try:
-            index = self.index(f"@{event.x},{event.y}")
-            line_idx = int(index.split('.')[0])
-            
-            # Basitleştirilmiş mantık: LineNumbers satır indeksi == Gerçek satır numarası
-            self.master.toggle_fold(line_idx)
-        except Exception:
-            pass
 
 class CodeEditor(ctk.CTkFrame):
     """
@@ -119,11 +29,10 @@ class CodeEditor(ctk.CTkFrame):
         self.content_modified = False
         self.font_size = FONT_SIZE
         self.last_mtime = 0
+        self.syntax_highlighting_enabled = True  # Büyük dosyalar için performans optimizasyonu
         
         # Çoklu imleç desteği
-        self.cursors = []  # [(satır, sütun), ...] formatında imleç pozisyonları
-        self.cursor_tags = []  # İmleçlerin görsel işaretçileri
-        self.multi_cursor_mode = False  # Çoklu imleç modunda mıyız?
+        self.multi_cursor_mode = False  # Çoklu imleç modunda mıyız? (cursor_manager tarafından güncellenir)
         
         # Yerleşimi yapılandır
         self.grid_columnconfigure(0, weight=0) # Satır numaraları
@@ -156,7 +65,14 @@ class CodeEditor(ctk.CTkFrame):
         self.scrollbar_x.grid(row=1, column=1, sticky="ew")
         
         self.text_area.configure(yscrollcommand=self.on_text_scroll, xscrollcommand=self.scrollbar_x.set)
-        self.line_numbers.configure(yscrollcommand=self.on_line_scroll)
+        # Sadece ana metin alanı kaydırıldığında satır numaralarını hareket ettir (Tek yönlü senkronizasyon)
+        # Bu, satır numaraları her yenilendiğinde (delete/insert) ana pencerenin yukarı zıplamasını önler.
+        self.line_numbers.configure(yscrollcommand=None)
+        
+        # Fare tekerleği olaylarını satır numaralarından ana metne ilet
+        self.line_numbers.bind("<MouseWheel>", self.on_line_numbers_wheel)
+        self.line_numbers.bind("<Button-4>", self.on_line_numbers_wheel) # Linux için
+        self.line_numbers.bind("<Button-5>", self.on_line_numbers_wheel) # Linux için
         # Minimap kaydırması on_text_scroll kancalarıyla yönetilir
         
         # Editörün ana metin alanı ile satır numaraları ve minimap arasındaki
@@ -190,6 +106,10 @@ class CodeEditor(ctk.CTkFrame):
         self.text_area.bind("<Alt-Down>", self.move_line_down)  # Satırı aşağı taşı
         self.text_area.bind("<Control-Shift-K>", self.delete_line)  # Satırı sil
         self.text_area.bind("<Control-j>", self.join_lines)  # Satırları birleştir
+
+        # Özellik Yöneticileri
+        self.code_folder = CodeFolder(self)
+        self.cursor_manager = MultiCursorManager(self)
         
         # İlk Kurulum
         if file_path:
@@ -200,12 +120,19 @@ class CodeEditor(ctk.CTkFrame):
 
     def set_lexer_from_file(self, filename):
         """Dosya uzantısına göre uygun sözdizimi vurgulayıcıyı (lexer) ayarlar."""
+        # Eğer syntax highlighting devre dışıysa işlem yapma
+        if not self.syntax_highlighting_enabled:
+            return
+            
         lexer = self.highlighter.set_lexer_from_filename(filename)
         self.minimap.set_lexer(lexer)
         if lexer and self.completer:
             self.completer.set_language(lexer.name)
             
     def set_lexer_by_name(self, name):
+        if not self.syntax_highlighting_enabled:
+            return
+            
         lexer = self.highlighter.set_lexer_by_name(name)
         self.minimap.set_lexer(lexer)
         if lexer and self.completer:
@@ -218,7 +145,7 @@ class CodeEditor(ctk.CTkFrame):
         Çoklu imleç modunda ise tüm imlçlere aynı işlemi uygular.
         """
         # Çoklu imleç modunda yazı yazma
-        if self.multi_cursor_mode and len(self.cursors) > 0:
+        if self.cursor_manager.active:
             if event.char and not event.state & 0x4:  # Ctrl tuşu basılı değilse
                 self.insert_at_all_cursors(event.char)
                 return "break"
@@ -230,9 +157,11 @@ class CodeEditor(ctk.CTkFrame):
                 return "break"
         
         # Önce otomatik tamamlama gezinme kontrolü
-        res = self.completer.handle_key(event)
-        if res == "break":
-            return "break"
+        # Performans için: Büyük dosyalarda autocomplete'i de devre dışı bırakabiliriz
+        if self.syntax_highlighting_enabled:
+            res = self.completer.handle_key(event)
+            if res == "break":
+                return "break"
             
         # Parantezleri otomatik kapatma
         char = event.char
@@ -287,7 +216,18 @@ class CodeEditor(ctk.CTkFrame):
         self.line_numbers.yview_moveto(args[0])
         self.minimap.on_scroll(*args)
 
+    def on_line_numbers_wheel(self, event):
+        """Satır numaraları üzerindeki fare tekerleği hareketini ana metne iletir."""
+        if event.num == 4:
+            self.text_area.yview_scroll(-1, "units")
+        elif event.num == 5:
+            self.text_area.yview_scroll(1, "units")
+        elif event.delta:
+            self.text_area.yview_scroll(int(-1*(event.delta/120)), "units")
+        return "break"
+
     def on_line_scroll(self, *args):
+        """Bu yöntem artık doğrudan yscrollcommand olarak kullanılmıyor, ancak gerekirse manuel çağrılabilir."""
         self.text_area.yview_moveto(args[0])
         self.scrollbar_y.set(*args)
         self.minimap.yview_moveto(args[0])
@@ -295,19 +235,27 @@ class CodeEditor(ctk.CTkFrame):
     def on_key_release(self, event=None):
         if event and event.keysym not in ["Control_L", "Control_R", "Shift_L", "Shift_R", "Alt_L", "Alt_R"]:
             self.content_modified = True
-            self.minimap.update_content()
+            if self.syntax_highlighting_enabled:
+                self.minimap.update_content()
             
-        self.update_line_numbers()
+        # Sadece satır sayısı değiştiyse satır numaralarını güncelle
+        current_line_count = int(self.text_area.index("end-1c").split('.')[0])
+        if not hasattr(self, '_last_line_count') or self._last_line_count != current_line_count:
+            self._last_line_count = current_line_count
+            self.update_line_numbers()
+            
         self.update_status_bar()
         if event and event.keysym in ["Return", "BackSpace", "Delete", "space"]:
-             self.highlighter.highlight()
+             if self.syntax_highlighting_enabled:
+                self.highlighter.highlight()
              
         # Otomatik tamamlama olayını tetikle
-        if self.completer and event:
+        if self.completer and event and self.syntax_highlighting_enabled:
             self.completer.on_key_release(event)
 
     def on_click(self, event):
-        self.highlighter.highlight_current_line()
+        if self.syntax_highlighting_enabled:
+            self.highlighter.highlight_current_line()
         # Durum çubuğunda imleç konumunu güncelle
         try:
             index = self.text_area.index("insert")
@@ -338,25 +286,73 @@ class CodeEditor(ctk.CTkFrame):
 
     def load_file(self, file_path):
         """Belirtilen yoldaki dosyayı okur ve editöre yükler."""
+        encodings = ['utf-8', 'cp1254', 'cp1252', 'latin-1']
+        
+        # Dosya boyutu kontrolü
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            file_size = os.path.getsize(file_path)
+            
+            # Limitler (1MB ve 10MB)
+            HIGHLIGHT_LIMIT = 1 * 1024 * 1024 # 1 MB
+            HARD_LIMIT = 10 * 1024 * 1024 # 10 MB
+            
+            if file_size > HIGHLIGHT_LIMIT:
+                self.syntax_highlighting_enabled = False
+            else:
+                self.syntax_highlighting_enabled = True
+                
+            read_size = -1 # Tümünü oku
+            if file_size > HARD_LIMIT:
+                if messagebox.askyesno("Büyük Dosya", "Bu dosya çok büyük (>10MB). Performans sorunlarını önlemek için sadece ilk 10MB yüklensin mi?\n(Hayır derseniz tamamı yüklenmeye çalışılacak fakat uygulama donabilir.)"):
+                    read_size = HARD_LIMIT
+            
+        except OSError:
+            file_size = 0
+            
+        content = None
+        last_error = None
+        
+        for encoding in encodings:
+            try:
+                with open(file_path, 'r', encoding=encoding) as f:
+                    content = f.read(read_size)
+                break
+            except UnicodeDecodeError:
+                continue
+            except Exception as e:
+                last_error = e
+                break
+        
+        if content is not None:
+            try:
                 self.text_area.delete('1.0', 'end')
                 self.text_area.insert('1.0', content)
                 self.update_line_numbers()
-                self.minimap.update_content()
-                self.highlighter.highlight()
+                
+                if self.syntax_highlighting_enabled:
+                    self.minimap.update_content()
+                    self.highlighter.highlight()
+                else:
+                    # Uyarı ver
+                    main_window = self.winfo_toplevel()
+                    if hasattr(main_window, 'status_bar'):
+                        main_window.status_bar.set_message("Büyük dosya: Sözdizimi vurgulama devre dışı bırakıldı.", "warning")
+                
                 self.content_modified = False
                 
-            # Son değişiklik zamanını kaydet
-            try:
-                self.last_mtime = os.path.getmtime(file_path)
-            except OSError:
-                self.last_mtime = 0
-                
-        except Exception as e:
-            print(f"Error loading file: {e}")
-            messagebox.showerror("Error", f"Could not load file: {e}")
+                # Son değişiklik zamanını kaydet
+                try:
+                    self.last_mtime = os.path.getmtime(file_path)
+                except OSError:
+                    self.last_mtime = 0
+                    
+            except Exception as e:
+                print(f"Error updating editor content: {e}")
+                messagebox.showerror("Error", f"Could not update editor content: {e}")
+        else:
+            final_error = last_error if last_error else "Desteklenmeyen dosya formatı veya kodlaması."
+            print(f"Error loading file: {final_error}")
+            messagebox.showerror("Hata", f"Dosya açılamadı: {final_error}")
 
     def save_file(self):
         """Editördeki içeriği mevcut dosya yoluna kaydeder."""
@@ -508,192 +504,31 @@ class CodeEditor(ctk.CTkFrame):
 
     # Katlama Uygulaması
     def is_line_foldable(self, line_num):
-        """
-        Bir satırın katlanabilir olup olmadığını girintisine (indentation) bakarak belirler.
-        Eğer sonraki satırın girintisi daha fazlaysa, bu satır bir blok başlangıcıdır.
-        """
-        try:
-            line_text = self.text_area.get(f"{line_num}.0", f"{line_num}.end")
-            if not line_text.strip():
-                return False
-                
-            indent_current = len(line_text) - len(line_text.lstrip())
-            
-            # Girintiyi kontrol etmek için bir sonraki boş olmayan satırı bul
-            next_line_num = line_num + 1
-            while True:
-                if self.text_area.compare(f"{next_line_num}.0", ">=", "end"):
-                    return False # EOF'a ulaşıldı
-                    
-                next_line_text = self.text_area.get(f"{next_line_num}.0", f"{next_line_num}.end")
-                if next_line_text.strip():
-                    break
-                next_line_num += 1
-            
-            indent_next = len(next_line_text) - len(next_line_text.lstrip())
-            
-            return indent_next > indent_current
-        except Exception:
-            return False
+        return self.code_folder.is_line_foldable(line_num)
 
     def is_line_folded(self, line_num):
-        """Bir satırın şu anda katlanmış durumda olup olmadığını kontrol eder."""
-        tag_name = f"fold_{line_num}"
-        ranges = self.text_area.tag_ranges(tag_name)
-        return bool(ranges)
+        return self.code_folder.is_line_folded(line_num)
 
     def toggle_fold(self, line_num):
-        """
-        Belirtilen satırdaki kod bloğunu katlar veya açar.
-        Katlama işlemi metni gizlemek (elide) için etiketler (tags) kullanır.
-        """
-        if not self.is_line_foldable(line_num):
-            return
+        self.code_folder.toggle_fold(line_num)
 
-        tag_name = f"fold_{line_num}"
-        
-        if self.is_line_folded(line_num):
-            # Katlamayı aç
-            self.text_area.tag_delete(tag_name)
-        else:
-            # Katla
-            # Başlangıç girintisini bul
-            line_text = self.text_area.get(f"{line_num}.0", f"{line_num}.end")
-            start_indent = len(line_text) - len(line_text.lstrip())
-            
-            # Bitiş satırını bul
-            current_line = line_num + 1
-            while True:
-                if self.text_area.compare(f"{current_line}.0", ">=", "end"):
-                    break
-                    
-                content = self.text_area.get(f"{current_line}.0", f"{current_line}.end")
-                
-                # Eğer boş olmayan satır aynı veya daha az girintiye sahipse, blok bitti
-                if content.strip():
-                    curr_indent = len(content) - len(content.lstrip())
-                    if curr_indent <= start_indent:
-                        break
-                
-                current_line += 1
-            
-            # Blok line_num+1'den current_line-1'e kadardır
-            # SONRAKİ satırdan başlayarak, kesme satırının başına kadar katlamak istiyoruz.
-            # Yani aralık: line_num+1.0'dan current_line.0'a
-            
-            end_line = current_line
-            
-            self.text_area.tag_add(tag_name, f"{line_num+1}.0", f"{end_line}.0")
-            self.text_area.tag_config(tag_name, elide=True)
-            self.text_area.tag_raise(tag_name) # Katlamanın her şeyi gizlediğinden emin ol
-            
-        self.line_numbers.redraw()
-        # Ayrıca minimap'i güncelle
-        self.minimap.update_content()
 
     # === Çoklu İmleç İşlevleri ===
     
     def add_cursor_at_click(self, event):
-        """
-        Alt+Click ile tıklanan yere yeni bir imleç ekler.
-        """
-        # Tıklanan pozisyonu al
-        index = self.text_area.index(f"@{event.x},{event.y}")
-        line, col = map(int, index.split('.'))
-        
-        # Bu pozisyonda zaten imleç var mı kontrol et
-        cursor_pos = (line, col)
-        if cursor_pos in self.cursors:
-            # Varsa kaldır
-            self.cursors.remove(cursor_pos)
-        else:
-            # Yoksa ekle
-            self.cursors.append(cursor_pos)
-        
-        # Çoklu imleç modunu etkinleştir
-        if len(self.cursors) > 0:
-            self.multi_cursor_mode = True
-        else:
-            self.multi_cursor_mode = False
-        
-        self.update_cursor_visuals()
-        return "break"
+        return self.cursor_manager.add_cursor_at_click(event)
     
     def clear_extra_cursors(self, event=None):
-        """
-        Escape tuşu ile tüm ek imlçleri temizler.
-        """
-        self.cursors = []
-        self.multi_cursor_mode = False
-        self.update_cursor_visuals()
-        return "break"
+        return self.cursor_manager.clear_cursors(event)
     
     def update_cursor_visuals(self):
-        """
-        Ekrandaki imleç görsellerini günceller.
-        """
-        # Önce eski cursor tag'lerini temizle
-        for tag in self.cursor_tags:
-            self.text_area.tag_delete(tag)
-        self.cursor_tags = []
+        self.cursor_manager.update_visuals()
         
-        # Yeni cursor tag'leri oluştur
-        for i, (line, col) in enumerate(self.cursors):
-            tag_name = f"cursor_{i}"
-            self.cursor_tags.append(tag_name)
-            
-            # İmleç pozisyonunu işaretle
-            try:
-                self.text_area.tag_add(tag_name, f"{line}.{col}")
-                self.text_area.tag_config(tag_name, background="#0078D7", foreground="white")
-            except:
-                pass
-    
     def insert_at_all_cursors(self, char):
-        """
-        Tüm imlçlere aynı anda karakter ekler.
-        """
-        # Önce tüm pozisyonları güncelle (sondan başa doğru)
-        self.cursors.sort(reverse=True)
+        self.cursor_manager.insert_at_all_cursors(char)
         
-        for i, (line, col) in enumerate(self.cursors):
-            try:
-                self.text_area.insert(f"{line}.{col}", char)
-                # Pozisyonu güncelle
-                self.cursors[i] = (line, col + len(char))
-            except:
-                pass
-        
-        # Ana imlece de ekle
-        self.text_area.insert("insert", char)
-        
-        self.update_cursor_visuals()
-    
     def delete_at_all_cursors(self, direction="backspace"):
-        """
-        Tüm imleçlerde silme işlemi yapar.
-        direction: "backspace" veya "delete"
-        """
-        # Sondan başa doğru sıralayarak sil
-        self.cursors.sort(reverse=True)
-        
-        for i, (line, col) in enumerate(self.cursors):
-            try:
-                if direction == "backspace" and col > 0:
-                    self.text_area.delete(f"{line}.{col-1}", f"{line}.{col}")
-                    self.cursors[i] = (line, col - 1)
-                elif direction == "delete":
-                    self.text_area.delete(f"{line}.{col}", f"{line}.{col+1}")
-            except:
-                pass
-        
-        # Ana imlçte de sil
-        if direction == "backspace":
-            self.text_area.delete("insert-1c", "insert")
-        else:
-            self.text_area.delete("insert", "insert+1c")
-        
-        self.update_cursor_visuals()
+        self.cursor_manager.delete_at_all_cursors(direction)
     
     # === Satır İşlemleri ===
     

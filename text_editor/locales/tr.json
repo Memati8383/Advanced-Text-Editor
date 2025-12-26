@@ -1,304 +1,20 @@
 {
-    "window_title": "⚙️ Ayarlar",
-    "panel_title": "⚙️ Ayarlar",
-    "search_placeholder": "🔍 Ayar ara...",
-    "categories": {
-        "Genel": "Genel",
-        "Editör": "Editör",
-        "Görünüm": "Görünüm",
-        "Tema": "Tema",
-        "Klavye Kısayolları": "Klavye Kısayolları",
-        "Terminal": "Terminal",
-        "Gelişmiş": "Gelişmiş"
-    },
     "buttons": {
-        "reset": "🔄 Varsayılana Dön",
-        "cancel": "❌ İptal",
         "apply": "✅ Uygula",
+        "cancel": "❌ İptal",
         "export": "📤 Ayarları Dışa Aktar",
         "import": "📥 Ayarları İçe Aktar",
+        "reset": "🔄 Varsayılana Dön",
         "reset_shortcuts": "Varsayılanlara Sıfırla"
     },
-    "messages": {
-        "active": "Aktif",
-        "passive": "Pasif",
-        "unknown": "Bilinmiyor",
-        "unknown_psutil": "Bilinmiyor (psutil gerekli)",
-        "calculation_failed": "Hesaplanamadı",
-        "time_h": "sa",
-        "time_m": "dk",
-        "time_s": "sn",
-        "no_limit": "Değişiklik Yok",
-        "seconds": "saniye",
-        "selected": "✅ Seçildi",
-        "preview": "Önizle",
-        "apply_text": "Uygula",
-        "no_results": "Sonuç bulunamadı",
-        "search_results": "📊 {count} sonuç bulundu",
-        "goto_category": "📁 {category} kategorisine git →",
-        "version_text": "Memati Editör v2.0",
-        "changes_title_suffix": "({count} değişiklik)",
-        "reset_confirm_title": "Varsayılana Dön",
-        "reset_confirm_message": "Tüm ayarlar varsayılan değerlere dönecek. Emin misiniz?",
-        "export_success_title": "Başarılı",
-        "export_success_message": "Ayarlar başarıyla dışa aktarıldı!",
-        "import_success_title": "Başarılı",
-        "import_success_message": "Ayarlar başarıyla içe aktarıldı!",
-        "error_title": "Hata"
-    },
-    "settings": {
-        "app_name": {"label": "Uygulama Adı", "desc": "Başlık çubuğunda görünen uygulama adı"},
-        "font_family": {"label": "Yazı Tipi", "desc": "Editörde kullanılacak yazı tipi ailesi"},
-        "font_size": {"label": "Yazı Boyutu", "desc": "Editör yazı tipi boyutu (8-32)"},
-        "language": {"label": "Dil / Language", "desc": "Uygulama arayüz dili"},
-        "show_line_numbers": {"label": "Satır Numaraları", "desc": "Editörde satır numaralarını göster"},
-        "word_wrap": {"label": "Kelime Kaydırma", "desc": "Uzun satırları otomatik olarak kaydır"},
-        "show_minimap": {"label": "Minimap", "desc": "Kod haritasını göster"},
-        "tab_size": {"label": "Tab Boyutu", "desc": "Tab karakterinin kaç boşluk genişliğinde olacağı"},
-        "auto_save": {"label": "Otomatik Kaydetme", "desc": "Değişiklikleri otomatik kaydet"},
-        "auto_save_interval": {"label": "Kaydetme Aralığı", "desc": "Otomatik kaydetme sıklığı (saniye)"},
-        "bracket_matching": {"label": "Parantez Eşleştirme", "desc": "İmleç parantez üzerindeyken eşini vurgula"},
-        "syntax_highlighting": {"label": "Sözdizimi Vurgulama", "desc": "Kod renklendirmesini etkinleştir"},
-        "show_status_bar": {"label": "Durum Çubuğu", "desc": "Alt kısımdaki bilgi çubuğunu göster"},
-        "show_file_explorer": {"label": "Dosya Gezgini", "desc": "Sol taraftaki dosya ağacını göster"},
-        "show_terminal": {"label": "Terminal Görünürlüğü", "desc": "Alt taraftaki terminal panelini göster"},
-        "start_fullscreen": {"label": "Tam Ekran Başlat", "desc": "Uygulamayı tam ekran modunda başlat"},
-        "theme_select": {"label": "Tema Seçimi", "desc": "Editör görünüm temasını seçin"},
-        "terminal_type": {"label": "Terminal Tipi", "desc": "Kullanılacak kabuk (shell) türü"},
-        "terminal_font_size": {"label": "Yazı Boyutu", "desc": "Terminal yazı tipi boyutu"},
-        "terminal_history": {"label": "Geçmiş Limiti", "desc": "Terminal çıktısı için satır limiti"},
-        "performance_mode": {"label": "Performans Modu", "desc": "Bazı görsel efektleri devre dışı bırakarak performansı artır"},
-        "auto_backup": {"label": "Otomatik Yedekleme", "desc": "Dosyaları periyodik olarak .bak dosyasına yedekle"},
-        "max_file_size": {"label": "Maksimum Dosya Boyutu", "desc": "Editörün açabileceği maksimum dosya boyutu (MB)"},
-        "error_reporting": {"label": "Hata Raporlama", "desc": "Hata oluştuğunda geliştiriciye rapor gönder"}
-    },
-    "help": {
-        "title": "🪐 {app_name} - Yardım Merkezi",
-        "header": "Yardım Merkezi",
-        "search_placeholder": "🔍 Ara...",
-        "start_tutorial": "🎓 İnteraktif Öğreticiyi Başlat",
-        "sections": {
-            "quick_start": "🚀 Hızlı Başlangıç",
-            "shortcuts": "⌨️ Klavye Kısayolları",
-            "multi_cursor": "🖱️ Çoklu İmleç Rehberi",
-            "theme_guide": "🎨 Tema Rehberi",
-            "file_formats": "📁 Dosya Formatları",
-            "markdown_guide": "📄 Markdown Rehberi",
-            "tips": "💡 İpuçları ve Püf Noktaları",
-            "faq": "❓ SSS",
-            "performance": "📊 Performans Raporu",
-            "image_viewer": "🖼️ Resim Görüntüleyici",
-            "goto_line": "🔢 Satıra Git",
-            "report_bug": "🐛 Hata Bildir",
-            "about": "ℹ️ Hakkında"
-        },
-        "buttons": {
-            "back": "◀ Geri",
-            "forward": "İleri ▶",
-            "home": "🏠 Ana Sayfa"
-        }
-    },
-    "help_content": {
-        "quick_start": "🎯 MEMATI EDITÖR'E HOŞ GELDİNİZ!\n\nModern, güçlü ve kullanıcı dostu metin editörünüz hazır!\n\n┌─────────────────────────────────────────┐\n│  🎓 İNTERAKTİF ÖĞRETİCİ                 │\n└─────────────────────────────────────────┘\n\nYeni misiniz? Endişelenmeyin! \n\n🎓 İNTERAKTİF ÖĞRETİCİ ile editörü 5 dakikada öğrenin!\n\n• Adım adım rehberlik\n• Görsel vurgulama (spotlight)\n• İnteraktif görevler\n• İlerleme takibi\n\nBaşlamak için:\n1. Yukarıdaki \"🎓 İnteraktif Öğreticiyi Başlat\" butonuna tıklayın\n2. Veya menüden: 🎓 Öğretici\n\n┌─────────────────────────────────────────┐\n│  İLK ADIMLAR                             │\n└─────────────────────────────────────────┘\n\n1️⃣  YENİ DOSYA OLUŞTURMA\n   • Ctrl+N tuşlarına basın\n   • Veya menüden: Dosya > Yeni Sekme\n\n2️⃣  DOSYA AÇMA\n   • Ctrl+O ile dosya seçin\n   • Veya dosyayı sürükleyip bırakın\n   • Klasör açmak için: Ctrl+Shift+O\n\n3️⃣  KAYDETME\n   • Ctrl+S ile mevcut dosyayı kaydedin\n   • Ctrl+Shift+S ile farklı kaydedin\n   • Otomatik kayıt: Her 30 saniyede bir!\n\n4️⃣  TEMA DEĞİŞTİRME\n   • Menüden: Tema > İstediğiniz temayı seçin\n   • 9 farklı, göz alıcı tema mevcut!\n\n5️⃣  ARAÇ VE ÖZELLİKLER\n   • Ctrl+F: Bul ve Değiştir\n   • Ctrl+G: Belirli satıra git\n   • Ctrl+Tekerlek: Yakınlaştır/Uzaklaştır\n   • F11: Tam ekran modu\n\n6️⃣  ÇOKLU İMLEÇ ARAÇLARI\n   • Alt+Click: Her yere imleç ekleyin\n   • Ctrl+D: Aynı kelimeyi seçip düzenleyin\n   • Detaylar için \"Çoklu İmleç Rehberi\"ne bakın!\n\n┌─────────────────────────────────────────┐\n│  HIZLI İPUÇLARI                         │\n└─────────────────────────────────────────┘\n\n💡 Otomatik parantez kapatma aktif!\n💡 Kod katlama: Satır numaralarındaki oklara tıklayın\n💡 Minimap: Büyük dosyalarda gezinmek için sağdaki haritayı kullanın\n💡 Sekmeler: Sağ tık ile gelişmiş sekme yönetimi\n\n┌─────────────────────────────────────────┐\n│  YARDIMA MI İHTİYACINIZ VAR?            │\n└─────────────────────────────────────────┘\n\nSol taraftaki menüden konuları keşfedin:\n• ⌨️  Klavye Kısayolları\n• 🖱️  Çoklu İmleç Rehberi\n• 💡 İpuçları ve Püf Noktaları\n• ❓ Sık Sorulan Sorular\n\nKeyifli kodlamalar! 🚀",
-        "shortcuts": "⌨️ KLAVYE KISAYOLLARI\n\nMemati Editör'ü klavyeden kontrol edin!\n\n┌─────────────────────────────────────────┐\n│  📁 DOSYA İŞLEMLERİ                     │\n└─────────────────────────────────────────┘\n\n{new_tab: <16} →  Yeni Sekme\n{open_file: <16} →  Dosya Aç\n{open_folder: <16} →  Klasör (Proje) Aç\n{save_file: <16} →  Kaydet\n{save_as: <16} →  Farklı Kaydet\n{close_tab: <16} →  Sekmeyi Kapat\n\n┌─────────────────────────────────────────┐\n│  ✏️ DÜZENLEME                            │\n└─────────────────────────────────────────┘\n\n{undo: <16} →  Geri Al\n{redo: <16} →  Yinele\n{cut: <16} →  Kes\n{copy: <16} →  Kopyala\n{paste: <16} →  Yapıştır\n{select_all: <16} →  Tümünü Seç\n{find: <16} →  Bul ve Değiştir\n{goto_line: <16} →  Satıra Git\n{duplicate_line: <16} →  Satır Çoğalt\n{move_line_up: <16} →  Satır Yukarı\n{move_line_down: <16} →  Satır Aşağı\n\n┌─────────────────────────────────────────┐\n│  🖱️ ÇOKLU İMLEÇ                         │\n└─────────────────────────────────────────┘\n\nAlt + Click      →  İmleç Ekle/Kaldır\nCtrl + D         →  Kelimeyi Seç (tekrarla)\nEscape           →  İmleçleri Temizle\n\n┌─────────────────────────────────────────┐\n│  👀 GÖRÜNÜM                              │\n└─────────────────────────────────────────┘\n\nCtrl + Tekerlek  →  Yakınlaştır/Uzaklaştır\n{zoom_reset: <16} →  Zoom Sıfırla\n{toggle_fullscreen: <16} →  Tam Ekran\n{toggle_file_explorer: <16} →  Dosya Gezgini Aç/Kapat\n{toggle_minimap: <16} →  Minimap Aç/Kapat\n{toggle_line_numbers: <16} →  Satır Numaraları\n{toggle_word_wrap: <16} →  Word Wrap (Satır Kaydır)\n{toggle_terminal: <16} →  Terminal Aç/Kapat\n{preview_markdown: <16} →  Markdown Önizleme\n{toggle_zen_mode: <16} →  Zen Mode (Dikkat Modu)\n\n┌─────────────────────────────────────────┐\n│  📋 KOPYALAMA KISAYOLLARI               │\n└─────────────────────────────────────────┘\n\n{copy_path: <16} →  Dosya Yolunu Kopyala\n{copy_relative_path: <16} →  Göreli Yolu Kopyala\n\n┌─────────────────────────────────────────┐\n│  💡 PRO İPUÇLARI                        │\n└─────────────────────────────────────────┘\n\n🔸 Kod katlama için satır numaralarındaki\n   ▼ ve ▶ işaretlerine tıklayın\n\n🔸 Sekme başlıklarına sağ tıklayarak:\n   • Sekmeyi kapat\n   • Diğerlerini kapat\n   • Sağdakileri kapat\n   • Yolu kopyala\n\n🔸 Minimap'e tıklayarak dosyada gezinin\n\n🔸 Satır numaralarına tıklayarak satır seçin\n\n🔸 Terminal panelinde PowerShell, CMD veya\n   Bash kullanabilirsiniz",
-        "multi_cursor": "🖱️ ÇOKLU İMLEÇ REHBERİ\n\nAynı anda birden fazla yerde düzenleme yapın!\n\n┌─────────────────────────────────────────┐\n│  🎯 TEMEL KULLANIM                      │\n└─────────────────────────────────────────┘\n\n1️⃣  İMLEÇ EKLEMEK:\n   ┌─────────────────────────────┐\n   │ Alt + Sol Tık                │\n   └─────────────────────────────┘\n   \n   Tıkladığınız her yere yeni bir imleç eklenir.\n   Aynı yere tekrar tıklarsanız imleç kaldırılır.\n\n2️⃣  KELİME SEÇME:\n   ┌─────────────────────────────┐\n   │ Ctrl + D                     │\n   └─────────────────────────────┘\n   \n   • Bir kelimenin üzerindeyken: Ctrl+D\n   • Kelime seçilir\n   • Tekrar basarsanız: Sonraki aynı kelime seçilir\n   • Her seferinde yeni imleç eklenir\n\n3️⃣  TEMİZLE:\n   ┌─────────────────────────────┐\n   │ Escape (Esc)                 │\n   └─────────────────────────────┘\n   \n   Tüm ek imleçleri temizler, tek imlece döner.\n\n┌─────────────────────────────────────────┐\n│  📚 ÖRNEKLİ SENARYOLAR                  │\n└─────────────────────────────────────────┘\n\n🔷 SENARYO 1: Sütun Düzenleme\n   ────────────────────────────\n   print(\"Satır 1\")\n   print(\"Satır 2\")\n   print(\"Satır 3\")\n   \n   🎯 Hedef: Her satırın başına # eklemek\n   \n   ✅ Çözüm:\n   1. Alt+Click ile her satırın başına imleç koyun\n   2. # yazın\n   3. Tüm satırlara aynı anda eklenir!\n\n🔷 SENARYO 2: Değişken Yeniden Adlandırma\n   ──────────────────────────────────────\n   old_name = 10\n   result = old_name * 2\n   print(old_name)\n   \n   🎯 Hedef: \"old_name\" → \"new_name\"\n   \n   ✅ Çözüm:\n   1. \"old_name\" üzerine imleci getirin\n   2. Ctrl+D'ye 3 kez basın (3 kullanım var)\n   3. \"new_name\" yazın\n   4. Hepsi birden değişir!\n\n🔷 SENARYO 3: Liste Elemanlarını Düzenleme\n   ────────────────────────────────────────\n   items = [\n       \"item1\",\n       \"item2\",\n       \"item3\"\n   ]\n   \n   🎯 Hedef: Tüm çift tırnakları tek tırnağa\n   \n   ✅ Çözüm:\n   1. İlk çift tırnağı seçin: \"\n   2. Ctrl+D ile tüm çift tırnakları seçin\n   3. ' yazın (tek tırnak)\n   4. Tamamı değişir!\n\n┌─────────────────────────────────────────┐\n│  💡 İLERİ DÜZEY İPUÇLARI                │\n└─────────────────────────────────────────┘\n\n🌟 Alt+Click ile SÜTUN SEÇİMİ:\n   Birçok satırda aynı konuma imleç koyarak\n   dikey bir düzenleme yapabilirsiniz.\n\n🌟 Ctrl+D ile PARÇALI SEÇİM:\n   Bazı kelimeleri seçip, bazılarını atlayabilirsiniz.\n   Her Ctrl+D bir sonrakini seçer, gerekmedikçe durun!\n\n🌟 PERFORMANS:\n   100'den fazla imleç performansı etkileyebilir.\n   Makul sayıda kullanın (≤ 50 önerilir).\n\n┌─────────────────────────────────────────┐\n│  ⚠️ DİKKAT EDİLMESİ GEREKENLER          │\n└─────────────────────────────────────────┘\n\n❌ Çoklu imleç modunda otomatik tamamlama\n   devre dışı kalır.\n\n❌ Çok fazla imleç eklemek editörü\n   yavaşlatabilir.\n\n✅ İhtiyacınız kadar imleç kullanın,\n   işiniz bitince Escape ile temizleyin!\n\n┌─────────────────────────────────────────┐\n│  🎓 PRATİK YAPIN!                       │\n└─────────────────────────────────────────┘\n\nEn iyi öğrenme yöntemi pratiktir!\nYukarıdaki örnekleri kendi dosyalarınızda\ndeneyin ve alışın.\n\nBaşarılar! 🚀",
-        "theme_guide": "🎨 TEMA REHBERİ\n\nGözünüze uygun temayı seçin!\n\n┌─────────────────────────────────────────┐\n│  🌈 MEVCUT TEMALAR              │\n└─────────────────────────────────────────┘\n\n🌑 DARK (KOYU)\n   ├─ Modern, klasik VS Code teması\n   ├─ Yüksek kontrast\n   └─ Uzun seanslar için ideal\n\n☀️ LIGHT (AÇIK)\n   ├─ Minimal ve temiz\n   ├─ Gündüz çalışma için mükemmel\n   └─ Profesyonel görünüm\n\n... (Diğer temalar menüden incelenebilir)\n\n┌─────────────────────────────────────────┐\n│  🔄 TEMA DEĞİŞTİRME                     │\n└─────────────────────────────────────────┘\n\n1. Menü çubuğundan \"🎨 Tema\" butonuna tıklayın\n2. Açılan listeden istediğiniz temayı seçin\n3. Tema anında uygulanır!\n\n┌─────────────────────────────────────────┐\n│  💡 TEMA SEÇİM İPUÇLARI                │\n└─────────────────────────────────────────┘\n\n🌙 GECE ÇALIŞIYORSANIZ:\n   → Dark, Dracula, Monokai, Nord, Synthwave\n\n☀️ GÜNDÜZ ÇALIŞIYORSANIZ:\n   → Light, Solarized Light\n\n👁️ GÖZ YORGUNLUĞU VARSA:\n   → Solarized, Nord (düşük kontrast)\n\n🎨 FARKLI BİR ŞEY İSTİYORSANIZ:\n   → Synthwave, Gruvbox, Dracula\n\n💼 PROFESYONEL GÖRÜNÜM:\n   → One Dark Pro, GitHub Dark, Light\n\nKeyifli kodlamalar! 🎨",
-        "tips": "💡 İPUÇLARI VE PÜF NOKTALARI\n\nEditörü daha verimli kullanın!\n\n┌─────────────────────────────────────────┐\n│  🚀 ÜRETKENLİK İPUÇLARI                 │\n└─────────────────────────────────────────┘\n\n1️⃣  SEKME YÖNETİMİ\n   🔸 Sekme başlığına SAĞ TIK yapın:\n      • Sekmeyi kapat\n      • Diğerlerini kapat\n      • Sağdakileri kapat\n      • Dosya yolunu kopyala\n   \n   🔸 Çok sekmeyle çalışıyorsanız düzenli\n      temizleyin!\n\n2️⃣  HIZLI KOPYALAMA\n   Sekme başlığına SAĞ TIK ile ulaşın veya kısayol kullanın:\n   🔸 Dosya yolunu kopyala (Ctrl+Shift+C)\n   🔸 Klasör yolunu kopyala\n   🔸 Göreli yolu kopyala (Ctrl+Alt+C)\n   🔸 Sadece dosya adını kopyala\n\n3️⃣  HIZLI NAVİGASYON\n   🔸 Ctrl+G ile doğrudan satıra gidin\n   🔸 Minimap'e tıklayarak dosyada gezinin\n   🔸 Kod katlama ile uzun fonksiyonları gizleyin\n\n4️⃣  AKILLI ARAMA\n   🔸 Ctrl+F ile Bul ve Değiştir açın\n   🔸 Regex desteği var!\n   🔸 Büyük/küçük harf duyarsız arama\n\n5️⃣  OTOMATIK ÖZELLIKLER\n   🔸 Parantezler otomatik kapanır: (, {, [, \", '\n   🔸 Enter'da akıllı girinti\n   🔸 Python'da : sonrası ekstra girinti\n   🔸 Her 30 saniyede otomatik kayıt\n\n6️⃣  GÖRSEL İYİLEŞTİRMELER\n   🔸 Ctrl+Tekerlek ile yakınlaştırma\n   🔸 Font boyutunu 8-72 arası ayarlayın\n   🔸 Minimap ile genel görünüm\n   🔸 Satır vurgulama aktif\n\n┌─────────────────────────────────────────┐\n│  🎯 WORKFLOW ÖNERİLERİ                  │\n└─────────────────────────────────────────┘\n\n📁 PROJE KLASÖRÜ AÇIN\n   • Ctrl+Shift+O ile tüm projenizi açın\n   • Dosya Gezgini'nden hızlıca gezinin\n   • Ağaç yapısında kolayca bulun\n\n🎨 TEMA RUTIN OLUŞTURUN\n   • Sabah: Light veya Solarized\n   • Akşam: Dark, Nord veya Gruvbox\n   • Gece: Dracula veya Synthwave\n\n📝 KOD KATLAMA KULLANIN\n   • Uzun fonksiyonları katlayın\n   • Sadece ilgilendiğiniz koda odaklanın\n   • Satır numaralarındaki oklara tıklayın\n\n🖱️ ÇOKLU İMLEÇ GÜCÜ\n   • Tekrarlayan düzenlemeler için kullanın\n   • Alt+Click ve Ctrl+D'yi öğrenin\n   • \"Çoklu İmleç Rehberi\"ne bakın!\n\n┌─────────────────────────────────────────┐\n│  ⚡ PERFORMANS İPUÇLARI                 │\n└─────────────────────────────────────────┘\n\n🔸 Çok büyük dosyalardan kaçının (>10MB)\n🔸 Gereksiz sekmeleri kapatın\n🔸 100+ imleci aynı anda kullanmayın\n🔸 Otomatik kayıt aktif, manuel kaydetmeyi\n   unutmayın (Ctrl+S)\n\n┌─────────────────────────────────────────┐\n│  🎓 ÖĞRENDİKÇE KEŞFEDİN                │\n└─────────────────────────────────────────┘\n\n✅ Tüm klavye kısayollarını deneyin\n✅ Farklı temaları test edin\n✅ Çoklu imleç ile pratik yapın\n✅ Dosya Gezgini'ni kullanın\n✅ Minimap'i keşfedin\n\nHer gün biraz daha verimli! 🚀",
-        "supported_formats": "📁 DESTEKLENEN DOSYA FORMATLARI\n\nMemati Editör birçok dosya formatını destekler!\n\n┌─────────────────────────────────────────┐\n│  🟢 TAM DESTEK (Highlighting + Complete) │\n└─────────────────────────────────────────┘\n\nSözdizimi vurgulama + Otomatik tamamlama:\n\n🐍 PYTHON (.py, .pyw)\n   • Akıllı tamamlama\n   • Fonksiyon önerileri\n   • Paket/modül tanıma\n\n🌐 HTML (.html, .htm)\n   • Tag tamamlama\n   • Attribute önerileri\n   • Paired tags\n\n🎨 CSS (.css, .scss, .sass)\n   • Property önerileri\n   • Renk önizleme\n   • Class/ID tamamlama\n\n📜 JAVASCRIPT (.js, .jsx)\n   • ES6+ desteği\n   • Keyword completion\n   • Modern syntax\n\n┌─────────────────────────────────────────┐\n│  🟡 SÖZDİZİMİ VURGULAMA                 │\n└─────────────────────────────────────────┘\n\nSadece renklendirme (tamamlama yok):\n\n📋 JSON (.json)\n📰 XML (.xml)\n📝 MARKDOWN (.md, .markdown)\n☕ JAVA (.java)\n⚙️ C/C++ (.c, .cpp, .h, .hpp)\n🐍 C# (.cs)\n🦀 RUST (.rs)\n🔷 TYPESCRIPT (.ts, .tsx)\n🐘 PHP (.php)\n💎 RUBY (.rb)\n🎯 GO (.go)\n... ve daha fazlası!\n\n┌─────────────────────────────────────────┐\n│  ⚪ DİĞER DOSYALAR                      │\n└─────────────────────────────────────────┘\n\nDüz metin olarak açılır:\n\n📄 .txt, .log, .ini, .conf\n📝 .yaml, .yml, .toml\n🔧 .sh, .bash, .bat, .ps1\n📜 .sql, .csv\n\n┌─────────────────────────────────────────┐\n│  🎨 OTOMATİK ALGILAMA                   │\n└─────────────────────────────────────────┘\n\nEditör dosya uzantısına göre otomatik olarak:\n\n✅ Uygun renk şemasını seçer\n✅ Sözdizimi vurgulayıcıyı ayarlar\n✅ Girinti stilini belirler\n✅ Dosya ikonunu gösterir\n\n┌─────────────────────────────────────────┐\n│  💡 İPUÇLARI                            │\n└─────────────────────────────────────────┘\n\n🔸 Uzantısı tanınmayan dosyalar düz metin\n   olarak açılır\n\n🔸 Manuel olarak dil değiştirme özelliği\n   yakında gelecek!\n\n🔸 Binary dosyaları açmak önerilmez\n   (yavaşlık ve garip karakterler)\n\nDesteklenen Formatlar:\n{formats}\n\nHer türlü metin dosyasını rahatça düzenleyin! 📝",
-        "faq": "❓ SIK SORULAN SORULAR\n\nMerak ettiklerinizin yanıtları burada!\n\n┌─────────────────────────────────────────┐\n│  🔧 GENEL SORULAR                       │\n└─────────────────────────────────────────┘\n\n❔ Memati Editör ücretsiz mi?\n✅ Evet! Tamamen ücretsiz ve open-source.\n\n❔ Hangi işletim sistemlerinde çalışır?\n✅ Windows, macOS ve Linux'ta çalışır.\n\n❔ İnternet bağlantısı gerekli mi?\n✅ Hayır, tamamen offline çalışır.\n\n┌─────────────────────────────────────────┐\n│  📂 DOSYA VE KAYIT                      │\n└─────────────────────────────────────────┘\n\n❔ Dosyalarım nereye kaydediliyor?\n✅ Sizin belirlediğiniz konuma. Otomatik\n   kayıt mevcut dosyanın üzerine yazar.\n\n❔ Otomatik kayıt ne sıklıkla çalışır?\n✅ Her 30 saniyede bir. Kaydedilmemiş\n   değişiklikler varsa otomatik kaydeder.\n\n❔ Kazara kapattım, kaybettim mi?\n✅ Otomatik kayıt aktifse hayır. 30 saniye\n   içinde kapatmadıysanız güvendesiniz.\n\n❔ Çok büyük dosyaları açabilir miyim?\n✅ Önerilmez. 10MB üzeri dosyalar\n   yavaşlık yaratabilir.\n\n┌─────────────────────────────────────────┐\n│  🎨 GÖRÜNÜM VE ÖZELLEŞTİRME             │\n└─────────────────────────────────────────┘\n\n❔ Font değiştirebilir miyim?\n✅ Şu anda sabit (Consolas/sistem mono).\n   Yakınlaştırma Ctrl+Tekerlek ile yapılır.\n\n❔ Özel tema oluşturabilir miyim?\n✅ Şu anda hayır, ancak yol haritamızda var!\n\n❔ Panelleri gizleyebilir miyim?\n✅ Evet! Görünüm menüsünden:\n   • Satır Numaraları\n   • Word Wrap\n   • Minimap\n   • Durum Çubuğu\n   • Dosya Gezgini\n   Toggle edilebilir. Ayrıca Zen Mode ile\n   sadece editörü gösterebilirsiniz (Ctrl+K, Z).\n\n┌─────────────────────────────────────────┐\n│  ⚡ PERFORMANS                           │\n└─────────────────────────────────────────┘\n\n❔ Editör yavaş çalışıyor, ne yapmalıyım?\n✅ • Gereksiz sekmeleri kapatın\n   • Çok büyük dosyalardan kaçının\n   • Çoklu imleç sayısını azaltın\n   • Bilgisayarınızı yeniden başlatın\n\n❔ Çok sekme açınca yavaşlıyor?\n✅ Normal bir durum. 10-15 sekmeye kadar\n   performans iyidir. Fazlasında yavaşlama\n   olabilir.\n\n┌─────────────────────────────────────────┐\n│  🔌 EKLENTILER VE ENTEGRASYONLAR        │\n└─────────────────────────────────────────┘\n\n❔ Plugin desteği var mı?\n✅ Henüz yok, ancak v2.0'da gelecek!\n\n❔ Git entegrasyonu var mı?\n✅ Şu anda yok, ancak planlanıyor.\n\n❔ Terminal açabilir miyim?\n✅ Evet! Ctrl+` ile entegre terminal açabilirsiniz.\n   PowerShell, CMD ve Bash desteklenir.\n\n┌─────────────────────────────────────────┐\n│  🐛 SORUN GİDERME                       │\n└─────────────────────────────────────────┘\n\n❔ Editör açılmıyor!\n✅ • Python 3.10+ yüklü olduğundan emin olun\n   • Bağımlılıkları kontrol edin:\n     pip install customtkinter pygments watchdog\n\n❔ Tema değişmiyor!\n✅ Editörü yeniden başlatmayı deneyin.\n\n❔ Kısayollar çalışmıyor!\n✅ Başka bir uygulamayla çakışma olabilir.\n   Arka planda çalışan programları kontrol edin.\n\n┌─────────────────────────────────────────┐\n│  🆘 DAHA FAZLA YARDIM                   │\n└─────────────────────────────────────────┘\n\nSorunuz yanıtlanmadı mı?\n\n📧 İletişim: support@memati-editor.local\n🐛 Hata bildir: \"Hata Bildir\" bölümüne bakın\n📖 Dokümantasyon: GitHub wiki (yakında)\n\nTopluluk desteği için forum yakında! 🚀",
-        "markdown_guide": "📄 MARKDOWN REHBERİ\n\nMarkdown dosyalarınızı canlı önizleyin!\n\n┌─────────────────────────────────────────┐\n│  🚀 NASIL KULLANILIR?                   │\n└─────────────────────────────────────────┘\n\n1️⃣  BİR MARKDOWN DOSYASI AÇIN\n   • Uzantısı .md veya .markdown olan bir dosya\n   • Örnek: README.md\n\n2️⃣  ÖNİZLEMEYİ BAŞLATIN\n   • Kısayol: Ctrl+Shift+V\n   • Veya sağ üstteki menüden \"Görünüm\" > \"Markdown Önizleme\"\n   • Ekran ikiye bölünür, sağda önizleme açılır\n\n┌─────────────────────────────────────────┐\n│  ✨ ÖZELLİKLER                          │\n└─────────────────────────────────────────┘\n\n🔄 CANLI GÜNCELLEME\n   Sol tarafta yazdığınız her şey, anında\n   sağ tarafta biçimlendirilmiş olarak görünür.\n\n📜 SENKRONİZE KAYDIRMA (SYNC SCROLL)\n   Editörde aşağı indiğinizde önizleme de\n   otomatik olarak kayar. Nerede kaldığınızı\n   asla kaybetmezsiniz!\n\n🎨 TEMA UYUMU\n   Editör temasını değiştirdiğinizde, önizleme\n   de otomatik olarak uyum sağlar.\n   • Dark mode → Koyu önizleme\n   • Light mode → Açık önizleme\n\n📊 İSTATİSTİK ÇUBUĞU\n   Önizleme panelinin altında detaylı bilgi:\n   • Kelime Sayısı\n   • Karakter Sayısı\n   • Okuma Süresi (Dk)\n\n🔍 ÖNİZLEME İÇİNDE ARAMA\n   Önizleme metni içinde arama yapabilirsiniz.\n   • Önizlemeye odaklanın\n   • Ctrl+F tuşuna basın\n   • Sonuçlar vurgulanır\n\n┌─────────────────────────────────────────┐\n│  📝 MARKDOWN SÖZDİZİMİ                  │\n└─────────────────────────────────────────┘\n\n# Başlık 1\n## Başlık 2\n### Başlık 3\n\n**Kalın Yazı**\n*İtalik Yazı*\n~~Üzeri Çizili~~\n\n- Liste öğesi 1\n- Liste öğesi 2\n\n1. Numaralı liste\n2. Numaralı liste\n\n[Link Metni](https://google.com)\n![Resim](image.png)\n\n`Kod Bloğu`\n\n```python\ndef hello():\n    print(\"Merhaba Dünya!\")\n```\n\n> Alıntı metni\n\n┌─────────────────────────────────────────┐\n│  💡 İPUÇLARI                            │\n└─────────────────────────────────────────┘\n\n🔸 Önizlemeyi kapatmak için tekrar\n   Ctrl+Shift+V tuşlarına basın.\n\n🔸 Pencereyi büyüttüğünüzde önizleme\n   daha iyi görünür.\n\n🔸 Tablolar ve Checkbox'lar da desteklenir!\n   - [x] Yapıldı\n   - [ ] Yapılacak\n\nKeyifli yazmalar! ✍️",
-        "image_viewer": "🖼️ RESİM GÖRÜNTÜLEYİCİ\n\nMemati Editör, kod dosyalarının yanı sıra resim dosyalarını da görüntüleyebilir.\n\n┌─────────────────────────────────────────┐\n│  ✨ ÖZELLİKLER                          │\n└─────────────────────────────────────────┘\n\n🔍 Yakınlaştırma/Uzaklaştırma:\n   Fare tekerleği ile resme odaklanabilirsiniz.\n\n✋ Kaydırma:\n   Büyütülmüş resimlerde sürükleyerek veya yön tuşlarıyla gezinebilirsiniz.\n\n🔄 Döndürme:\n   'R' (Sağ) ve 'L' (Sol) tuşlarıyla resmi döndürebilirsiniz.\n\nabc Ekrana Sığdır:\n   'F' tuşu veya araç çubuğundaki buton ile resmi pencereye sığdırabilirsiniz.\n\n┌─────────────────────────────────────────┐\n│  📁 DESTEKLENEN FORMATLAR               │\n└─────────────────────────────────────────┘\n\n• PNG\n• JPG / JPEG\n• GIF\n• BMP\n• WEBP",
-        "goto_line": "🔢 SATIRA GİT\n\nBüyük dosyalarda belirli bir satıra hızlıca ulaşmak için kullanılır.\n\n┌─────────────────────────────────────────┐\n│  🚀 KULLANIM                            │\n└─────────────────────────────────────────┘\n\n1️⃣  PENCEREYİ AÇIN\n   • Kısayol: Ctrl+G\n   • Menü: Düzen > Satıra Git\n\n2️⃣  SATIR NUMARASINI GİRİN\n   • Gitmek istediğiniz satır numarasını yazın.\n\n3️⃣  GİT'E TIKLAYIN\n   • \"Git\" butonuna tıklayın veya Enter'a basın.\n\nEditör sizi otomatik olarak o satıra götürecek ve satırı vurgulayacaktır.",
-        "report_bug": "🐛 HATA BİLDİR\n\nHata mı buldunuz? Bize bildirin!\n\n┌─────────────────────────────────────────┐\n│  📧 İLETİŞİM                            │\n└─────────────────────────────────────────┘\n\nE-posta: bugs@memati-editor.local\nGitHub:  github.com/memati/memati-editor/issues\n\n┌─────────────────────────────────────────┐\n│  📝 HATA BİLDİRİMİ ŞABLONU              │\n└─────────────────────────────────────────┘\n\nLütfen e-postanıza şunları ekleyin:\n\n1️⃣  BAŞLIK\n   Kısa ve açıklayıcı başlık\n   Örnek: \"Tema değiştirdiğimde çöküyor\"\n\n2️⃣  AÇIKLAMA\n   Hatayı detaylı anlatın:\n   • Ne yapmaya çalışıyordunuz?\n   • Ne oldu?\n   • Hatayı nasıl tekrarlayabiliriz?\n\n3️⃣  PERFORMANS RAPORU\n   \"Performans Raporu\" bölümünden kopyalayın\n\n4️⃣  EKRAN GÖRÜNTÜSÜ\n   Varsa hata ekran görüntüsü ekleyin\n\n5️⃣  HATA MESAJI\n   Konsol çıktısı veya hata mesajı\n\n┌─────────────────────────────────────────┐\n│  ✅ İYİ BİR HATA BİLDİRİMİ ÖRNEĞİ       │\n└─────────────────────────────────────────┘\n\nBaşlık:\n\"Dracula temasında imleç görünmüyor\"\n\nAçıklama:\n\"Dracula temasını seçtiğimde metin imleci\n(cursor) görünmez oluyor. Dark temasında\nproblem yok. Windows 11 kullanıyorum.\"\n\nAdımlar:\n1. Editörü aç\n2. Tema > Dracula seç\n3. Herhangi bir yere tıkla\n4. İmleç görünmüyor\n\nBeklenen: İmleç görünmeli\nGerçekleşen: İmleç görünmüyor\n\nPerformans Raporu: [eklendi]\n\n┌─────────────────────────────────────────┐\n│  🚀 KATKIDA BULUNUN                     │\n└─────────────────────────────────────────┘\n\nSadece hata değil, özellik önerileri de\ngönderin!\n\n• Yeni özellik fikirleri\n• UI/UX iyileştirme önerileri\n• Dokümantasyon güncellemeleri\n• Kod katkıları\n\nGitHub'dan Pull Request açabilirsiniz!\n\n┌─────────────────────────────────────────┐\n│  💙 TEŞEKKÜRLER                         │\n└─────────────────────────────────────────┘\n\nHer geri bildirim Memati Editör'ü daha\niyi yapar. Katkılarınız için teşekkürler!\n\n🌟 Projeyi begendiyseniz GitHub'da yıldız\n   vermeyi unutmayın!",
-        "about": "ℹ️ {app_name} HAKKINDA\n\nModern, Hafif ve Güçlü Python IDE\n\n┌─────────────────────────────────────────┐\n│  📱 UYGULAMA BİLGİSİ                    │\n└─────────────────────────────────────────┘\n\n🪐 İsim: {app_name}\n📦 Sürüm: 1.0\n📅 Yayın: 2025\n🏷️ Kod Adı: \"Memati\"\n\n┌─────────────────────────────────────────┐\n│  🛠️ TEKNOLOJİ YIĞINI                    │\n└─────────────────────────────────────────┘\n\n🐍 Dil: Python 3.10+\n🎨 GUI: CustomTkinter\n🌈 Syntax: Pygments\n👁️ Monitoring: Watchdog\n⚡ Async: Threading\n\n┌─────────────────────────────────────────┐\n│  ✨ ÖZELLİKLER                          │\n└─────────────────────────────────────────┘\n\n✅ Çoklu Sekme Desteği\n✅ Sözdizimi Vurgulama (300+ dil)\n✅ Çoklu İmleç\n✅ Akıllı Otomatik Tamamlama\n✅ Kod Katlama\n✅ Minimap\n✅ Bul ve Değiştir (Regex)\n✅ 9 Premium Tema\n✅ Otomatik Kayıt\n✅ Dosya İzleme\n✅ Satıra Git\n✅ Tam Ekran Modu\n✅ Zoom Desteği\n✅ Entegre Terminal\n✅ Zen Mode (Dikkat Modu)\n✅ Dosya Gezgini\n\n┌─────────────────────────────────────────┐\n│  👨‍💻 GELİŞTİRİCİ                        │\n└─────────────────────────────────────────┘\n\n🎯 Geliştirici: Memati AI Team\n🌐 Website: memati-editor.local\n📧 İletişim: contact@memati-editor.local\n💬 Topluluk: Discord (yakında)\n\n┌─────────────────────────────────────────┐\n│  📜 LİSANS                              │\n└─────────────────────────────────────────┘\n\n📄 MIT License\n🆓 Ücretsiz ve Open Source\n🔓 Kaynak kodu GitHub'da\n\nCopyright © 2025 Memati\nTüm Hakları Saklıdır.\n\n┌─────────────────────────────────────────┐\n│  🙏 TEŞEKKÜRLER                         │\n└─────────────────────────────────────────┘\n\nBu proje şu harika kütüphaneler sayesinde\nmümkün oldu:\n\n• CustomTkinter - Modern UI\n• Pygments - Syntax highlighting\n• Watchdog - File monitoring\n• Python - Amazing language\n\nVe tüm katkıda bulunanlara ❤️\n\n┌─────────────────────────────────────────┐\n│  🔮 GELECEK PLANLAR (v2.0)              │\n└─────────────────────────────────────────┘\n\n🚀 Plugin Sistemi\n🚀 Git Entegrasyonu\n🚀 AI Kod Asistanı\n🚀 Collaboration Mode\n🚀 Özel Tema Oluşturucu\n🚀 Debugging Desteği\n🚀 Split View\n🚀 Snippet Manager\n\nBizi takip edin! 🌟\n\n┌─────────────────────────────────────────┐\n│  💙 SOSYAL MEDYA                        │\n└─────────────────────────────────────────┘\n\n🐙 GitHub: /memati/memati-editor\n🐦 Twitter: @memati_editor\n📺 YouTube: Memati Editor Tutorials\n💬 Discord: discord.gg/memati\n\nMemati Editör ile kodlamanın keyfini çıkarın!\n\n☕ Made with Coffee and Love by Memati Team",
-        "performance_report": "📊 DETAYLI PERFORMANS RAPORU\n\nAnlık sistem ve editör durumu:\n\n┌─────────────────────────────────────────┐\n│  💻 SİSTEM VE KAYNAKLAR                 │\n└─────────────────────────────────────────┘\n\n🖥️  OS: {sys_info}\n🐍 Python: {py_ver}\n💾 Bellek (RAM): {memory_usage}\n⚙️  CPU Kullanımı: {cpu_usage}\n🧵 Aktif İş Parçacığı: {thread_count}\n⏱️  Çalışma Süresi: {uptime_str}\n\n┌─────────────────────────────────────────┐\n│  📈 TEKNİK İSTATİSTİKLER                │\n└─────────────────────────────────────────┘\n\n📑 Açık Dosyalar: {tab_count}\n📝 Toplam Satır: {total_lines}\n🔤 Toplam Karakter: {total_chars}\n🎨 Aktif Tema: {current_theme}\n🌐 Dil Dağılımı: {languages_str}\n\n┌─────────────────────────────────────────┐\n│  ✅ SAĞLIK KONTROLÜ                     │\n└─────────────────────────────────────────┘\n\n🟢 Arayüz Tepkisi: Optimal\n🟢 Dosya İzleyici: Aktif (Watchdog)\n🟢 Auto-Save: Aktif (30sn)\n🟢 GPU Hızlandırma: {gpu_status}\n\n┌─────────────────────────────────────────┐\n│  💡 ANALİZ VE ÖNERİLER                  │\n└─────────────────────────────────────────┘\n\n{suggestions_text}\n\n┌─────────────────────────────────────────┐\n│  📋 RAPOR BİLGİSİ                       │\n└─────────────────────────────────────────┘\n\nSürüm: Memati Editör v1.2 (Dev)\nNode: {node}\nZaman: {time}\n",
-        "performance_suggestions": {
-            "high_tab_count": "🟡 Sekme sayısı yüksek (10+). Performans düşebilir.",
-            "high_line_count": "🟡 Toplam satır sayısı çok yüksek. Editör yavaşlayabilir.",
-            "high_memory": "🟡 Bellek kullanımı yüksek (>500MB).",
-            "install_psutil": "🟡 Tam performans verileri için 'psutil' modülünü kurun.\n   Komut: pip install psutil",
-            "all_good": "✅ Tüm sistem değerleri optimal seviyede."
-        }
-    },
-    "tutorial": {
-        "title": "Memati Editör - Öğretici",
-        "header_welcome": "Hoş Geldiniz!",
-        "buttons": {
-            "back": "Geri",
-            "pause": "Duraklat",
-            "resume": "Devam",
-            "next": "Devam Et",
-            "skip": "Öğreticiyi Atla",
-            "complete": "Tamamla 🎉"
-        },
-        "labels": {
-            "task": "GÖREV",
-            "tip": "İPUCU",
-            "task_pending": "İlerlemek için yukarıdaki görevi tamamlayın.",
-            "task_completed": "✅ Harika! Görev tamamlandı!"
-        },
-        "messages": {
-             "skip_confirm_title": "Atla",
-             "skip_confirm_msg": "Öğreticiyi kapatmak istediğinizden emin misiniz?",
-             "completed_title": "Tamamlandı",
-             "completed_msg": "🎉 Tebrikler!\n\nTutorial tamamlandı!\nGörevler: {completed}/{total}"
-        },
-        "steps": {
-            "welcome": {
-                "title": "Memati Editör'e Hoş Geldiniz!",
-                "message": "Merhaba! 👋\n\nEditörünüzü profesyonelce kullanmanız için hazırladığımız bu interaktif rehbere hoş geldiniz.\n\n🚀 Bu turda şunları keşfedeceksiniz:\n• Arayüzün gizli güçleri\n• Şimşek hızında kodlama teknikleri\n• Proje yönetim ipuçları\n\nHazırsanız başlayalım!",
-                "tips": ["Öğretici penceresini ekranın rahat bir köşesine taşıyabilirsiniz."]
-            },
-            "menus": {
-                "title": "Menüler ve Komutlar",
-                "message": "Her şeyin merkezi burası.\n\nDosya işlemlerinden tema ayarlarına kadar her şeye buradan ulaşabilirsiniz.\n\n💡 Kısayolları (örn. Ctrl+N) menülerden öğrenerek zaman kazanabilirsiniz.",
-                "tips": []
-            },
-            "file_explorer": {
-                "title": "Dosya Gezgini",
-                "message": "Projeleriniz burada yaşar.\n\nDosyalarınızı ağaç yapısında görüntüleyin. Klasörleri açıp kapamak için çift tıklayabilirsiniz.\n\n🎯 Görev: Sol paneldeki 'Dosya Gezgini'ni inceleyin.",
-                "tips": ["Ctrl+Shift+O ile yeni bir klasör açabilirsiniz.", "Paneli gizlemek için Ctrl+B'yi kullanın."]
-            },
-            "image_viewer": {
-                "title": "Resim Görüntüleyici",
-                "message": "Editörünüz artık resim dosyalarını da açabiliyor!\n\nDesteklenen formatlar: PNG, JPG, JPEG, BMP, GIF.\n\n🎯 Görev: Dosya gezgininden bir resim dosyası açın.",
-                "tips": ["Resmi yakınlaştırmak için tekerleği kullanın.", "Yön tuşları ile resim içinde gezinebilirsiniz."]
-            },
-             "new_tab": {
-                "title": "Yeni Bir Başlangıç",
-                "message": "Kodlamaya başlamak için temiz bir sayfa açın.\n\n🎯 Görev: Ctrl+N kısayolunu kullanarak veya Dosya menüsünden yeni bir sekme oluşturun.",
-                "tips": ["Sekmeleri sürükleyerek sırasını değiştirebilirsiniz."]
-            },
-            "editor_area": {
-                "title": "Editörün Kalbi",
-                "message": "Burası sizin oyun alanınız.\n\n✨ Özellikler:\n• Otomatik Tamamlama (Ctrl+Space)\n• Kod Renklendirme\n• Akıllı Girinti\n\n🎯 Görev: Editöre rastgele bir şeyler yazın!",
-                "tips": ["Yazı boyutunu değiştirmek için Ctrl + Tekerlek kullanın."]
-            },
-            "minimap": {
-                "title": "Minimap (Kod Haritası)",
-                "message": "Kodunuzun kuş bakışı görünümü.\n\nUzun dosyalarda hızla gezinmek için sağdaki haritayı kullanın.\n\nKlavye Kısayolu: Ctrl+M",
-                "tips": []
-            },
-            "multi_cursor": {
-                "title": "Çoklu İmleç Sihirbazlığı",
-                "message": "Aynı anda birden fazla yeri düzenleyin!\n\n🎯 Görev: Klavyede 'Alt' tuşuna basılı tutarak editörde farklı yerlere tıklayın. Birden fazla imleç yanıp sönmeli!",
-                "tips": ["İmleçleri iptal etmek için 'Escape' tuşuna basın.", "Listeleri düzenlerken harikalar yaratır."]
-            },
-            "smart_select": {
-                "title": "Akıllı Seçim (Ctrl+D)",
-                "message": "Değişken adlarını değiştirmek hiç bu kadar kolay olmamıştı.\n\n1. Bir kelimeyi seçin.\n2. Ctrl+D'ye basarak bir sonraki aynısını seçin.\n3. Yazmaya başlayın; hepsi değişecek!\n\n🎯 Görev: Bunu deneyin!",
-                "tips": []
-            },
-            "find_replace": {
-                "title": "Bul ve Yok Et (Değiştir)",
-                "message": "Güçlü arama motoru emrinizde.\n\n🎯 Görev: Ctrl+F tuşuna basarak arama panelini açın. Regex desteği bile var!",
-                "tips": []
-            },
-            "goto_line": {
-                "title": "Satıra Git (Ctrl+G)",
-                "message": "Uzun dosyalarda kaybolmayın.\n\n🎯 Görev: Ctrl+G tuşuna basarak 'Satıra Git' penceresini açın.",
-                "tips": ["Sadece sayı girerek istediğiniz satıra ışınlanın."]
-            },
-            "terminal": {
-                "title": "Terminal Entegrasyonu",
-                "message": "Editörden çıkmadan komut çalıştırın.\n\n🎯 Görev: Ctrl+` (Tab'ın üstündeki tuş) ile terminali açın/kapatın.",
-                "tips": ["Terminali 'exit' yazarak da kapatabilirsiniz."]
-            },
-            "markdown": {
-                "title": "Markdown Önizleme",
-                "message": "Doküman yazarları için harika bir özellik.\n\nEğer bir .md dosyasındaysanız, Ctrl+Shift+V ile canlı önizlemeyi açabilirsiniz.\n\n💡 Editörde kaydırdıkça önizleme de kayar (Sync Scroll).",
-                "tips": []
-            },
-            "zen_mode": {
-                "title": "Zen Modu",
-                "message": "Sadece koda odaklanmak istediğinizde...\n\n🧘 Ctrl+K, ardından Z tuşuna basın.\n\nTüm paneller gizlenir, sadece kod kalır. Geri dönmek için aynısı.",
-                "tips": []
-            },
-            "settings": {
-                "title": "Ayarlar Menüsü",
-                "message": "Editörünüzü tamamen özelleştirin.\n\nAyarları açmak için Dosya > Ayarlar menüsünü kullanın.\n\n💡 İpucu: Hızlı erişim için Ctrl+, kısayolunu kullanabilirsiniz.",
-                "tips": []
-            },
-            "theme": {
-                "title": "Temalar",
-                "message": "Gözünüze en uygun görünümü seçin.\n\nAyarlar menüsünden veya Görünüm > Tema altından 9 farklı tema arasından seçim yapabilirsiniz.",
-                "tips": ["Gece çalışmaları için 'Dracula' veya 'Dark' temalarını öneririz."]
-            },
-            "code_folding": {
-                "title": "Kod Katlama",
-                "message": "Uzun kod bloklarını gizleyerek odaklanın.\n\nSatır numaralarının yanındaki oklara (▼) tıklayarak fonksiyonları veya sınıfları katlayabilirsiniz.",
-                "tips": []
-            },
-            "status_bar": {
-                "title": "Durum Çubuğu",
-                "message": "Dosyanız hakkında her şey burada.\n\nAlt kısımdaki çubuktan:\n• Satır/Sütun bilgisini\n• Dosya dilini\n• Kodlama (UTF-8) bilgisini görebilirsiniz.",
-                "tips": []
-            },
-            "congrats": {
-                "title": "Tebrikler! 🎉",
-                "message": "Temel eğitimi başarıyla tamamladınız!\n\nArtık Memati Editör'ün gücü parmaklarınızın ucunda. Keşfedilecek daha çok özellik var (Temalar, Git entegrasyonu, vb.).\n\nİyi kodlamalar!",
-                "tips": ["Bu tura istediğiniz zaman Yardım menüsünden ulaşabilirsiniz."]
-            }
-        }
-    },
-    "menu": {
-        "file": "Dosya",
-        "edit": "Düzenle",
-        "view": "Görünüm",
-        "theme": "Tema",
-        "help": "Yardım",
-        "tutorial": "Öğretici",
-        "settings": "Ayarlar",
-        "items": {
-            "new_tab": "Yeni Sekme",
-            "open_file": "Dosya Aç",
-            "open_folder": "Klasör Aç",
-            "save": "Kaydet",
-            "save_as": "Farklı Kaydet",
-            "find_replace": "Bul ve Değiştir",
-            "goto_line": "Satıra Git",
-            "exit": "Çıkış",
-            "undo": "Geri Al",
-            "redo": "Yinele",
-            "cut": "Kes",
-            "copy": "Kopyala",
-            "paste": "Yapıştır",
-            "duplicate_line": "Satır Çoğalt",
-            "move_up": "Yukarı Taşı",
-            "move_down": "Aşağı Taşı",
-            "delete_line": "Satır Sil",
-            "join_lines": "Satır Birleştir",
-            "copy_path": "Yol Kopyala",
-            "relative_path": "Göreli Yol",
-            "line_numbers": "Satır Numaraları",
-            "word_wrap": "Satır Sarma (Word Wrap)",
-            "minimap": "Minimap",
-            "status_bar": "Durum Çubuğu",
-            "file_explorer": "Dosya Gezgini",
-            "terminal": "Terminal",
-            "markdown_preview": "Markdown Önizleme",
-            "zen_mode": "Zen Modu",
-            "zen_exit": "⤣ Zen Modundan Çık",
-            "fullscreen": "Tam Ekran"
-        }
-    },
-    "status_messages": {
-        "line_numbers_on": "Satır numaraları açık",
-        "line_numbers_off": "Satır numaraları kapalı",
-        "word_wrap_on": "Satır sarma açık",
-        "word_wrap_off": "Satır sarma kapalı",
-        "minimap_on": "Minimap açık",
-        "minimap_off": "Minimap kapalı",
-        "explorer_on": "Dosya gezgini açık",
-        "explorer_off": "Dosya gezgini kapalı",
-        "terminal_opened": "⌨️ Terminal açıldı",
-        "terminal_closed": "Terminal kapatıldı",
-        "file_needed": "⚠️ Önce bir dosya açın",
-        "markdown_error": "⚠️ Sadece .md dosyaları önizlenebilir",
-        "preview_opened": "Markdown önizleme açıldı",
-        "preview_closed": "Markdown önizleme kapatıldı",
-        "preview_failed": "❌ Önizleme başlatılamadı",
-        "ready": "Hazır"
+    "categories": {
+        "Editör": "Editör",
+        "Gelişmiş": "Gelişmiş",
+        "Genel": "Genel",
+        "Görünüm": "Görünüm",
+        "Klavye Kısayolları": "Klavye Kısayolları",
+        "Tema": "Tema",
+        "Terminal": "Terminal"
     },
     "context_menu": {
         "close": "Kapat",
@@ -306,10 +22,450 @@
         "close_right": "Sağdakileri Kapat",
         "copy_filename": "Dosya Adını Kopyala"
     },
-    "status_bar": {
-        "ln": "Satır",
-        "col": "Sütun"
-    },
     "file_explorer_title": "Dosya Gezgini",
-    "untitled_tab": "Adsız"
+    "help": {
+        "buttons": {
+            "back": "◀ Geri",
+            "forward": "İleri ▶",
+            "home": "🏠 Ana Sayfa"
+        },
+        "header": "Yardım Merkezi",
+        "search_placeholder": "🔍 Ara...",
+        "sections": {
+            "about": "ℹ️ Hakkında",
+            "faq": "❓ SSS",
+            "file_formats": "📁 Dosya Formatları",
+            "goto_line": "🔢 Satıra Git",
+            "image_viewer": "🖼️ Resim Görüntüleyici",
+            "markdown_guide": "📄 Markdown Rehberi",
+            "multi_cursor": "🖱️ Çoklu İmleç Rehberi",
+            "performance": "📊 Performans Raporu",
+            "quick_start": "🚀 Hızlı Başlangıç",
+            "report_bug": "🐛 Hata Bildir",
+            "shortcuts": "⌨️ Klavye Kısayolları",
+            "theme_guide": "🎨 Tema Rehberi",
+            "tips": "💡 İpuçları ve Püf Noktaları"
+        },
+        "start_tutorial": "🎓 İnteraktif Öğreticiyi Başlat",
+        "title": "🪐 {app_name} - Yardım Merkezi"
+    },
+    "help_content": {
+        "about": "ℹ️ {app_name} HAKKINDA\n\nModern, Hafif ve Güçlü Python IDE\n\n┌─────────────────────────────────────────┐\n│  📱 UYGULAMA BİLGİSİ                    │\n└─────────────────────────────────────────┘\n\n🪐 İsim: {app_name}\n📦 Sürüm: 1.0\n📅 Yayın: 2025\n🏷️ Kod Adı: \"Memati\"\n\n┌─────────────────────────────────────────┐\n│  🛠️ TEKNOLOJİ YIĞINI                    │\n└─────────────────────────────────────────┘\n\n🐍 Dil: Python 3.10+\n🎨 GUI: CustomTkinter\n🌈 Syntax: Pygments\n👁️ Monitoring: Watchdog\n⚡ Async: Threading\n\n┌─────────────────────────────────────────┐\n│  ✨ ÖZELLİKLER                          │\n└─────────────────────────────────────────┘\n\n✅ Çoklu Sekme Desteği\n✅ Sözdizimi Vurgulama (300+ dil)\n✅ Çoklu İmleç\n✅ Akıllı Otomatik Tamamlama\n✅ Kod Katlama\n✅ Minimap\n✅ Bul ve Değiştir (Regex)\n✅ 9 Premium Tema\n✅ Otomatik Kayıt\n✅ Dosya İzleme\n✅ Satıra Git\n✅ Tam Ekran Modu\n✅ Zoom Desteği\n✅ Entegre Terminal\n✅ Zen Mode (Dikkat Modu)\n✅ Dosya Gezgini\n\n┌─────────────────────────────────────────┐\n│  👨‍💻 GELİŞTİRİCİ                        │\n└─────────────────────────────────────────┘\n\n🎯 Geliştirici: Memati AI Team\n🌐 Website: memati-editor.local\n📧 İletişim: contact@memati-editor.local\n💬 Topluluk: Discord (yakında)\n\n┌─────────────────────────────────────────┐\n│  📜 LİSANS                              │\n└─────────────────────────────────────────┘\n\n📄 MIT License\n🆓 Ücretsiz ve Open Source\n🔓 Kaynak kodu GitHub'da\n\nCopyright © 2025 Memati\nTüm Hakları Saklıdır.\n\n┌─────────────────────────────────────────┐\n│  🙏 TEŞEKKÜRLER                         │\n└─────────────────────────────────────────┘\n\nBu proje şu harika kütüphaneler sayesinde\nmümkün oldu:\n\n• CustomTkinter - Modern UI\n• Pygments - Syntax highlighting\n• Watchdog - File monitoring\n• Python - Amazing language\n\nVe tüm katkıda bulunanlara ❤️\n\n┌─────────────────────────────────────────┐\n│  🔮 GELECEK PLANLAR (v2.0)              │\n└─────────────────────────────────────────┘\n\n🚀 Plugin Sistemi\n🚀 Git Entegrasyonu\n🚀 AI Kod Asistanı\n🚀 Collaboration Mode\n🚀 Özel Tema Oluşturucu\n🚀 Debugging Desteği\n🚀 Split View\n🚀 Snippet Manager\n\nBizi takip edin! 🌟\n\n┌─────────────────────────────────────────┐\n│  💙 SOSYAL MEDYA                        │\n└─────────────────────────────────────────┘\n\n🐙 GitHub: /memati/memati-editor\n🐦 Twitter: @memati_editor\n📺 YouTube: Memati Editor Tutorials\n💬 Discord: discord.gg/memati\n\nMemati Editör ile kodlamanın keyfini çıkarın!\n\n☕ Made with Coffee and Love by Memati Team",
+        "faq": "❓ SIK SORULAN SORULAR\n\nMerak ettiklerinizin yanıtları burada!\n\n┌─────────────────────────────────────────┐\n│  🔧 GENEL SORULAR                       │\n└─────────────────────────────────────────┘\n\n❔ Memati Editör ücretsiz mi?\n✅ Evet! Tamamen ücretsiz ve open-source.\n\n❔ Hangi işletim sistemlerinde çalışır?\n✅ Windows, macOS ve Linux'ta çalışır.\n\n❔ İnternet bağlantısı gerekli mi?\n✅ Hayır, tamamen offline çalışır.\n\n┌─────────────────────────────────────────┐\n│  📂 DOSYA VE KAYIT                      │\n└─────────────────────────────────────────┘\n\n❔ Dosyalarım nereye kaydediliyor?\n✅ Sizin belirlediğiniz konuma. Otomatik\n   kayıt mevcut dosyanın üzerine yazar.\n\n❔ Otomatik kayıt ne sıklıkla çalışır?\n✅ Her 30 saniyede bir. Kaydedilmemiş\n   değişiklikler varsa otomatik kaydeder.\n\n❔ Kazara kapattım, kaybettim mi?\n✅ Otomatik kayıt aktifse hayır. 30 saniye\n   içinde kapatmadıysanız güvendesiniz.\n\n❔ Çok büyük dosyaları açabilir miyim?\n✅ Önerilmez. 10MB üzeri dosyalar\n   yavaşlık yaratabilir.\n\n┌─────────────────────────────────────────┐\n│  🎨 GÖRÜNÜM VE ÖZELLEŞTİRME             │\n└─────────────────────────────────────────┘\n\n❔ Font değiştirebilir miyim?\n✅ Şu anda sabit (Consolas/sistem mono).\n   Yakınlaştırma Ctrl+Tekerlek ile yapılır.\n\n❔ Özel tema oluşturabilir miyim?\n✅ Şu anda hayır, ancak yol haritamızda var!\n\n❔ Panelleri gizleyebilir miyim?\n✅ Evet! Görünüm menüsünden:\n   • Satır Numaraları\n   • Word Wrap\n   • Minimap\n   • Durum Çubuğu\n   • Dosya Gezgini\n   Toggle edilebilir. Ayrıca Zen Mode ile\n   sadece editörü gösterebilirsiniz (Ctrl+K, Z).\n\n┌─────────────────────────────────────────┐\n│  ⚡ PERFORMANS                           │\n└─────────────────────────────────────────┘\n\n❔ Editör yavaş çalışıyor, ne yapmalıyım?\n✅ • Gereksiz sekmeleri kapatın\n   • Çok büyük dosyalardan kaçının\n   • Çoklu imleç sayısını azaltın\n   • Bilgisayarınızı yeniden başlatın\n\n❔ Çok sekme açınca yavaşlıyor?\n✅ Normal bir durum. 10-15 sekmeye kadar\n   performans iyidir. Fazlasında yavaşlama\n   olabilir.\n\n┌─────────────────────────────────────────┐\n│  🔌 EKLENTILER VE ENTEGRASYONLAR        │\n└─────────────────────────────────────────┘\n\n❔ Plugin desteği var mı?\n✅ Henüz yok, ancak v2.0'da gelecek!\n\n❔ Git entegrasyonu var mı?\n✅ Şu anda yok, ancak planlanıyor.\n\n❔ Terminal açabilir miyim?\n✅ Evet! Ctrl+` ile entegre terminal açabilirsiniz.\n   PowerShell, CMD ve Bash desteklenir.\n\n┌─────────────────────────────────────────┐\n│  🐛 SORUN GİDERME                       │\n└─────────────────────────────────────────┘\n\n❔ Editör açılmıyor!\n✅ • Python 3.10+ yüklü olduğundan emin olun\n   • Bağımlılıkları kontrol edin:\n     pip install customtkinter pygments watchdog\n\n❔ Tema değişmiyor!\n✅ Editörü yeniden başlatmayı deneyin.\n\n❔ Kısayollar çalışmıyor!\n✅ Başka bir uygulamayla çakışma olabilir.\n   Arka planda çalışan programları kontrol edin.\n\n┌─────────────────────────────────────────┐\n│  🆘 DAHA FAZLA YARDIM                   │\n└─────────────────────────────────────────┘\n\nSorunuz yanıtlanmadı mı?\n\n📧 İletişim: support@memati-editor.local\n🐛 Hata bildir: \"Hata Bildir\" bölümüne bakın\n📖 Dokümantasyon: GitHub wiki (yakında)\n\nTopluluk desteği için forum yakında! 🚀",
+        "goto_line": "🔢 SATIRA GİT\n\nBüyük dosyalarda belirli bir satıra hızlıca ulaşmak için kullanılır.\n\n┌─────────────────────────────────────────┐\n│  🚀 KULLANIM                            │\n└─────────────────────────────────────────┘\n\n1️⃣  PENCEREYİ AÇIN\n   • Kısayol: Ctrl+G\n   • Menü: Düzen > Satıra Git\n\n2️⃣  SATIR NUMARASINI GİRİN\n   • Gitmek istediğiniz satır numarasını yazın.\n\n3️⃣  GİT'E TIKLAYIN\n   • \"Git\" butonuna tıklayın veya Enter'a basın.\n\nEditör sizi otomatik olarak o satıra götürecek ve satırı vurgulayacaktır.",
+        "image_viewer": "🖼️ RESİM GÖRÜNTÜLEYİCİ\n\nMemati Editör, kod dosyalarının yanı sıra resim dosyalarını da görüntüleyebilir.\n\n┌─────────────────────────────────────────┐\n│  ✨ ÖZELLİKLER                          │\n└─────────────────────────────────────────┘\n\n🔍 Yakınlaştırma/Uzaklaştırma:\n   Fare tekerleği ile resme odaklanabilirsiniz.\n\n✋ Kaydırma:\n   Büyütülmüş resimlerde sürükleyerek veya yön tuşlarıyla gezinebilirsiniz.\n\n🔄 Döndürme:\n   'R' (Sağ) ve 'L' (Sol) tuşlarıyla resmi döndürebilirsiniz.\n\nabc Ekrana Sığdır:\n   'F' tuşu veya araç çubuğundaki buton ile resmi pencereye sığdırabilirsiniz.\n\n┌─────────────────────────────────────────┐\n│  📁 DESTEKLENEN FORMATLAR               │\n└─────────────────────────────────────────┘\n\n• PNG\n• JPG / JPEG\n• GIF\n• BMP\n• WEBP",
+        "markdown_guide": "📄 MARKDOWN REHBERİ\n\nMarkdown dosyalarınızı canlı önizleyin!\n\n┌─────────────────────────────────────────┐\n│  🚀 NASIL KULLANILIR?                   │\n└─────────────────────────────────────────┘\n\n1️⃣  BİR MARKDOWN DOSYASI AÇIN\n   • Uzantısı .md veya .markdown olan bir dosya\n   • Örnek: README.md\n\n2️⃣  ÖNİZLEMEYİ BAŞLATIN\n   • Kısayol: Ctrl+Shift+V\n   • Veya sağ üstteki menüden \"Görünüm\" > \"Markdown Önizleme\"\n   • Ekran ikiye bölünür, sağda önizleme açılır\n\n┌─────────────────────────────────────────┐\n│  ✨ ÖZELLİKLER                          │\n└─────────────────────────────────────────┘\n\n🔄 CANLI GÜNCELLEME\n   Sol tarafta yazdığınız her şey, anında\n   sağ tarafta biçimlendirilmiş olarak görünür.\n\n📜 SENKRONİZE KAYDIRMA (SYNC SCROLL)\n   Editörde aşağı indiğinizde önizleme de\n   otomatik olarak kayar. Nerede kaldığınızı\n   asla kaybetmezsiniz!\n\n🎨 TEMA UYUMU\n   Editör temasını değiştirdiğinizde, önizleme\n   de otomatik olarak uyum sağlar.\n   • Dark mode → Koyu önizleme\n   • Light mode → Açık önizleme\n\n📊 İSTATİSTİK ÇUBUĞU\n   Önizleme panelinin altında detaylı bilgi:\n   • Kelime Sayısı\n   • Karakter Sayısı\n   • Okuma Süresi (Dk)\n\n🔍 ÖNİZLEME İÇİNDE ARAMA\n   Önizleme metni içinde arama yapabilirsiniz.\n   • Önizlemeye odaklanın\n   • Ctrl+F tuşuna basın\n   • Sonuçlar vurgulanır\n\n┌─────────────────────────────────────────┐\n│  📝 MARKDOWN SÖZDİZİMİ                  │\n└─────────────────────────────────────────┘\n\n# Başlık 1\n## Başlık 2\n### Başlık 3\n\n**Kalın Yazı**\n*İtalik Yazı*\n~~Üzeri Çizili~~\n\n- Liste öğesi 1\n- Liste öğesi 2\n\n1. Numaralı liste\n2. Numaralı liste\n\n[Link Metni](https://google.com)\n![Resim](image.png)\n\n`Kod Bloğu`\n\n```python\ndef hello():\n    print(\"Merhaba Dünya!\")\n```\n\n> Alıntı metni\n\n┌─────────────────────────────────────────┐\n│  💡 İPUÇLARI                            │\n└─────────────────────────────────────────┘\n\n🔸 Önizlemeyi kapatmak için tekrar\n   Ctrl+Shift+V tuşlarına basın.\n\n🔸 Pencereyi büyüttüğünüzde önizleme\n   daha iyi görünür.\n\n🔸 Tablolar ve Checkbox'lar da desteklenir!\n   - [x] Yapıldı\n   - [ ] Yapılacak\n\nKeyifli yazmalar! ✍️",
+        "multi_cursor": "🖱️ ÇOKLU İMLEÇ REHBERİ\n\nAynı anda birden fazla yerde düzenleme yapın!\n\n┌─────────────────────────────────────────┐\n│  🎯 TEMEL KULLANIM                      │\n└─────────────────────────────────────────┘\n\n1️⃣  İMLEÇ EKLEMEK:\n   ┌─────────────────────────────┐\n   │ Alt + Sol Tık                │\n   └─────────────────────────────┘\n   \n   Tıkladığınız her yere yeni bir imleç eklenir.\n   Aynı yere tekrar tıklarsanız imleç kaldırılır.\n\n2️⃣  KELİME SEÇME:\n   ┌─────────────────────────────┐\n   │ Ctrl + D                     │\n   └─────────────────────────────┘\n   \n   • Bir kelimenin üzerindeyken: Ctrl+D\n   • Kelime seçilir\n   • Tekrar basarsanız: Sonraki aynı kelime seçilir\n   • Her seferinde yeni imleç eklenir\n\n3️⃣  TEMİZLE:\n   ┌─────────────────────────────┐\n   │ Escape (Esc)                 │\n   └─────────────────────────────┘\n   \n   Tüm ek imleçleri temizler, tek imlece döner.\n\n┌─────────────────────────────────────────┐\n│  📚 ÖRNEKLİ SENARYOLAR                  │\n└─────────────────────────────────────────┘\n\n🔷 SENARYO 1: Sütun Düzenleme\n   ────────────────────────────\n   print(\"Satır 1\")\n   print(\"Satır 2\")\n   print(\"Satır 3\")\n   \n   🎯 Hedef: Her satırın başına # eklemek\n   \n   ✅ Çözüm:\n   1. Alt+Click ile her satırın başına imleç koyun\n   2. # yazın\n   3. Tüm satırlara aynı anda eklenir!\n\n🔷 SENARYO 2: Değişken Yeniden Adlandırma\n   ──────────────────────────────────────\n   old_name = 10\n   result = old_name * 2\n   print(old_name)\n   \n   🎯 Hedef: \"old_name\" → \"new_name\"\n   \n   ✅ Çözüm:\n   1. \"old_name\" üzerine imleci getirin\n   2. Ctrl+D'ye 3 kez basın (3 kullanım var)\n   3. \"new_name\" yazın\n   4. Hepsi birden değişir!\n\n🔷 SENARYO 3: Liste Elemanlarını Düzenleme\n   ────────────────────────────────────────\n   items = [\n       \"item1\",\n       \"item2\",\n       \"item3\"\n   ]\n   \n   🎯 Hedef: Tüm çift tırnakları tek tırnağa\n   \n   ✅ Çözüm:\n   1. İlk çift tırnağı seçin: \"\n   2. Ctrl+D ile tüm çift tırnakları seçin\n   3. ' yazın (tek tırnak)\n   4. Tamamı değişir!\n\n┌─────────────────────────────────────────┐\n│  💡 İLERİ DÜZEY İPUÇLARI                │\n└─────────────────────────────────────────┘\n\n🌟 Alt+Click ile SÜTUN SEÇİMİ:\n   Birçok satırda aynı konuma imleç koyarak\n   dikey bir düzenleme yapabilirsiniz.\n\n🌟 Ctrl+D ile PARÇALI SEÇİM:\n   Bazı kelimeleri seçip, bazılarını atlayabilirsiniz.\n   Her Ctrl+D bir sonrakini seçer, gerekmedikçe durun!\n\n🌟 PERFORMANS:\n   100'den fazla imleç performansı etkileyebilir.\n   Makul sayıda kullanın (≤ 50 önerilir).\n\n┌─────────────────────────────────────────┐\n│  ⚠️ DİKKAT EDİLMESİ GEREKENLER          │\n└─────────────────────────────────────────┘\n\n❌ Çoklu imleç modunda otomatik tamamlama\n   devre dışı kalır.\n\n❌ Çok fazla imleç eklemek editörü\n   yavaşlatabilir.\n\n✅ İhtiyacınız kadar imleç kullanın,\n   işiniz bitince Escape ile temizleyin!\n\n┌─────────────────────────────────────────┐\n│  🎓 PRATİK YAPIN!                       │\n└─────────────────────────────────────────┘\n\nEn iyi öğrenme yöntemi pratiktir!\nYukarıdaki örnekleri kendi dosyalarınızda\ndeneyin ve alışın.\n\nBaşarılar! 🚀",
+        "performance_report": "📊 DETAYLI PERFORMANS RAPORU\n\nAnlık sistem ve editör durumu:\n\n┌─────────────────────────────────────────┐\n│  💻 SİSTEM VE KAYNAKLAR                 │\n└─────────────────────────────────────────┘\n\n🖥️  OS: {sys_info}\n🐍 Python: {py_ver}\n💾 Bellek (RAM): {memory_usage}\n⚙️  CPU Kullanımı: {cpu_usage}\n🧵 Aktif İş Parçacığı: {thread_count}\n⏱️  Çalışma Süresi: {uptime_str}\n\n┌─────────────────────────────────────────┐\n│  📈 TEKNİK İSTATİSTİKLER                │\n└─────────────────────────────────────────┘\n\n📑 Açık Dosyalar: {tab_count}\n📝 Toplam Satır: {total_lines}\n🔤 Toplam Karakter: {total_chars}\n🎨 Aktif Tema: {current_theme}\n🌐 Dil Dağılımı: {languages_str}\n\n┌─────────────────────────────────────────┐\n│  ✅ SAĞLIK KONTROLÜ                     │\n└─────────────────────────────────────────┘\n\n🟢 Arayüz Tepkisi: Optimal\n🟢 Dosya İzleyici: Aktif (Watchdog)\n🟢 Auto-Save: Aktif (30sn)\n🟢 GPU Hızlandırma: {gpu_status}\n\n┌─────────────────────────────────────────┐\n│  💡 ANALİZ VE ÖNERİLER                  │\n└─────────────────────────────────────────┘\n\n{suggestions_text}\n\n┌─────────────────────────────────────────┐\n│  📋 RAPOR BİLGİSİ                       │\n└─────────────────────────────────────────┘\n\nSürüm: Memati Editör v1.2 (Dev)\nNode: {node}\nZaman: {time}\n",
+        "performance_suggestions": {
+            "all_good": "✅ Tüm sistem değerleri optimal seviyede.",
+            "high_line_count": "🟡 Toplam satır sayısı çok yüksek. Editör yavaşlayabilir.",
+            "high_memory": "🟡 Bellek kullanımı yüksek (>500MB).",
+            "high_tab_count": "🟡 Sekme sayısı yüksek (10+). Performans düşebilir.",
+            "install_psutil": "🟡 Tam performans verileri için 'psutil' modülünü kurun.\n   Komut: pip install psutil"
+        },
+        "quick_start": "🎯 MEMATI EDITÖR'E HOŞ GELDİNİZ!\n\nModern, güçlü ve kullanıcı dostu metin editörünüz hazır!\n\n┌─────────────────────────────────────────┐\n│  🎓 İNTERAKTİF ÖĞRETİCİ                 │\n└─────────────────────────────────────────┘\n\nYeni misiniz? Endişelenmeyin! \n\n🎓 İNTERAKTİF ÖĞRETİCİ ile editörü 5 dakikada öğrenin!\n\n• Adım adım rehberlik\n• Görsel vurgulama (spotlight)\n• İnteraktif görevler\n• İlerleme takibi\n\nBaşlamak için:\n1. Yukarıdaki \"🎓 İnteraktif Öğreticiyi Başlat\" butonuna tıklayın\n2. Veya menüden: 🎓 Öğretici\n\n┌─────────────────────────────────────────┐\n│  İLK ADIMLAR                             │\n└─────────────────────────────────────────┘\n\n1️⃣  YENİ DOSYA OLUŞTURMA\n   • Ctrl+N tuşlarına basın\n   • Veya menüden: Dosya > Yeni Sekme\n\n2️⃣  DOSYA AÇMA\n   • Ctrl+O ile dosya seçin\n   • Veya dosyayı sürükleyip bırakın\n   • Klasör açmak için: Ctrl+Shift+O\n\n3️⃣  KAYDETME\n   • Ctrl+S ile mevcut dosyayı kaydedin\n   • Ctrl+Shift+S ile farklı kaydedin\n   • Otomatik kayıt: Her 30 saniyede bir!\n\n4️⃣  TEMA DEĞİŞTİRME\n   • Menüden: Tema > İstediğiniz temayı seçin\n   • 9 farklı, göz alıcı tema mevcut!\n\n5️⃣  ARAÇ VE ÖZELLİKLER\n   • Ctrl+F: Bul ve Değiştir\n   • Ctrl+G: Belirli satıra git\n   • Ctrl+Tekerlek: Yakınlaştır/Uzaklaştır\n   • F11: Tam ekran modu\n\n6️⃣  ÇOKLU İMLEÇ ARAÇLARI\n   • Alt+Click: Her yere imleç ekleyin\n   • Ctrl+D: Aynı kelimeyi seçip düzenleyin\n   • Detaylar için \"Çoklu İmleç Rehberi\"ne bakın!\n\n┌─────────────────────────────────────────┐\n│  HIZLI İPUÇLARI                         │\n└─────────────────────────────────────────┘\n\n💡 Otomatik parantez kapatma aktif!\n💡 Kod katlama: Satır numaralarındaki oklara tıklayın\n💡 Minimap: Büyük dosyalarda gezinmek için sağdaki haritayı kullanın\n💡 Sekmeler: Sağ tık ile gelişmiş sekme yönetimi\n\n┌─────────────────────────────────────────┐\n│  YARDIMA MI İHTİYACINIZ VAR?            │\n└─────────────────────────────────────────┘\n\nSol taraftaki menüden konuları keşfedin:\n• ⌨️  Klavye Kısayolları\n• 🖱️  Çoklu İmleç Rehberi\n• 💡 İpuçları ve Püf Noktaları\n• ❓ Sık Sorulan Sorular\n\nKeyifli kodlamalar! 🚀",
+        "report_bug": "🐛 HATA BİLDİR\n\nHata mı buldunuz? Bize bildirin!\n\n┌─────────────────────────────────────────┐\n│  📧 İLETİŞİM                            │\n└─────────────────────────────────────────┘\n\nE-posta: bugs@memati-editor.local\nGitHub:  github.com/memati/memati-editor/issues\n\n┌─────────────────────────────────────────┐\n│  📝 HATA BİLDİRİMİ ŞABLONU              │\n└─────────────────────────────────────────┘\n\nLütfen e-postanıza şunları ekleyin:\n\n1️⃣  BAŞLIK\n   Kısa ve açıklayıcı başlık\n   Örnek: \"Tema değiştirdiğimde çöküyor\"\n\n2️⃣  AÇIKLAMA\n   Hatayı detaylı anlatın:\n   • Ne yapmaya çalışıyordunuz?\n   • Ne oldu?\n   • Hatayı nasıl tekrarlayabiliriz?\n\n3️⃣  PERFORMANS RAPORU\n   \"Performans Raporu\" bölümünden kopyalayın\n\n4️⃣  EKRAN GÖRÜNTÜSÜ\n   Varsa hata ekran görüntüsü ekleyin\n\n5️⃣  HATA MESAJI\n   Konsol çıktısı veya hata mesajı\n\n┌─────────────────────────────────────────┐\n│  ✅ İYİ BİR HATA BİLDİRİMİ ÖRNEĞİ       │\n└─────────────────────────────────────────┘\n\nBaşlık:\n\"Dracula temasında imleç görünmüyor\"\n\nAçıklama:\n\"Dracula temasını seçtiğimde metin imleci\n(cursor) görünmez oluyor. Dark temasında\nproblem yok. Windows 11 kullanıyorum.\"\n\nAdımlar:\n1. Editörü aç\n2. Tema > Dracula seç\n3. Herhangi bir yere tıkla\n4. İmleç görünmüyor\n\nBeklenen: İmleç görünmeli\nGerçekleşen: İmleç görünmüyor\n\nPerformans Raporu: [eklendi]\n\n┌─────────────────────────────────────────┐\n│  🚀 KATKIDA BULUNUN                     │\n└─────────────────────────────────────────┘\n\nSadece hata değil, özellik önerileri de\ngönderin!\n\n• Yeni özellik fikirleri\n• UI/UX iyileştirme önerileri\n• Dokümantasyon güncellemeleri\n• Kod katkıları\n\nGitHub'dan Pull Request açabilirsiniz!\n\n┌─────────────────────────────────────────┐\n│  💙 TEŞEKKÜRLER                         │\n└─────────────────────────────────────────┘\n\nHer geri bildirim Memati Editör'ü daha\niyi yapar. Katkılarınız için teşekkürler!\n\n🌟 Projeyi begendiyseniz GitHub'da yıldız\n   vermeyi unutmayın!",
+        "shortcuts": "⌨️ KLAVYE KISAYOLLARI\n\nMemati Editör'ü klavyeden kontrol edin!\n\n┌─────────────────────────────────────────┐\n│  📁 DOSYA İŞLEMLERİ                     │\n└─────────────────────────────────────────┘\n\n{new_tab: <16} →  Yeni Sekme\n{open_file: <16} →  Dosya Aç\n{open_folder: <16} →  Klasör (Proje) Aç\n{save_file: <16} →  Kaydet\n{save_as: <16} →  Farklı Kaydet\n{close_tab: <16} →  Sekmeyi Kapat\n\n┌─────────────────────────────────────────┐\n│  ✏️ DÜZENLEME                            │\n└─────────────────────────────────────────┘\n\n{undo: <16} →  Geri Al\n{redo: <16} →  Yinele\n{cut: <16} →  Kes\n{copy: <16} →  Kopyala\n{paste: <16} →  Yapıştır\n{select_all: <16} →  Tümünü Seç\n{find: <16} →  Bul ve Değiştir\n{goto_line: <16} →  Satıra Git\n{duplicate_line: <16} →  Satır Çoğalt\n{move_line_up: <16} →  Satır Yukarı\n{move_line_down: <16} →  Satır Aşağı\n\n┌─────────────────────────────────────────┐\n│  🖱️ ÇOKLU İMLEÇ                         │\n└─────────────────────────────────────────┘\n\nAlt + Click      →  İmleç Ekle/Kaldır\nCtrl + D         →  Kelimeyi Seç (tekrarla)\nEscape           →  İmleçleri Temizle\n\n┌─────────────────────────────────────────┐\n│  👀 GÖRÜNÜM                              │\n└─────────────────────────────────────────┘\n\nCtrl + Tekerlek  →  Yakınlaştır/Uzaklaştır\n{zoom_reset: <16} →  Zoom Sıfırla\n{toggle_fullscreen: <16} →  Tam Ekran\n{toggle_file_explorer: <16} →  Dosya Gezgini Aç/Kapat\n{toggle_minimap: <16} →  Minimap Aç/Kapat\n{toggle_line_numbers: <16} →  Satır Numaraları\n{toggle_word_wrap: <16} →  Word Wrap (Satır Kaydır)\n{toggle_terminal: <16} →  Terminal Aç/Kapat\n{preview_markdown: <16} →  Markdown Önizleme\n{toggle_zen_mode: <16} →  Zen Mode (Dikkat Modu)\n\n┌─────────────────────────────────────────┐\n│  📋 KOPYALAMA KISAYOLLARI               │\n└─────────────────────────────────────────┘\n\n{copy_path: <16} →  Dosya Yolunu Kopyala\n{copy_relative_path: <16} →  Göreli Yolu Kopyala\n\n┌─────────────────────────────────────────┐\n│  💡 PRO İPUÇLARI                        │\n└─────────────────────────────────────────┘\n\n🔸 Kod katlama için satır numaralarındaki\n   ▼ ve ▶ işaretlerine tıklayın\n\n🔸 Sekme başlıklarına sağ tıklayarak:\n   • Sekmeyi kapat\n   • Diğerlerini kapat\n   • Sağdakileri kapat\n   • Yolu kopyala\n\n🔸 Minimap'e tıklayarak dosyada gezinin\n\n🔸 Satır numaralarına tıklayarak satır seçin\n\n🔸 Terminal panelinde PowerShell, CMD veya\n   Bash kullanabilirsiniz",
+        "supported_formats": "📁 DESTEKLENEN DOSYA FORMATLARI\n\nMemati Editör birçok dosya formatını destekler!\n\n┌─────────────────────────────────────────┐\n│  🟢 TAM DESTEK (Highlighting + Complete) │\n└─────────────────────────────────────────┘\n\nSözdizimi vurgulama + Otomatik tamamlama:\n\n🐍 PYTHON (.py, .pyw)\n   • Akıllı tamamlama\n   • Fonksiyon önerileri\n   • Paket/modül tanıma\n\n🌐 HTML (.html, .htm)\n   • Tag tamamlama\n   • Attribute önerileri\n   • Paired tags\n\n🎨 CSS (.css, .scss, .sass)\n   • Property önerileri\n   • Renk önizleme\n   • Class/ID tamamlama\n\n📜 JAVASCRIPT (.js, .jsx)\n   • ES6+ desteği\n   • Keyword completion\n   • Modern syntax\n\n┌─────────────────────────────────────────┐\n│  🟡 SÖZDİZİMİ VURGULAMA                 │\n└─────────────────────────────────────────┘\n\nSadece renklendirme (tamamlama yok):\n\n📋 JSON (.json)\n📰 XML (.xml)\n📝 MARKDOWN (.md, .markdown)\n☕ JAVA (.java)\n⚙️ C/C++ (.c, .cpp, .h, .hpp)\n🐍 C# (.cs)\n🦀 RUST (.rs)\n🔷 TYPESCRIPT (.ts, .tsx)\n🐘 PHP (.php)\n💎 RUBY (.rb)\n🎯 GO (.go)\n... ve daha fazlası!\n\n┌─────────────────────────────────────────┐\n│  ⚪ DİĞER DOSYALAR                      │\n└─────────────────────────────────────────┘\n\nDüz metin olarak açılır:\n\n📄 .txt, .log, .ini, .conf\n📝 .yaml, .yml, .toml\n🔧 .sh, .bash, .bat, .ps1\n📜 .sql, .csv\n\n┌─────────────────────────────────────────┐\n│  🎨 OTOMATİK ALGILAMA                   │\n└─────────────────────────────────────────┘\n\nEditör dosya uzantısına göre otomatik olarak:\n\n✅ Uygun renk şemasını seçer\n✅ Sözdizimi vurgulayıcıyı ayarlar\n✅ Girinti stilini belirler\n✅ Dosya ikonunu gösterir\n\n┌─────────────────────────────────────────┐\n│  💡 İPUÇLARI                            │\n└─────────────────────────────────────────┘\n\n🔸 Uzantısı tanınmayan dosyalar düz metin\n   olarak açılır\n\n🔸 Manuel olarak dil değiştirme özelliği\n   yakında gelecek!\n\n🔸 Binary dosyaları açmak önerilmez\n   (yavaşlık ve garip karakterler)\n\nDesteklenen Formatlar:\n{formats}\n\nHer türlü metin dosyasını rahatça düzenleyin! 📝",
+        "theme_guide": "🎨 TEMA REHBERİ\n\nGözünüze uygun temayı seçin!\n\n┌─────────────────────────────────────────┐\n│  🌈 MEVCUT TEMALAR              │\n└─────────────────────────────────────────┘\n\n🌑 DARK (KOYU)\n   ├─ Modern, klasik VS Code teması\n   ├─ Yüksek kontrast\n   └─ Uzun seanslar için ideal\n\n☀️ LIGHT (AÇIK)\n   ├─ Minimal ve temiz\n   ├─ Gündüz çalışma için mükemmel\n   └─ Profesyonel görünüm\n\n... (Diğer temalar menüden incelenebilir)\n\n┌─────────────────────────────────────────┐\n│  🔄 TEMA DEĞİŞTİRME                     │\n└─────────────────────────────────────────┘\n\n1. Menü çubuğundan \"🎨 Tema\" butonuna tıklayın\n2. Açılan listeden istediğiniz temayı seçin\n3. Tema anında uygulanır!\n\n┌─────────────────────────────────────────┐\n│  💡 TEMA SEÇİM İPUÇLARI                │\n└─────────────────────────────────────────┘\n\n🌙 GECE ÇALIŞIYORSANIZ:\n   → Dark, Dracula, Monokai, Nord, Synthwave\n\n☀️ GÜNDÜZ ÇALIŞIYORSANIZ:\n   → Light, Solarized Light\n\n👁️ GÖZ YORGUNLUĞU VARSA:\n   → Solarized, Nord (düşük kontrast)\n\n🎨 FARKLI BİR ŞEY İSTİYORSANIZ:\n   → Synthwave, Gruvbox, Dracula\n\n💼 PROFESYONEL GÖRÜNÜM:\n   → One Dark Pro, GitHub Dark, Light\n\nKeyifli kodlamalar! 🎨",
+        "tips": "💡 İPUÇLARI VE PÜF NOKTALARI\n\nEditörü daha verimli kullanın!\n\n┌─────────────────────────────────────────┐\n│  🚀 ÜRETKENLİK İPUÇLARI                 │\n└─────────────────────────────────────────┘\n\n1️⃣  SEKME YÖNETİMİ\n   🔸 Sekme başlığına SAĞ TIK yapın:\n      • Sekmeyi kapat\n      • Diğerlerini kapat\n      • Sağdakileri kapat\n      • Dosya yolunu kopyala\n   \n   🔸 Çok sekmeyle çalışıyorsanız düzenli\n      temizleyin!\n\n2️⃣  HIZLI KOPYALAMA\n   Sekme başlığına SAĞ TIK ile ulaşın veya kısayol kullanın:\n   🔸 Dosya yolunu kopyala (Ctrl+Shift+C)\n   🔸 Klasör yolunu kopyala\n   🔸 Göreli yolu kopyala (Ctrl+Alt+C)\n   🔸 Sadece dosya adını kopyala\n\n3️⃣  HIZLI NAVİGASYON\n   🔸 Ctrl+G ile doğrudan satıra gidin\n   🔸 Minimap'e tıklayarak dosyada gezinin\n   🔸 Kod katlama ile uzun fonksiyonları gizleyin\n\n4️⃣  AKILLI ARAMA\n   🔸 Ctrl+F ile Bul ve Değiştir açın\n   🔸 Regex desteği var!\n   🔸 Büyük/küçük harf duyarsız arama\n\n5️⃣  OTOMATIK ÖZELLIKLER\n   🔸 Parantezler otomatik kapanır: (, {, [, \", '\n   🔸 Enter'da akıllı girinti\n   🔸 Python'da : sonrası ekstra girinti\n   🔸 Her 30 saniyede otomatik kayıt\n\n6️⃣  GÖRSEL İYİLEŞTİRMELER\n   🔸 Ctrl+Tekerlek ile yakınlaştırma\n   🔸 Font boyutunu 8-72 arası ayarlayın\n   🔸 Minimap ile genel görünüm\n   🔸 Satır vurgulama aktif\n\n┌─────────────────────────────────────────┐\n│  🎯 WORKFLOW ÖNERİLERİ                  │\n└─────────────────────────────────────────┘\n\n📁 PROJE KLASÖRÜ AÇIN\n   • Ctrl+Shift+O ile tüm projenizi açın\n   • Dosya Gezgini'nden hızlıca gezinin\n   • Ağaç yapısında kolayca bulun\n\n🎨 TEMA RUTIN OLUŞTURUN\n   • Sabah: Light veya Solarized\n   • Akşam: Dark, Nord veya Gruvbox\n   • Gece: Dracula veya Synthwave\n\n📝 KOD KATLAMA KULLANIN\n   • Uzun fonksiyonları katlayın\n   • Sadece ilgilendiğiniz koda odaklanın\n   • Satır numaralarındaki oklara tıklayın\n\n🖱️ ÇOKLU İMLEÇ GÜCÜ\n   • Tekrarlayan düzenlemeler için kullanın\n   • Alt+Click ve Ctrl+D'yi öğrenin\n   • \"Çoklu İmleç Rehberi\"ne bakın!\n\n┌─────────────────────────────────────────┐\n│  ⚡ PERFORMANS İPUÇLARI                 │\n└─────────────────────────────────────────┘\n\n🔸 Çok büyük dosyalardan kaçının (>10MB)\n🔸 Gereksiz sekmeleri kapatın\n🔸 100+ imleci aynı anda kullanmayın\n🔸 Otomatik kayıt aktif, manuel kaydetmeyi\n   unutmayın (Ctrl+S)\n\n┌─────────────────────────────────────────┐\n│  🎓 ÖĞRENDİKÇE KEŞFEDİN                │\n└─────────────────────────────────────────┘\n\n✅ Tüm klavye kısayollarını deneyin\n✅ Farklı temaları test edin\n✅ Çoklu imleç ile pratik yapın\n✅ Dosya Gezgini'ni kullanın\n✅ Minimap'i keşfedin\n\nHer gün biraz daha verimli! 🚀"
+    },
+    "menu": {
+        "edit": "Düzenle",
+        "file": "Dosya",
+        "help": "Yardım",
+        "items": {
+            "copy": "Kopyala",
+            "copy_path": "Yol Kopyala",
+            "cut": "Kes",
+            "delete_line": "Satır Sil",
+            "duplicate_line": "Satır Çoğalt",
+            "exit": "Çıkış",
+            "file_explorer": "Dosya Gezgini",
+            "find_replace": "Bul ve Değiştir",
+            "fullscreen": "Tam Ekran",
+            "goto_line": "Satıra Git",
+            "join_lines": "Satır Birleştir",
+            "line_numbers": "Satır Numaraları",
+            "markdown_preview": "Markdown Önizleme",
+            "minimap": "Minimap",
+            "move_down": "Aşağı Taşı",
+            "move_up": "Yukarı Taşı",
+            "new_tab": "Yeni Sekme",
+            "open_file": "Dosya Aç",
+            "open_folder": "Klasör Aç",
+            "recent_files": "Son Dosyalar",
+            "clear_recent": "Listeyi Temizle",
+            "no_recent": "(Liste Boş)",
+            "paste": "Yapıştır",
+            "redo": "Yinele",
+            "relative_path": "Göreli Yol",
+            "save": "Kaydet",
+            "save_as": "Farklı Kaydet",
+            "status_bar": "Durum Çubuğu",
+            "terminal": "Terminal",
+            "undo": "Geri Al",
+            "word_wrap": "Satır Sarma (Word Wrap)",
+            "zen_exit": "⤣ Zen Modundan Çık",
+            "zen_mode": "Zen Modu"
+        },
+        "settings": "Ayarlar",
+        "theme": "Tema",
+        "tutorial": "Öğretici",
+        "view": "Görünüm"
+    },
+    "messages": {
+        "active": "Aktif",
+        "apply_text": "Uygula",
+        "calculation_failed": "Hesaplanamadı",
+        "changes_title_suffix": "({count} değişiklik)",
+        "error_title": "Hata",
+        "export_success_message": "Ayarlar başarıyla dışa aktarıldı!",
+        "export_success_title": "Başarılı",
+        "goto_category": "📁 {category} kategorisine git →",
+        "import_success_message": "Ayarlar başarıyla içe aktarıldı!",
+        "import_success_title": "Başarılı",
+        "no_limit": "Değişiklik Yok",
+        "no_results": "Sonuç bulunamadı",
+        "passive": "Pasif",
+        "preview": "Önizle",
+        "reset_confirm_message": "Tüm ayarlar varsayılan değerlere dönecek. Emin misiniz?",
+        "reset_confirm_title": "Varsayılana Dön",
+        "search_results": "📊 {count} sonuç bulundu",
+        "seconds": "saniye",
+        "selected": "✅ Seçildi",
+        "time_h": "sa",
+        "time_m": "dk",
+        "time_s": "sn",
+        "unknown": "Bilinmiyor",
+        "unknown_psutil": "Bilinmiyor (psutil gerekli)",
+        "version_text": "Memati Editör v2.0"
+    },
+    "panel_title": "⚙️ Ayarlar",
+    "search_placeholder": "🔍 Ayar ara...",
+    "settings": {
+        "app_name": {
+            "desc": "Başlık çubuğunda görünen uygulama adı",
+            "label": "Uygulama Adı"
+        },
+        "auto_backup": {
+            "desc": "Dosyaları periyodik olarak .bak dosyasına yedekle",
+            "label": "Otomatik Yedekleme"
+        },
+        "auto_save": {
+            "desc": "Değişiklikleri otomatik kaydet",
+            "label": "Otomatik Kaydetme"
+        },
+        "auto_save_interval": {
+            "desc": "Otomatik kaydetme sıklığı (saniye)",
+            "label": "Kaydetme Aralığı"
+        },
+        "bracket_matching": {
+            "desc": "İmleç parantez üzerindeyken eşini vurgula",
+            "label": "Parantez Eşleştirme"
+        },
+        "error_reporting": {
+            "desc": "Hata oluştuğunda geliştiriciye rapor gönder",
+            "label": "Hata Raporlama"
+        },
+        "font_family": {
+            "desc": "Editörde kullanılacak yazı tipi ailesi",
+            "label": "Yazı Tipi"
+        },
+        "font_size": {
+            "desc": "Editör yazı tipi boyutu (8-32)",
+            "label": "Yazı Boyutu"
+        },
+        "language": {
+            "desc": "Uygulama arayüz dili",
+            "label": "Dil / Language"
+        },
+        "max_file_size": {
+            "desc": "Editörün açabileceği maksimum dosya boyutu (MB)",
+            "label": "Maksimum Dosya Boyutu"
+        },
+        "performance_mode": {
+            "desc": "Bazı görsel efektleri devre dışı bırakarak performansı artır",
+            "label": "Performans Modu"
+        },
+        "show_file_explorer": {
+            "desc": "Sol taraftaki dosya ağacını göster",
+            "label": "Dosya Gezgini"
+        },
+        "show_line_numbers": {
+            "desc": "Editörde satır numaralarını göster",
+            "label": "Satır Numaraları"
+        },
+        "show_minimap": {
+            "desc": "Kod haritasını göster",
+            "label": "Minimap"
+        },
+        "show_status_bar": {
+            "desc": "Alt kısımdaki bilgi çubuğunu göster",
+            "label": "Durum Çubuğu"
+        },
+        "show_terminal": {
+            "desc": "Alt taraftaki terminal panelini göster",
+            "label": "Terminal Görünürlüğü"
+        },
+        "start_fullscreen": {
+            "desc": "Uygulamayı tam ekran modunda başlat",
+            "label": "Tam Ekran Başlat"
+        },
+        "syntax_highlighting": {
+            "desc": "Kod renklendirmesini etkinleştir",
+            "label": "Sözdizimi Vurgulama"
+        },
+        "tab_size": {
+            "desc": "Tab karakterinin kaç boşluk genişliğinde olacağı",
+            "label": "Tab Boyutu"
+        },
+        "terminal_font_size": {
+            "desc": "Terminal yazı tipi boyutu",
+            "label": "Yazı Boyutu"
+        },
+        "terminal_history": {
+            "desc": "Terminal çıktısı için satır limiti",
+            "label": "Geçmiş Limiti"
+        },
+        "terminal_type": {
+            "desc": "Kullanılacak kabuk (shell) türü",
+            "label": "Terminal Tipi"
+        },
+        "theme_select": {
+            "desc": "Editör görünüm temasını seçin",
+            "label": "Tema Seçimi"
+        },
+        "word_wrap": {
+            "desc": "Uzun satırları otomatik olarak kaydır",
+            "label": "Kelime Kaydırma"
+        },
+        "highlight_current_line": {
+            "desc": "İmlecin bulunduğu satırı görsel olarak vurgula",
+            "label": "Aktif Satır Vurgulama"
+        },
+        "show_whitespace": {
+            "desc": "Boşluk ve tab karakterlerini görünür yap",
+            "label": "Boşlukları Göster"
+        },
+        "auto_indent": {
+            "desc": "Yeni satıra geçerken otomatik girinti uygula",
+            "label": "Otomatik Girinti"
+        },
+        "window_opacity": {
+            "desc": "Pencere şeffaflık seviyesi (100 = opak)",
+            "label": "Pencere Opaklığı"
+        },
+        "sidebar_width": {
+            "desc": "Sol panel genişliği (piksel)",
+            "label": "Sidebar Genişliği"
+        },
+        "accent_color": {
+            "desc": "Arayüz vurgu rengi",
+            "label": "Vurgu Rengi"
+        },
+        "terminal_cursor_blink": {
+            "desc": "Terminal imlecinin yanıp sönmesi",
+            "label": "İmleç Yanıp Sönme"
+        },
+        "cache_size": {
+            "desc": "Önbellek boyutu (MB)",
+            "label": "Önbellek Boyutu"
+        },
+        "log_level": {
+            "desc": "Günlük kayıt detay seviyesi",
+            "label": "Günlük Seviyesi"
+        }
+    },
+    "categories_desc": {
+        "Genel": "Uygulama adı, dil ve yazı tipi ayarları",
+        "Editör": "Kod düzenleme deneyiminizi özelleştirin",
+        "Görünüm": "Arayüz görünürlük ve düzen ayarları",
+        "Tema": "Renk şemaları ve görsel tema seçenekleri",
+        "Klavye Kısayolları": "Kısayol tuşlarını özelleştirin",
+        "Terminal": "Entegre terminal yapılandırması",
+        "Gelişmiş": "Performans ve sistem ayarları"
+    },
+    "status_bar": {
+        "col": "Sütun",
+        "ln": "Satır"
+    },
+    "drop_zone": {
+        "title": "Dosyaları Buraya Bırakın",
+        "subtitle": "Dosya veya klasör açmak için bırakın",
+        "file_single": "Dosya Açılacak",
+        "file_multiple": "{count} Dosya Açılacak",
+        "folder_single": "Klasör Açılacak",
+        "folder_multiple": "{count} Klasör Açılacak",
+        "mixed": "{file_count} Dosya, {folder_count} Klasör",
+        "more_files": "... ve {count} dosya daha",
+        "file_opened": "📄 {name} açıldı",
+        "folder_opened": "📂 {name} açıldı",
+        "items_opened": "✅ {count} öğe açıldı"
+    },
+    "status_messages": {
+        "explorer_off": "Dosya gezgini kapalı",
+        "explorer_on": "Dosya gezgini açık",
+        "file_needed": "⚠️ Önce bir dosya açın",
+        "line_numbers_off": "Satır numaraları kapalı",
+        "line_numbers_on": "Satır numaraları açık",
+        "markdown_error": "⚠️ Sadece .md dosyaları önizlenebilir",
+        "minimap_off": "Minimap kapalı",
+        "minimap_on": "Minimap açık",
+        "preview_closed": "Markdown önizleme kapatıldı",
+        "preview_failed": "❌ Önizleme başlatılamadı",
+        "preview_opened": "Markdown önizleme açıldı",
+        "ready": "Hazır",
+        "terminal_closed": "Terminal kapatıldı",
+        "terminal_opened": "⌨️ Terminal açıldı",
+        "word_wrap_off": "Satır sarma kapalı",
+        "word_wrap_on": "Satır sarma açık"
+    },
+    "tutorial": {
+        "buttons": {
+            "back": "Geri",
+            "complete": "Tamamla 🎉",
+            "next": "Devam Et",
+            "pause": "Duraklat",
+            "resume": "Devam",
+            "skip": "Öğreticiyi Atla"
+        },
+        "header_welcome": "Hoş Geldiniz!",
+        "labels": {
+            "task": "GÖREV",
+            "task_completed": "✅ Harika! Görev tamamlandı!",
+            "task_pending": "İlerlemek için yukarıdaki görevi tamamlayın.",
+            "tip": "İPUCU"
+        },
+        "messages": {
+            "completed_msg": "🎉 Tebrikler!\n\nTutorial tamamlandı!\nGörevler: {completed}/{total}",
+            "completed_title": "Tamamlandı",
+            "skip_confirm_msg": "Öğreticiyi kapatmak istediğinizden emin misiniz?",
+            "skip_confirm_title": "Atla"
+        },
+        "steps": {
+            "code_folding": {
+                "message": "Uzun kod bloklarını gizleyerek odaklanın.\n\nSatır numaralarının yanındaki oklara (▼) tıklayarak fonksiyonları veya sınıfları katlayabilirsiniz.",
+                "tips": [],
+                "title": "Kod Katlama"
+            },
+            "congrats": {
+                "message": "Temel eğitimi başarıyla tamamladınız!\n\nArtık Memati Editör'ün gücü parmaklarınızın ucunda. Keşfedilecek daha çok özellik var (Temalar, Git entegrasyonu, vb.).\n\nİyi kodlamalar!",
+                "tips": [
+                    "Bu tura istediğiniz zaman Yardım menüsünden ulaşabilirsiniz."
+                ],
+                "title": "Tebrikler! 🎉"
+            },
+            "editor_area": {
+                "message": "Burası sizin oyun alanınız.\n\n✨ Özellikler:\n• Otomatik Tamamlama (Ctrl+Space)\n• Kod Renklendirme\n• Akıllı Girinti\n\n🎯 Görev: Editöre rastgele bir şeyler yazın!",
+                "tips": [
+                    "Yazı boyutunu değiştirmek için Ctrl + Tekerlek kullanın."
+                ],
+                "title": "Editörün Kalbi"
+            },
+            "file_explorer": {
+                "message": "Projeleriniz burada yaşar.\n\nDosyalarınızı ağaç yapısında görüntüleyin. Klasörleri açıp kapamak için çift tıklayabilirsiniz.\n\n🎯 Görev: Sol paneldeki 'Dosya Gezgini'ni inceleyin.",
+                "tips": [
+                    "Ctrl+Shift+O ile yeni bir klasör açabilirsiniz.",
+                    "Paneli gizlemek için Ctrl+B'yi kullanın."
+                ],
+                "title": "Dosya Gezgini"
+            },
+            "find_replace": {
+                "message": "Güçlü arama motoru emrinizde.\n\n🎯 Görev: Ctrl+F tuşuna basarak arama panelini açın. Regex desteği bile var!",
+                "tips": [],
+                "title": "Bul ve Yok Et (Değiştir)"
+            },
+            "goto_line": {
+                "message": "Uzun dosyalarda kaybolmayın.\n\n🎯 Görev: Ctrl+G tuşuna basarak 'Satıra Git' penceresini açın.",
+                "tips": [
+                    "Sadece sayı girerek istediğiniz satıra ışınlanın."
+                ],
+                "title": "Satıra Git (Ctrl+G)"
+            },
+            "image_viewer": {
+                "message": "Editörünüz artık resim dosyalarını da açabiliyor!\n\nDesteklenen formatlar: PNG, JPG, JPEG, BMP, GIF.\n\n🎯 Görev: Dosya gezgininden bir resim dosyası açın.",
+                "tips": [
+                    "Resmi yakınlaştırmak için tekerleği kullanın.",
+                    "Yön tuşları ile resim içinde gezinebilirsiniz."
+                ],
+                "title": "Resim Görüntüleyici"
+            },
+            "markdown": {
+                "message": "Doküman yazarları için harika bir özellik.\n\nEğer bir .md dosyasındaysanız, Ctrl+Shift+V ile canlı önizlemeyi açabilirsiniz.\n\n💡 Editörde kaydırdıkça önizleme de kayar (Sync Scroll).",
+                "tips": [],
+                "title": "Markdown Önizleme"
+            },
+            "menus": {
+                "message": "Her şeyin merkezi burası.\n\nDosya işlemlerinden tema ayarlarına kadar her şeye buradan ulaşabilirsiniz.\n\n💡 Kısayolları (örn. Ctrl+N) menülerden öğrenerek zaman kazanabilirsiniz.",
+                "tips": [],
+                "title": "Menüler ve Komutlar"
+            },
+            "minimap": {
+                "message": "Kodunuzun kuş bakışı görünümü.\n\nUzun dosyalarda hızla gezinmek için sağdaki haritayı kullanın.\n\nKlavye Kısayolu: Ctrl+M",
+                "tips": [],
+                "title": "Minimap (Kod Haritası)"
+            },
+            "multi_cursor": {
+                "message": "Aynı anda birden fazla yeri düzenleyin!\n\n🎯 Görev: Klavyede 'Alt' tuşuna basılı tutarak editörde farklı yerlere tıklayın. Birden fazla imleç yanıp sönmeli!",
+                "tips": [
+                    "İmleçleri iptal etmek için 'Escape' tuşuna basın.",
+                    "Listeleri düzenlerken harikalar yaratır."
+                ],
+                "title": "Çoklu İmleç Sihirbazlığı"
+            },
+            "new_tab": {
+                "message": "Kodlamaya başlamak için temiz bir sayfa açın.\n\n🎯 Görev: Ctrl+N kısayolunu kullanarak veya Dosya menüsünden yeni bir sekme oluşturun.",
+                "tips": [
+                    "Sekmeleri sürükleyerek sırasını değiştirebilirsiniz."
+                ],
+                "title": "Yeni Bir Başlangıç"
+            },
+            "settings": {
+                "message": "Editörünüzü tamamen özelleştirin.\n\nAyarları açmak için Dosya > Ayarlar menüsünü kullanın.\n\n💡 İpucu: Hızlı erişim için Ctrl+, kısayolunu kullanabilirsiniz.",
+                "tips": [],
+                "title": "Ayarlar Menüsü"
+            },
+            "smart_select": {
+                "message": "Değişken adlarını değiştirmek hiç bu kadar kolay olmamıştı.\n\n1. Bir kelimeyi seçin.\n2. Ctrl+D'ye basarak bir sonraki aynısını seçin.\n3. Yazmaya başlayın; hepsi değişecek!\n\n🎯 Görev: Bunu deneyin!",
+                "tips": [],
+                "title": "Akıllı Seçim (Ctrl+D)"
+            },
+            "status_bar": {
+                "message": "Dosyanız hakkında her şey burada.\n\nAlt kısımdaki çubuktan:\n• Satır/Sütun bilgisini\n• Dosya dilini\n• Kodlama (UTF-8) bilgisini görebilirsiniz.",
+                "tips": [],
+                "title": "Durum Çubuğu"
+            },
+            "terminal": {
+                "message": "Editörden çıkmadan komut çalıştırın.\n\n🎯 Görev: Ctrl+` (Tab'ın üstündeki tuş) ile terminali açın/kapatın.",
+                "tips": [
+                    "Terminali 'exit' yazarak da kapatabilirsiniz."
+                ],
+                "title": "Terminal Entegrasyonu"
+            },
+            "theme": {
+                "message": "Gözünüze en uygun görünümü seçin.\n\nAyarlar menüsünden veya Görünüm > Tema altından 9 farklı tema arasından seçim yapabilirsiniz.",
+                "tips": [
+                    "Gece çalışmaları için 'Dracula' veya 'Dark' temalarını öneririz."
+                ],
+                "title": "Temalar"
+            },
+            "welcome": {
+                "message": "Merhaba! 👋\n\nEditörünüzü profesyonelce kullanmanız için hazırladığımız bu interaktif rehbere hoş geldiniz.\n\n🚀 Bu turda şunları keşfedeceksiniz:\n• Arayüzün gizli güçleri\n• Şimşek hızında kodlama teknikleri\n• Proje yönetim ipuçları\n\nHazırsanız başlayalım!",
+                "tips": [
+                    "Öğretici penceresini ekranın rahat bir köşesine taşıyabilirsiniz."
+                ],
+                "title": "Memati Editör'e Hoş Geldiniz!"
+            },
+            "zen_mode": {
+                "message": "Sadece koda odaklanmak istediğinizde...\n\n🧘 Ctrl+K, ardından Z tuşuna basın.\n\nTüm paneller gizlenir, sadece kod kalır. Geri dönmek için aynısı.",
+                "tips": [],
+                "title": "Zen Modu"
+            }
+        },
+        "title": "Memati Editör - Öğretici"
+    },
+    "untitled_tab": "Adsız",
+    "window_title": "⚙️ Ayarlar"
 }
