@@ -31,6 +31,7 @@ Memati Editör, modern geliştiricilerin ihtiyaç duyduğu birçok özelliği ba
 ## 📂 Dosya Yönetimi
 
 *   **Dosya Gezgini:** Proje klasörünüzü ağaç yapısında görüntüleyin.
+*   **Son Kullanılan Dosyalar:** En son üzerinde çalıştığınız dosyalara hızlı erişim menüsü.
 *   **İkon Seti:** Her dosya türü için özel ikonlar.
 *   **Sağ Tık Menüsü:** Dosya yollarını kopyalama, sekmeleri yönetme ve daha fazlası.
 
