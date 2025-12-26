@@ -44,6 +44,8 @@
 - **📁 Gelişmiş Dosya Gezgini**: Ağaç yapısı, her dosya formatı için özel ikonlar.
 - **⌨️ Entegre Terminal**: PowerShell/Bash desteği, tema uyumu ve çoklu sekme.
 - **🌍 Çoklu Dil Desteği**: Türkçe, İngilizce ve Azerbaycan Türkçesi desteği.
+- **🕒 Son Kullanılan Dosyalar**: Son açtığınız dosyalara hızlı erişim ve kolay yönetim.
+- **⚙️ Ayarlar Paneli**: Kapsamlı ve modern ayarlar arayüzü.
 
 ### 🛡️ **Güvenlik ve Performans**
 - **💾 Sessiz Otomatik Kayıt**: Kodunuzu yazarken arka planda otomatik olarak güvenceye alın.
@@ -107,7 +109,9 @@ Detaylı kullanım rehberleri için `docs/` klasörüne göz atın:
 | Kategori | Kısayol | İşlem |
 | :--- | :--- | :--- |
 | **📁 Dosya** | <kbd>Ctrl</kbd> + <kbd>N</kbd> | Yeni Sekme Aç |
+| | <kbd>Ctrl</kbd> + <kbd>O</kbd> | Dosya Aç |
 | | <kbd>Ctrl</kbd> + <kbd>S</kbd> | Kaydet |
+| | - | Son Kullanılan Dosyalar |
 | **✏️ Düzenleme** | <kbd>Ctrl</kbd> + <kbd>F</kbd> | Bul ve Değiştir |
 | | <kbd>Ctrl</kbd> + <kbd>G</kbd> | Satıra Git |
 | **🖱️ Çoklu İmleç** | <kbd>Alt</kbd> + <kbd>Click</kbd> | Yeni İmleç Ekle |

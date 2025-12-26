@@ -4,3 +4,4 @@ watchdog
 Pillow
 pypiwin32; sys_platform == 'win32'
 psutil
+tkinterdnd2
