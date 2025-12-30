@@ -154,7 +154,35 @@ class MenuBar(ctk.CTkFrame):
 
         # Son Kullanılanlar Bölümü
         settings = SettingsManager.get_instance()
-        recent_files = settings.get("recent_files", [])
+        recent_files = settings.get_recent_files()  # Otomatik olarak var olmayan dosyaları filtreler
+        
+        def _shorten_path(path: str, max_len: int = 45) -> str:
+            """Uzun dosya yollarını akıllıca kısaltır."""
+            if len(path) <= max_len:
+                return path
+            
+            # Drive + klasör + dosya formatı: C:\...\parent\file.txt
+            parts = path.replace('/', '\\').split('\\')
+            filename = parts[-1]
+            
+            if len(parts) <= 2:
+                return path  # Çok kısa yol
+            
+            # Drive veya root
+            drive = parts[0]
+            parent = parts[-2] if len(parts) > 2 else ""
+            
+            # Kısaltılmış format oluştur
+            if parent:
+                shortened = f"{drive}\\...\\{parent}\\{filename}"
+            else:
+                shortened = f"{drive}\\...\\{filename}"
+            
+            # Hâlâ çok uzunsa sadece dosya adını göster
+            if len(shortened) > max_len:
+                return f"...\\{filename}" if len(filename) < max_len else filename[:max_len-3] + "..."
+            
+            return shortened
         
         if recent_files:
             menu_items.append({
@@ -167,16 +195,17 @@ class MenuBar(ctk.CTkFrame):
                 "delete_hover": ("#404040", "#505050")
             })
             for file_path in recent_files:
-                if os.path.exists(file_path):
-                    filename = os.path.basename(file_path)
-                    icon = FileIcons.get_icon(filename) if FileIcons else "📝"
-                    
-                    menu_items.append({
-                        "icon": icon, 
-                        "label": file_path, 
-                        "command": lambda p=file_path: tm.open_file(p),
-                        "on_delete": lambda p=file_path: settings.remove_recent_file(p)
-                    })
+                filename = os.path.basename(file_path)
+                icon = FileIcons.get_icon(filename) if FileIcons else "📝"
+                short_label = _shorten_path(file_path)
+                
+                menu_items.append({
+                    "icon": icon, 
+                    "label": short_label,
+                    "tooltip": file_path,  # Hover'da tam yolu göster
+                    "command": lambda p=file_path: tm.open_file(p),
+                    "on_delete": lambda p=file_path: settings.remove_recent_file(p)
+                })
             menu_items.append({"separator": True})
 
         menu_items.extend([

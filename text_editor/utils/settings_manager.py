@@ -98,33 +98,74 @@ class SettingsManager:
         self.settings = self.DEFAULT_SETTINGS.copy()
         self.save_settings()
 
+    # Son kullanılan dosyalar için maksimum limit
+    MAX_RECENT_FILES = 15
+
+    def _normalize_path(self, file_path: str) -> str:
+        """Dosya yolunu normalleştirir (tutarlılık için)."""
+        if not file_path:
+            return ""
+        # Normalize: backslash/forward slash tutarlılığı ve case sensitivity
+        return os.path.normcase(os.path.normpath(os.path.abspath(file_path)))
+
     def add_recent_file(self, file_path: str) -> None:
         """Son kullanılan dosyalara bir dosya ekler."""
         if not file_path:
             return
+        
+        # Dosya var mı kontrol et
+        if not os.path.exists(file_path):
+            return
             
+        # Yolu normalleştir
+        normalized_path = self._normalize_path(file_path)
+        
         recent = self.get("recent_files", [])
         if not isinstance(recent, list):
             recent = []
+        
+        # Normalize edilmiş yollarla karşılaştır ve varsa çıkar
+        recent = [p for p in recent if self._normalize_path(p) != normalized_path]
             
-        # Eğer zaten varsa çıkar (başa eklemek için)
-        if file_path in recent:
-            recent.remove(file_path)
-            
-        # Başa ekle
+        # Başa ekle (orijinal formatta)
         recent.insert(0, file_path)
         
-        # Limit (örn: 15 dosya)
-        recent = recent[:15]
+        # Limit uygula
+        recent = recent[:self.MAX_RECENT_FILES]
         
         self.set("recent_files", recent)
 
     def remove_recent_file(self, file_path: str) -> None:
         """Belirli bir dosyayı son kullanılanlardan çıkarır."""
+        if not file_path:
+            return
+            
+        normalized_path = self._normalize_path(file_path)
         recent = self.get("recent_files", [])
-        if file_path in recent:
-            recent.remove(file_path)
-            self.set("recent_files", recent)
+        
+        if not isinstance(recent, list):
+            return
+            
+        # Normalize edilmiş karşılaştırma ile sil
+        new_recent = [p for p in recent if self._normalize_path(p) != normalized_path]
+        
+        if len(new_recent) != len(recent):
+            self.set("recent_files", new_recent)
+
+    def get_recent_files(self) -> list:
+        """Var olan son kullanılan dosyaları döndürür."""
+        recent = self.get("recent_files", [])
+        if not isinstance(recent, list):
+            return []
+        
+        # Sadece var olan dosyaları filtrele
+        valid_files = [p for p in recent if os.path.exists(p)]
+        
+        # Eğer geçersiz dosyalar temizlendiyse, kaydet
+        if len(valid_files) != len(recent):
+            self.set("recent_files", valid_files)
+        
+        return valid_files
 
     def clear_recent_files(self) -> None:
         """Tüm son kullanılan dosyaları temizler."""

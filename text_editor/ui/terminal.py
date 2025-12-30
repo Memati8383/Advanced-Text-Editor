@@ -17,6 +17,8 @@ import sys
 import re
 import signal
 
+from text_editor.ui.context_menu import ModernTerminalContextMenu
+
 
 class TerminalPanel(ctk.CTkFrame):
     """
@@ -420,31 +422,49 @@ class TerminalPanel(ctk.CTkFrame):
         self.output_text.tag_configure("timestamp", foreground="#5c6370")
     
     def _create_context_menu(self):
-        """Sağ tık menüsünü oluştur"""
-        self.context_menu = tk.Menu(
-            self.output_text, 
-            tearoff=0, 
-            bg="#2d2d2d", 
-            fg="#cccccc",
-            activebackground="#0e639c",
-            activeforeground="white",
-            font=("Segoe UI", 10)
-        )
-        self.context_menu.add_command(label="📋 Kopyala", command=self._copy_to_clipboard, accelerator="Ctrl+C")
-        self.context_menu.add_command(label="📌 Yapıştır", command=self._paste_from_clipboard, accelerator="Ctrl+V")
-        self.context_menu.add_separator()
-        self.context_menu.add_command(label="🔍 Metni Seç", command=self._select_all_output)
-        self.context_menu.add_command(label="🗑️ Temizle", command=self._clear_output)
-        self.context_menu.add_separator()
-        self.context_menu.add_command(label="📂 Klasörü Aç", command=lambda: self._quick_command("explorer ."))
-        self.context_menu.add_command(label="💾 Çıktıyı Kaydet", command=self._save_output)
+        """Sağ tık menüsü için tema bilgilerini hazırla"""
+        # Yeni modern context menu sistemi kullanılıyor
+        # Eskiden tk.Menu kullanılıyordu, artık _show_context_menu içinde 
+        # ModernTerminalContextMenu oluşturuluyor
+        self._context_menu_window = None
     
     def _show_context_menu(self, event):
         """Sağ tık menüsünü göster"""
-        try:
-            self.context_menu.tk_popup(event.x_root, event.y_root)
-        finally:
-            self.context_menu.grab_release()
+        # Önceki menü varsa kapat
+        if self._context_menu_window:
+            try:
+                self._context_menu_window.close()
+            except:
+                pass
+        
+        # Tema hazırla
+        menu_theme = {
+            "bg": self._bg_color,
+            "bg_hover": self.theme.get("menu_hover", "#2a2d2e"),
+            "bg_active": self._accent_color,
+            "border": "#454545",
+            "text": self._fg_color,
+            "text_hover": "#ffffff",
+            "shortcut": "#858585",
+            "separator": "#404040",
+            "icon": self._accent_color,
+            "accent": self._accent_color,
+            "shadow": "#000000"
+        }
+        
+        # Modern context menu oluştur
+        self._context_menu_window = ModernTerminalContextMenu.create(
+            master=self.winfo_toplevel(),
+            x=event.x_root,
+            y=event.y_root,
+            theme=menu_theme,
+            on_copy=self._copy_to_clipboard,
+            on_paste=self._paste_from_clipboard,
+            on_select_all=self._select_all_output,
+            on_clear=self._clear_output,
+            on_open_folder=lambda: self._quick_command("explorer ."),
+            on_save_output=self._save_output
+        )
     
     def _copy_to_clipboard(self):
         """Seçili metni panoya kopyala"""

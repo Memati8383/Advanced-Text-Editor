@@ -20,6 +20,10 @@ class ModernDropdownMenu(ctk.CTkToplevel):
         self.items = items
         self.theme = theme or {}
         
+        # Tooltip için değişkenler
+        self._tooltip_window = None
+        self._tooltip_after_id = None
+        
         # Pencere ayarları
         self.overrideredirect(True)  # Başlık çubuğu yok
         self.attributes("-topmost", True)  # Her zaman üstte
@@ -157,16 +161,23 @@ class ModernDropdownMenu(ctk.CTkToplevel):
             delete_btn.grid(row=0, column=3, padx=(0, 6), pady=2, sticky="e")
         
         # Hover efektleri
+        tooltip_text = item.get("tooltip")  # Tooltip metni (örn: tam dosya yolu)
+        
         def on_enter(e):
             if item.get("enabled", True) and not item.get("is_header", False):
                 btn_frame.configure(fg_color=self.theme.get("menu_hover", "#404040"))
                 if submenu:
                     # Alt menüyü göster
                     self.show_submenu(btn_frame, submenu)
+            # Tooltip göster
+            if tooltip_text:
+                self._show_tooltip(btn_frame, tooltip_text, e)
         
         def on_leave(e):
             if not item.get("is_header", False):
                 btn_frame.configure(fg_color="transparent")
+            # Tooltip gizle
+            self._hide_tooltip()
                 
         # Header stili
         if item.get("is_header"):
@@ -207,6 +218,69 @@ class ModernDropdownMenu(ctk.CTkToplevel):
         # TODO: Alt menü implementasyonu
         pass
     
+    def _show_tooltip(self, widget, text, event=None):
+        """Tooltip gösterir (gecikmeli)"""
+        if not text:
+            return
+            
+        def show():
+            if self._tooltip_window:
+                return
+            
+            # Tooltip penceresi oluştur
+            self._tooltip_window = tk.Toplevel(self)
+            self._tooltip_window.wm_overrideredirect(True)
+            self._tooltip_window.attributes("-topmost", True)
+            
+            # Tooltip içeriği
+            bg_color = self.theme.get("tooltip_bg", "#1a1a1a")
+            fg_color = self.theme.get("tooltip_fg", "#e0e0e0")
+            border_color = self.theme.get("accent_color", "#505050")
+            
+            frame = tk.Frame(
+                self._tooltip_window, 
+                bg=border_color, 
+                padx=1, 
+                pady=1
+            )
+            frame.pack()
+            
+            label = tk.Label(
+                frame,
+                text=text,
+                bg=bg_color,
+                fg=fg_color,
+                font=("Segoe UI", 9),
+                padx=8,
+                pady=4
+            )
+            label.pack()
+            
+            # Pozisyonu ayarla (widget'ın altında)
+            x = widget.winfo_rootx()
+            y = widget.winfo_rooty() + widget.winfo_height() + 4
+            
+            # Ekran sınırları kontrolü
+            screen_width = self.winfo_screenwidth()
+            tooltip_width = label.winfo_reqwidth() + 10
+            if x + tooltip_width > screen_width:
+                x = screen_width - tooltip_width - 10
+            
+            self._tooltip_window.geometry(f"+{x}+{y}")
+        
+        # 400ms gecikme ile göster
+        self._tooltip_after_id = self.after(400, show)
+    
+    def _hide_tooltip(self):
+        """Tooltip'i gizler"""
+        if self._tooltip_after_id:
+            self.after_cancel(self._tooltip_after_id)
+            self._tooltip_after_id = None
+        
+        if self._tooltip_window:
+            self._tooltip_window.destroy()
+            self._tooltip_window = None
+    
     def fade_in(self):
         """Fade-in animasyonu"""
         alpha = self.attributes("-alpha")
@@ -217,6 +291,7 @@ class ModernDropdownMenu(ctk.CTkToplevel):
     def destroy_menu(self):
         """Menüyü yok eder"""
         try:
+            self._hide_tooltip()
             self.destroy()
         except:
             pass

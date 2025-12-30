@@ -382,27 +382,33 @@ class TabManager(ctk.CTkFrame):
             self.context_menu_window.close()
             self.context_menu_window = None
 
+        # Menü komutları (yeni Dict formatı)
         commands = [
-            (lang.get("context_menu.close", "Kapat"), lambda: self.check_and_close_tab(tab_name)),
-            (lang.get("context_menu.close_others", "Diğerlerini Kapat"), lambda: self.close_others(tab_name)),
-            (lang.get("context_menu.close_right", "Sağdakileri Kapat"), lambda: self.close_right(tab_name)),
+            {"icon": "✕", "text": lang.get("context_menu.close", "Kapat"), "command": lambda: self.check_and_close_tab(tab_name), "shortcut": "Ctrl+W"},
+            {"icon": "📑", "text": lang.get("context_menu.close_others", "Diğerlerini Kapat"), "command": lambda: self.close_others(tab_name)},
+            {"icon": "➡️", "text": lang.get("context_menu.close_right", "Sağdakileri Kapat"), "command": lambda: self.close_right(tab_name)},
             "-",
-            (f"📋 {lang.get('menu.items.copy_path', 'Dosya Yolunu Kopyala')}", lambda: self.copy_path(tab_name)),
-            (f"📋 {lang.get('context_menu.copy_filename', 'Dosya Adını Kopyala')}", lambda: self.copy_filename(tab_name))
+            {"icon": "📋", "text": lang.get('menu.items.copy_path', 'Dosya Yolunu Kopyala'), "command": lambda: self.copy_path(tab_name)},
+            {"icon": "📝", "text": lang.get('context_menu.copy_filename', 'Dosya Adını Kopyala'), "command": lambda: self.copy_filename(tab_name)},
         ]
 
+        # Tema hazırla
         menu_theme = None
         if self.current_theme:
-            border_color = self.current_theme.get("accent_color", "#454545")
-            if "border" in self.current_theme:
-                border_color = self.current_theme["border"]
+            border_color = self.current_theme.get("border", self.current_theme.get("accent_color", "#454545"))
 
             menu_theme = {
-                "bg": self.current_theme.get("menu_bg", "#2b2b2b"),
+                "bg": self.current_theme.get("menu_bg", "#1e1e1e"),
+                "bg_hover": self.current_theme.get("menu_hover", "#2a2d2e"),
+                "bg_active": self.current_theme.get("accent_color", "#094771"),
                 "border": border_color,
-                "hover": self.current_theme.get("menu_hover", "#094771"),
                 "text": self.current_theme.get("menu_fg", "#cccccc"),
-                "separator": border_color
+                "text_hover": "#ffffff",
+                "shortcut": "#858585",
+                "separator": self.current_theme.get("menu_hover", "#404040"),
+                "icon": self.current_theme.get("accent_color", "#75beff"),
+                "accent": self.current_theme.get("accent_color", "#007acc"),
+                "shadow": "#000000"
             }
         
         self.context_menu_window = ModernContextMenu(
@@ -538,28 +544,36 @@ class TabManager(ctk.CTkFrame):
                 not current_editor.content_modified and 
                 len(current_editor.text_area.get("1.0", "end-1c")) == 0)
 
-    def _load_file_into_tab(self, tab_name: str, file_path: str):
-        ext = os.path.splitext(file_path)[1].lower()
-        is_image = ext in IMAGE_EXTENSIONS
-        current_view = self.editors[tab_name]
-        
-        if is_image:
-            from text_editor.ui.image_viewer import ImageViewer
-            if not isinstance(current_view, ImageViewer):
-                self._replace_tab_content(tab_name, ImageViewer)
-        elif not is_image and not isinstance(current_view, CodeEditor):
-            self._replace_tab_content(tab_name, CodeEditor)
+    def _load_file_into_tab(self, tab_name: str, file_path: str) -> bool:
+        """Dosyayı sekmeye yükler. Başarılı olursa True döner."""
+        try:
+            ext = os.path.splitext(file_path)[1].lower()
+            is_image = ext in IMAGE_EXTENSIONS
+            current_view = self.editors[tab_name]
             
-        editor = self.editors[tab_name]
-        editor.load_file(file_path)
-        editor.file_path = file_path
-        editor.set_lexer_from_file(file_path)
-        self.file_monitor.add_file(file_path)
-        
-        # Son kullanılanlara ekle
-        SettingsManager.get_instance().add_recent_file(file_path)
-        
-        self._update_tab_visuals(tab_name)
+            if is_image:
+                from text_editor.ui.image_viewer import ImageViewer
+                if not isinstance(current_view, ImageViewer):
+                    self._replace_tab_content(tab_name, ImageViewer)
+            elif not is_image and not isinstance(current_view, CodeEditor):
+                self._replace_tab_content(tab_name, CodeEditor)
+                
+            editor = self.editors[tab_name]
+            editor.load_file(file_path)
+            editor.file_path = file_path
+            editor.set_lexer_from_file(file_path)
+            self.file_monitor.add_file(file_path)
+            
+            # Son kullanılanlara ekle (sadece başarılı yüklemede)
+            SettingsManager.get_instance().add_recent_file(file_path)
+            
+            self._update_tab_visuals(tab_name)
+            return True
+            
+        except Exception as e:
+            logger.error(f"Dosya yüklenemedi ({file_path}): {e}")
+            self._update_status(f"Dosya açılamadı: {os.path.basename(file_path)}", "error", 3000)
+            return False
 
     def _replace_tab_content(self, tab_name: str, view_class):
         if tab_name in self.editors:
@@ -772,8 +786,13 @@ class TabManager(ctk.CTkFrame):
             GoToLineDialog(self, editor)
 
     def show_find_replace(self):
+        if hasattr(self, 'find_replace_window') and self.find_replace_window and self.find_replace_window.winfo_exists():
+            self.find_replace_window.lift()
+            self.find_replace_window.focus()
+            return
+
         from text_editor.ui.search_dialog import SearchDialog
-        SearchDialog(self)
+        self.find_replace_window = SearchDialog(self)
 
     def update_language(self):
         """Bütün sekmelerin isimlerini o anki dile göre günceller."""

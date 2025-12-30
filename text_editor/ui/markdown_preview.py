@@ -12,6 +12,7 @@ import re
 from .markdown.styler import MarkdownStyler
 from .markdown.renderer import MarkdownRenderer
 from .markdown.exporter import MarkdownExporter
+from .context_menu import ModernContextMenu
 
 class MarkdownPreview(ctk.CTkFrame):
     """
@@ -491,34 +492,54 @@ class MarkdownPreview(ctk.CTkFrame):
         except: pass
 
     def _create_context_menu(self):
-        self.context_menu = tk.Menu(self, tearoff=0)
-        # Renkleri styler'dan al
-        colors = self.styler.colors
-        # Not: Eğer renkler henüz yüklenmediyse varsayılanları kullanır, 
-        # update_theme metodunda burası güncellenmeli mi? 
-        # Tkinter menu konfigürasyonu dinamik olarak yapılmalı.
-        # Basitçe şimdilik statik bırakalım veya lazily oluşturalım.
-        # En iyisi show anında configure etmek.
-        
-        self.context_menu.add_command(label="📋 Kopyala", command=self._copy_selection)
-        self.context_menu.add_command(label="✅ Tümünü Seç", command=self._select_all)
-        self.context_menu.add_separator()
-        self.context_menu.add_command(label="📤 HTML Olarak Kaydet", command=self.export_as_html)
-        self.context_menu.add_command(label="🖨️ Yazdır", command=self._print_preview)
+        """Sağ tık menüsü için hazırlık."""
+        # Yeni modern context menu sistemi kullanılıyor
+        self._context_menu_window = None
         
     def _show_context_menu(self, event):
-        # Renkleri güncelle
+        """Modern sağ tık menüsünü göster."""
+        # Önceki menü varsa kapat
+        if self._context_menu_window:
+            try:
+                self._context_menu_window.close()
+            except:
+                pass
+        
+        # Tema hazırla
         colors = self.styler.colors
-        self.context_menu.configure(
-            bg=colors.get("menu_bg", "#2b2b2b"),
-            fg=colors.get("menu_fg", "#d4d4d4"),
-            activebackground=colors.get("menu_hover", "#3c3c3c"),
-            activeforeground=colors.get("menu_fg", "#ffffff")
+        menu_theme = {
+            "bg": colors.get("bg", "#1e1e1e"),
+            "bg_hover": colors.get("code_bg", "#2a2d2e"),
+            "bg_active": colors.get("h1", "#569cd6"),
+            "border": colors.get("hr", "#454545"),
+            "text": colors.get("fg", "#d4d4d4"),
+            "text_hover": "#ffffff",
+            "shortcut": "#858585",
+            "separator": colors.get("hr", "#404040"),
+            "icon": colors.get("h2", "#4ec9b0"),
+            "accent": colors.get("h1", "#569cd6"),
+            "shadow": "#000000"
+        }
+        
+        # Menü komutları
+        commands = [
+            {"icon": "📋", "text": "Kopyala", "command": self._copy_selection, "shortcut": "Ctrl+C"},
+            {"icon": "☑️", "text": "Tümünü Seç", "command": self._select_all, "shortcut": "Ctrl+A"},
+            "-",
+            {"icon": "📤", "text": "HTML Olarak Kaydet", "command": self.export_as_html},
+            {"icon": "🖨️", "text": "Yazdır", "command": self._print_preview, "shortcut": "Ctrl+P"},
+            "-",
+            {"icon": "🔍", "text": "Ara", "command": lambda: self.search_entry.focus(), "shortcut": "Ctrl+F"},
+        ]
+        
+        # Modern context menu oluştur
+        self._context_menu_window = ModernContextMenu(
+            self.winfo_toplevel(),
+            commands,
+            event.x_root,
+            event.y_root,
+            menu_theme
         )
-        try:
-            self.context_menu.tk_popup(event.x_root, event.y_root)
-        finally:
-            self.context_menu.grab_release()
 
     def _copy_selection(self):
         try:

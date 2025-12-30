@@ -49,7 +49,7 @@ class LanguageManager:
             if not self._translations and lang_code != "tr":
                 self.load_language("tr")
 
-    def get(self, key_path: str, default: str = "") -> str:
+    def get(self, key_path: str, default: Any = "") -> Any:
         """
         Nokta ile ayrılmış anahtar yolunu kullanarak çeviriyi döndürür.
         Örn: get("buttons.save")
@@ -62,9 +62,9 @@ class LanguageManager:
         try:
             for k in keys:
                 value = value[k]
-            return str(value)
+            return value
         except (KeyError, TypeError):
-            return default or key_path
+            return default if default else key_path
 
     @property
     def current_lang(self) -> str:

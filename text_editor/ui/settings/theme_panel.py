@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import tkinter as tk
 import customtkinter as ctk
-from typing import Dict, Any, Final, Optional, Union
+from typing import Dict, Any, Final, Optional, Union, Tuple
 
 from text_editor.ui.settings.base_panel import BaseSettingsPanel
 from text_editor.theme_config import get_available_themes, get_theme

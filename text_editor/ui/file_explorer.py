@@ -386,40 +386,49 @@ class FileExplorer(ctk.CTkFrame):
             if self.context_menu_window:
                 self.context_menu_window.close()
                 self.context_menu_window = None
+            
+            # Seçili olan dosya mı klasör mü?
+            path = self.tree.item(item_id, "values")[0]
+            is_file = os.path.isfile(path)
 
-            # Menü komutlarını hazırla
+            # Menü komutlarını hazırla (yeni Dict formatı)
             commands = [
-                ("Yeni Dosya", self._context_new_file),
-                ("Yeni Klasör", self._context_new_folder),
+                {"icon": "📄", "text": self.lang.get("context_menu.new_file", "Yeni Dosya"), "command": self._context_new_file},
+                {"icon": "📁", "text": self.lang.get("context_menu.new_folder", "Yeni Klasör"), "command": self._context_new_folder},
                 "-",
-                ("Aç", self._context_open),
-                "-",
-                ("Yeniden Adlandır", self._context_rename),
-                ("Sil", self._context_delete),
-                "-",
-                ("Yolu Kopyala", self._context_copy_path)
             ]
             
+            if is_file:
+                commands.append({"icon": "📂", "text": self.lang.get("context_menu.open", "Aç"), "command": self._context_open, "shortcut": "Enter"})
+                commands.append("-")
+            
+            commands.extend([
+                {"icon": "✏️", "text": self.lang.get("context_menu.rename", "Yeniden Adlandır"), "command": self._context_rename, "shortcut": "F2"},
+                {"icon": "🗑️", "text": self.lang.get("context_menu.delete", "Sil"), "command": self._context_delete, "shortcut": "Del"},
+                "-",
+                {"icon": "📋", "text": self.lang.get("context_menu.copy_path", "Yolu Kopyala"), "command": self._context_copy_path},
+            ])
+            
             if os.name == 'nt':
-                commands.append(("Klasörde Göster", self._context_show_in_explorer))
+                commands.append({"icon": "🔍", "text": self.lang.get("context_menu.show_in_explorer", "Klasörde Göster"), "command": self._context_show_in_explorer})
             
             # Tema renklerini hazırla
             menu_theme = None
             if self.current_theme_colors:
-                # Kenarlık rengi için accent_color veya varsayılan gri kullan
-                border_color = self.current_theme_colors.get("accent_color", "#454545")
-                # Eğer accent color çok parlaksa ve bu bir border ise, belki daha soft bir şey istenebilir
-                # Ama şimdilik accent color uyumlu görünüyor. Alternatif olarak menu_fg'nin şeffaf hali vb.
-                # Daha güvenli bir varsayılan:
-                if "border" in self.current_theme_colors:
-                    border_color = self.current_theme_colors["border"]
+                border_color = self.current_theme_colors.get("border", self.current_theme_colors.get("accent_color", "#454545"))
                 
                 menu_theme = {
-                    "bg": self.current_theme_colors.get("menu_bg", "#2b2b2b"),
+                    "bg": self.current_theme_colors.get("menu_bg", "#1e1e1e"),
+                    "bg_hover": self.current_theme_colors.get("menu_hover", "#2a2d2e"),
+                    "bg_active": self.current_theme_colors.get("accent_color", "#094771"),
                     "border": border_color,
-                    "hover": self.current_theme_colors.get("menu_hover", "#094771"),
                     "text": self.current_theme_colors.get("menu_fg", "#cccccc"),
-                    "separator": border_color
+                    "text_hover": "#ffffff",
+                    "shortcut": "#858585",
+                    "separator": self.current_theme_colors.get("menu_hover", "#404040"),
+                    "icon": self.current_theme_colors.get("accent_color", "#75beff"),
+                    "accent": self.current_theme_colors.get("accent_color", "#007acc"),
+                    "shadow": "#000000"
                 }
 
             # Menüyü oluştur ve göster

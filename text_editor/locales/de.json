@@ -5,24 +5,24 @@
         "export": "📤 Einstellungen exportieren",
         "import": "📥 Einstellungen importieren",
         "reset": "🔄 Auf Standard zurücksetzen",
-        "reset_shortcuts": "Verknüpfungen zurücksetzen"
+        "reset_shortcuts": "Tastenkürzel zurücksetzen"
     },
     "categories": {
         "Editör": "Editor",
         "Gelişmiş": "Erweitert",
         "Genel": "Allgemein",
         "Görünüm": "Aussehen",
-        "Klavye Kısayolları": "Tastenkombinationen",
+        "Klavye Kısayolları": "Tastenkürzel",
         "Tema": "Thema",
         "Terminal": "Terminal"
     },
     "context_menu": {
-        "close": "Kapat",
-        "close_others": "Diğerlerini Kapat",
-        "close_right": "Sağdakileri Kapat",
-        "copy_filename": "Dosya Adını Kopyala"
+        "close": "Schließen",
+        "close_others": "Andere schließen",
+        "close_right": "Rechte schließen",
+        "copy_filename": "Dateinamen kopieren"
     },
-    "file_explorer_title": "Explorer",
+    "file_explorer_title": "Datei-Explorer",
     "help": {
         "buttons": {
             "back": "◀ Zurück",
@@ -34,42 +34,42 @@
         "sections": {
             "about": "ℹ️ Über",
             "faq": "❓ FAQ",
-            "file_formats": "📁 Unterstützte Formate",
+            "file_formats": "📁 Dateiformate",
             "goto_line": "🔢 Gehe zu Zeile",
             "image_viewer": "🖼️ Bildbetrachter",
-            "markdown_guide": "📄 Markdown-Anleitung",
-            "multi_cursor": "🖱️ Multi-Cursor-Anleitung",
+            "markdown_guide": "📄 Markdown-Guide",
+            "multi_cursor": "🖱️ Multi-Cursor-Guide",
             "performance": "📊 Leistungsbericht",
             "quick_start": "🚀 Schnellstart",
             "report_bug": "🐛 Fehler melden",
-            "shortcuts": "⌨️ Tastenkombinationen",
-            "theme_guide": "🎨 Themen-Anleitung",
-            "tips": "💡 Tipps und Tricks"
+            "shortcuts": "⌨️ Tastenkürzel",
+            "theme_guide": "🎨 Themen-Guide",
+            "tips": "💡 Tipps & Tricks"
         },
         "start_tutorial": "🎓 Interaktives Tutorial starten",
         "title": "🪐 {app_name} - Hilfezentrum"
     },
     "help_content": {
-        "about": "ℹ️ ÜBER {app_name}\n\nModerne, leichte und leistungsstarke Python-IDE\n\n(Übersetzung für Info...)",
-        "faq": "❓ HÄUFIG GESTELLTE FRAGEN\n\nAntworten auf Ihre Fragen finden Sie hier!",
-        "goto_line": "🔢 GEHE ZU ZEILE\n\nWird verwendet, um schnell eine bestimmte Zeile in großen Dateien zu erreichen.",
-        "image_viewer": "🖼️ BILDBETRACHTER\n\nMemati Editor kann Bilddateien zusammen mit Codedateien anzeigen.",
-        "markdown_guide": "📄 MARKDOWN-ANLEITUNG\n\nVorschau Ihrer Markdown-Dateien live!",
-        "multi_cursor": "🖱️ MULTI-CURSOR-ANLEITUNG\n\nBearbeiten Sie an mehreren Stellen gleichzeitig!",
-        "performance_report": "📊 DETAILLIERTER LEISTUNGSBERICHT\n\nAktueller System- und Editorstatus:\n\n{sys_info}\n...",
+        "about": "ℹ️ ÜBER {app_name}\n\nModerne, leichte und leistungsstarke Python-IDE\n\n┌─────────────────────────────────────────┐\n│  📱 APP-INFO                            │\n└─────────────────────────────────────────┘\n\n🪐 Name: {app_name}\n📦 Version: 1.0\n📅 Veröffentlichung: 2025\n🏷️ Codename: \"Memati\"\n\n┌─────────────────────────────────────────┐\n│  🛠️ TECH STACK                          │\n└─────────────────────────────────────────┘\n\n🐍 Sprache: Python 3.10+\n🎨 GUI: CustomTkinter\n🌈 Syntax: Pygments\n👁️ Monitoring: Watchdog\n⚡ Async: Threading\n\n┌─────────────────────────────────────────┐\n│  ✨ FEATURES                            │\n└─────────────────────────────────────────┘\n\n✅ Multi-Tab-Unterstützung\n✅ Syntax-Hervorhebung (300+ Sprachen)\n✅ Multi-Cursor\n✅ Intelligente Autovervollständigung\n✅ Code-Faltung\n✅ Minimap\n✅ Suchen & Ersetzen (Regex)\n✅ 9 Premium-Themen\n✅ Automatisches Speichern\n✅ Dateiüberwachung\n✅ Gehe zu Zeile\n✅ Vollbildmodus\n✅ Zoom-Unterstützung\n✅ Integriertes Terminal\n✅ Zen-Modus (Fokus-Modus)\n✅ Datei-Explorer\n\n┌─────────────────────────────────────────┐\n│  👨‍💻 ENTWICKLER                          │\n└─────────────────────────────────────────┘\n\n🎯 Entwickler: Memati AI Team\n🌐 Webseite: memati-editor.local\n📧 Kontakt: contact@memati-editor.local\n💬 Community: Discord (bald)\n\n┌─────────────────────────────────────────┐\n│  📜 LIZENZ                              │\n└─────────────────────────────────────────┘\n\n📄 MIT-Lizenz\n🆓 Kostenlos & Open Source\n🔓 Quellcode auf GitHub\n\nCopyright © 2025 Memati\nAlle Rechte vorbehalten.\n\n┌─────────────────────────────────────────┐\n│  🙏 DANKSAGUNG                          │\n└─────────────────────────────────────────┘\n\nDieses Projekt wurde durch diese großartigen\nBibliotheken ermöglicht:\n\n• CustomTkinter - Moderne UI\n• Pygments - Syntax-Hervorhebung\n• Watchdog - Dateiüberwachung\n• Python - Tolle Sprache\n\nUnd an alle Mitwirkenden ❤️\n\n┌─────────────────────────────────────────┐\n│  🔮 ZUKUNFTSPLÄNE (v2.0)                │\n└─────────────────────────────────────────┘\n\n🚀 Plugin-System\n🚀 Git-Integration\n🚀 AI-Code-Assistent\n🚀 Kollaborationsmodus\n🚀 Benutzerdefinierter Themen-Ersteller\n🚀 Debugging-Unterstützung\n🚀 Geteilte Ansicht\n🚀 Schnipsel-Manager\n\nFolgen Sie uns! 🌟\n\n┌─────────────────────────────────────────┐\n│  💙 SOZIALE MEDIEN                      │\n└─────────────────────────────────────────┘\n\n🐙 GitHub: /memati/memati-editor\n🐦 Twitter: @memati_editor\n📺 YouTube: Memati Editor Tutorials\n💬 Discord: discord.gg/memati\n\nViel Spaß beim Programmieren mit Memati Editor!\n\n☕ Made with Coffee and Love by Memati Team",
+        "faq": "❓ HÄUFIG GESTELLTE FRAGEN (FAQ)\n\nHier finden Sie Antworten auf Ihre Fragen!\n\n┌─────────────────────────────────────────┐\n│  🔧 ALLGEMEINE FRAGEN                   │\n└─────────────────────────────────────────┘\n\n❔ Ist Memati Editor kostenlos?\n✅ Ja! Komplett kostenlos und Open Source.\n\n❔ Auf welchen Betriebssystemen läuft es?\n✅ Windows, macOS und Linux.\n\n❔ Ist eine Internetverbindung erforderlich?\n✅ Nein, es funktioniert komplett offline.\n\n┌─────────────────────────────────────────┐\n│  📂 DATEIEN & SPEICHERN                 │\n└─────────────────────────────────────────┘\n\n❔ Wo werden meine Dateien gespeichert?\n✅ An dem von Ihnen gewählten Ort. Auto-Save\n   überschreibt die vorhandene Datei.\n\n❔ Wie oft läuft das automatische Speichern?\n✅ Alle 30 Sekunden. Wenn ungespeicherte\n   Änderungen vorliegen, wird gespeichert.\n\n❔ Aus Versehen geschlossen, Daten verloren?\n✅ Nein, wenn Auto-Save aktiv ist. Wenn Sie nicht\n   innerhalb von 30 Sek. geschlossen haben, sind Sie sicher.\n\n❔ Kann ich sehr große Dateien öffnen?\n✅ Nicht empfohlen. Dateien über 10MB\n   können zu Verlangsamungen führen.\n\n┌─────────────────────────────────────────┐\n│  🎨 AUSSEHEN & ANPASSUNG                │\n└─────────────────────────────────────────┘\n\n❔ Kann ich die Schriftart ändern?\n✅ Derzeit fest (Consolas/System-Monospace).\n   Zoomen mit Strg+Mausrad.\n\n❔ Kann ich eigene Themen erstellen?\n✅ Derzeit nein, aber auf unserer Roadmap!\n\n❔ Kann ich Panels ausblenden?\n✅ Ja! Im Menü 'Aussehen':\n   • Zeilennummern\n   • Zeilenumbruch\n   • Minimap\n   • Statusleiste\n   • Datei-Explorer\n   Umschaltbar. Auch Zen-Modus zeigt\n   nur den Editor (Strg+K, Z).\n\n┌─────────────────────────────────────────┐\n│  ⚡ LEISTUNG                             │\n└─────────────────────────────────────────┘\n\n❔ Editor läuft langsam, was tun?\n✅ • Unnötige Tabs schließen\n   • Sehr große Dateien vermeiden\n   • Multi-Cursor-Anzahl reduzieren\n   • Computer neu starten\n\n❔ Wird es bei vielen Tabs langsam?\n✅ Normal. Bis 10-15 Tabs ist die Leistung gut.\n   Darüber hinaus kann es langsamer werden.\n\n┌─────────────────────────────────────────┐\n│  🔌 PLUGINS & INTEGRATIONEN             │\n└─────────────────────────────────────────┘\n\n❔ Gibt es Plugin-Unterstützung?\n✅ Noch nicht, kommt in v2.0!\n\n❔ Gibt es Git-Integration?\n✅ Derzeit nicht, aber geplant.\n\n❔ Kann ich ein Terminal öffnen?\n✅ Ja! Mit Strg+` integriertes Terminal öffnen.\n   PowerShell, CMD und Bash werden unterstützt.\n\n┌─────────────────────────────────────────┐\n│  🐛 FEHLERBEHEBUNG                      │\n└─────────────────────────────────────────┘\n\n❔ Editor öffnet sich nicht!\n✅ • Stellen Sie sicher, dass Python 3.10+ installiert ist\n   • Abhängigkeiten prüfen:\n     pip install customtkinter pygments watchdog\n\n❔ Thema ändert sich nicht!\n✅ Versuchen Sie, den Editor neu zu starten.\n\n❔ Tastenkürzel funktionieren nicht!\n✅ Konflikt mit anderer App möglich.\n   Hintergrundprogramme prüfen.\n\n┌─────────────────────────────────────────┐\n│  🆘 WEITERE HILFE                       │\n└─────────────────────────────────────────┘\n\nFrage nicht beantwortet?\n\n📧 Kontakt: support@memati-editor.local\n🐛 Fehler melden: Siehe Abschnitt \"Fehler melden\"\n📖 Dokumentation: GitHub Wiki (bald)\n\nCommunity-Support-Forum bald verfügbar! 🚀",
+        "goto_line": "🔢 GEHE ZU ZEILE\n\nVerwendet, um in großen Dateien schnell zu einer bestimmten Zeile zu gelangen.\n\n┌─────────────────────────────────────────┐\n│  🚀 VERWENDUNG                          │\n└─────────────────────────────────────────┘\n\n1️⃣  FENSTER ÖFFNEN\n   • Kürzel: Strg+G\n   • Menü: Bearbeiten > Gehe zu Zeile\n\n2️⃣  ZEILENNUMMER EINGEBEN\n   • Tippen Sie die gewünschte Zeilennummer ein.\n\n3️⃣  AUF 'GEHE ZU' KLICKEN\n   • Klicken Sie auf den Button oder drücken Sie Enter.\n\nDer Editor bringt Sie automatisch zu der Zeile und hebt sie hervor.",
+        "image_viewer": "🖼️ BILDBETRACHTER\n\nMemati Editor kann neben Code-Dateien auch Bilddateien anzeigen.\n\n┌─────────────────────────────────────────┐\n│  ✨ FEATURES                            │\n└─────────────────────────────────────────┘\n\n🔍 Zoomen:\n   Mit dem Mausrad können Sie auf das Bild zoomen.\n\n✋ Verschieben:\n   In vergrößerten Bildern können Sie durch Ziehen navigieren.\n\n🔄 Drehen:\n   Mit 'R' (Rechts) und 'L' (Links) können Sie das Bild drehen.\n\nabc Anpassen:\n   Mit 'F' oder Toolbar-Button das Bild an Fenster anpassen.\n\n┌─────────────────────────────────────────┐\n│  📁 UNTERSTÜTZTE FORMATE                │\n└─────────────────────────────────────────┘\n\n• PNG\n• JPG / JPEG\n• GIF\n• BMP\n• WEBP",
+        "markdown_guide": "📄 MARKDOWN-GUIDE\n\nVorschau Ihrer Markdown-Dateien live!\n\n┌─────────────────────────────────────────┐\n│  🚀 WIE BENUTZT MAN ES?                 │\n└─────────────────────────────────────────┘\n\n1️⃣  EINE MARKDOWN-DATEI ÖFFNEN\n   • Datei mit Endung .md oder .markdown\n   • Beispiel: README.md\n\n2️⃣  VORSCHAU STARTEN\n   • Kürzel: Strg+Umschalt+V\n   • Oder Menü \"Ansicht\" > \"Markdown-Vorschau\"\n   • Bildschirm teilt sich, Vorschau rechts\n\n┌─────────────────────────────────────────┐\n│  ✨ FEATURES                            │\n└─────────────────────────────────────────┘\n\n🔄 LIVE-UPDATE\n   Alles, was Sie links tippen, erscheint\n   sofort formatiert auf der rechten Seite.\n\n📜 SYNCHRONES SCROLLEN (SYNC SCROLL)\n   Wenn Sie im Editor scrollen, scrollt die\n   Vorschau mit. Sie verlieren nie den Faden!\n\n🎨 THEMEN-KOMPATIBILITÄT\n   Wenn Sie das Editor-Thema ändern, passt\n   sich die Vorschau automatisch an.\n   • Dark Mode → Dunkle Vorschau\n   • Light Mode → Helle Vorschau\n\n📊 STATISTIK-LEISTE\n   Detaillierte Info unter dem Vorschau-Panel:\n   • Wortanzahl\n   • Zeichenanzahl\n   • Lesezeit (Min)\n\n🔍 SUCHE IN VORSCHAU\n   Sie können im Vorschau-Text suchen.\n   • Fokus auf Vorschau\n   • Strg+F drücken\n   • Ergebnisse werden hervorgehoben\n\n┌─────────────────────────────────────────┐\n│  📝 MARKDOWN-SYNTAX                     │\n└─────────────────────────────────────────┘\n\n# Überschrift 1\n## Überschrift 2\n### Überschrift 3\n\n**Fett**\n*Kursiv*\n~~Durchgestrichen~~\n\n- Listenelement 1\n- Listenelement 2\n\n1. Nummerierte Liste\n2. Nummerierte Liste\n\n[Link Text](https://google.com)\n![Bild](image.png)\n\n`Code-Block`\n\n```python\ndef hello():\n    print(\"Hallo Welt!\")\n```\n\n> Zitat-Text\n\n┌─────────────────────────────────────────┐\n│  💡 TIPPS                               │\n└─────────────────────────────────────────┘\n\n🔸 Zum Schließen der Vorschau erneut\n   Strg+Umschalt+V drücken.\n\n🔸 Wenn Sie das Fenster vergrößern, sieht\n   die Vorschau besser aus.\n\n🔸 Tabellen und Checkboxen unterstützt!\n   - [x] Erledigt\n   - [ ] Zu erledigen\n\nViel Spaß beim Schreiben! ✍️",
+        "multi_cursor": "🖱️ MULTI-CURSOR-GUIDE\n\nBearbeiten Sie an mehreren Stellen gleichzeitig!\n\n┌─────────────────────────────────────────┐\n│  🎯 GRUNDLAGEN                          │\n└─────────────────────────────────────────┘\n\n1️⃣  CURSOR HINZUFÜGEN:\n   ┌─────────────────────────────┐\n   │ Alt + Linksklick             │\n   └─────────────────────────────┘\n   \n   Neuer Cursor an jeder angeklickten Stelle.\n   Erneuter Klick entfernt den Cursor.\n\n2️⃣  WORT AUSWÄHLEN:\n   ┌─────────────────────────────┐\n   │ Strg + D                     │\n   └─────────────────────────────┘\n   \n   • Auf einem Wort: Strg+D\n   • Wort wird ausgewählt\n   • Erneut drücken: Nächstes gleiches Wort\n   • Fügt jedes Mal neuen Cursor hinzu\n\n3️⃣  BEREINIGEN:\n   ┌─────────────────────────────┐\n   │ Escape (Esc)                 │\n   └─────────────────────────────┘\n   \n   Entfernt alle zusätzlichen Cursor, zurück zu einem.\n\n┌─────────────────────────────────────────┐\n│  📚 BEISPIELSZENARIEN                   │\n└─────────────────────────────────────────┘\n\n🔷 SZENARIO 1: Spaltenbearbeitung\n   ────────────────────────────\n   print(\"Zeile 1\")\n   print(\"Zeile 2\")\n   print(\"Zeile 3\")\n   \n   🎯 Ziel: # am Anfang jeder Zeile hinzufügen\n   \n   ✅ Lösung:\n   1. Alt+Klick am Anfang jeder Zeile\n   2. # tippen\n   3. Wird überall gleichzeitig hinzugefügt!\n\n🔷 SZENARIO 2: Variable umbenennen\n   ──────────────────────────────────────\n   old_name = 10\n   result = old_name * 2\n   print(old_name)\n   \n   🎯 Ziel: \"old_name\" → \"new_name\"\n   \n   ✅ Lösung:\n   1. Cursor auf \"old_name\"\n   2. 3-mal Strg+D drücken (3 Vorkommen)\n   3. \"new_name\" tippen\n   4. Alle ändern sich sofort!\n\n🔷 SZENARIO 3: Listenelemente bearbeiten\n   ────────────────────────────────────────\n   items = [\n       \"item1\",\n       \"item2\",\n       \"item3\"\n   ]\n   \n   🎯 Ziel: Alle doppelten Anführungszeichen zu einfachen\n   \n   ✅ Lösung:\n   1. Erstes \" auswählen\n   2. Strg+D um alle \" auszuwählen\n   3. ' tippen\n   4. Alle ändern sich!\n\n┌─────────────────────────────────────────┐\n│  💡 FORTGESCHRITTENE TIPPS              │\n└─────────────────────────────────────────┘\n\n🌟 Alt+Klick SPALTENAUSWAHL:\n   Cursor an gleicher Position in mehreren Zeilen\n   für vertikale Bearbeitung.\n\n🌟 Strg+D TEILAUSWAHL:\n   Sie können manche Wörter auswählen, andere überspringen.\n   Jedes Strg+D wählt das nächste, stoppen Sie bei Bedarf!\n\n🌟 LEISTUNG:\n   Über 100 Cursor können die Leistung beeinflussen.\n   Nutzen Sie eine vernünftige Menge (≤ 50 empfohlen).\n\n┌─────────────────────────────────────────┐\n│  ⚠️ ZU BEACHTEN                         │\n└─────────────────────────────────────────┘\n\n❌ Autovervollständigung ist im Multi-Cursor-Modus\n   deaktiviert.\n\n❌ Zu viele Cursor können den Editor\n   verlangsamen.\n\n✅ Nutzen Sie so viele wie nötig,\n   Esc zum Bereinigen, wenn fertig!\n\n┌─────────────────────────────────────────┐\n│  🎓 JETZT ÜBEN!                         │\n└─────────────────────────────────────────┘\n\nBeste Lernmethode ist Praxis!\nProbieren Sie die obigen Beispiele in Ihren\neigenen Dateien aus.\n\nViel Erfolg! 🚀",
+        "performance_report": "📊 DETAILLIERTER LEISTUNGSBERICHT\n\nAktueller System- und Editorstatus:\n\n┌─────────────────────────────────────────┐\n│  💻 SYSTEM UND RESSOURCEN               │\n└─────────────────────────────────────────┘\n\n🖥️  OS: {sys_info}\n🐍 Python: {py_ver}\n💾 RAM: {memory_usage}\n⚙️  CPU-Nutzung: {cpu_usage}\n🧵 Aktive Threads: {thread_count}\n⏱️  Laufzeit: {uptime_str}\n\n┌─────────────────────────────────────────┐\n│  📈 TECHNISCHE STATISTIKEN              │\n└─────────────────────────────────────────┘\n\n📑 Offene Dateien: {tab_count}\n📝 Gesamtzeilen: {total_lines}\n🔤 Gesamtzeichen: {total_chars}\n🎨 Aktives Thema: {current_theme}\n🌐 Sprachverteilung: {languages_str}\n\n┌─────────────────────────────────────────┐\n│  ✅ GESUNDHEITSCHECK                    │\n└─────────────────────────────────────────┘\n\n🟢 UI-Reaktion: Optimal\n🟢 Dateiüberwachung: Aktiv (Watchdog)\n🟢 Auto-Save: Aktiv (30s)\n🟢 GPU-Beschleunigung: {gpu_status}\n\n┌─────────────────────────────────────────┐\n│  💡 ANALYSE UND VORSCHLÄGE              │\n└─────────────────────────────────────────┘\n\n{suggestions_text}\n\n┌─────────────────────────────────────────┐\n│  📋 BERICHTSINFO                        │\n└─────────────────────────────────────────┘\n\nVersion: Memati Editör v1.2 (Dev)\nNode: {node}\nZeit: {time}\n",
         "performance_suggestions": {
-            "all_good": "✅ Alle Systemwerte sind auf optimalem Niveau.",
-            "high_line_count": "🟡 Gesamtzahl der Zeilen ist sehr hoch. Editor könnte langsamer werden.",
+            "all_good": "✅ Alle Systemwerte im optimalen Bereich.",
+            "high_line_count": "🟡 Gesamtzahl der Zeilen sehr hoch. Editor könnte langsamer werden.",
             "high_memory": "🟡 Hohe Speichernutzung (>500MB).",
-            "high_tab_count": "🟡 Hohe Tab-Anzahl (10+). Leistung kann sinken.",
-            "install_psutil": "🟡 Installieren Sie das Modul 'psutil' für vollständige Leistungsdaten."
+            "high_tab_count": "🟡 Viele Tabs offen (10+). Leistung kann sinken.",
+            "install_psutil": "🟡 Für vollständige Leistungsdaten 'psutil' installieren.\n   Befehl: pip install psutil"
         },
-        "quick_start": "🎯 WILLKOMMEN BEIM MEMATI EDITOR!\n\nEin moderner, leistungsstarker und benutzerfreundlicher Texteditor steht bereit!\n\n┌─────────────────────────────────────────┐\n│  🎓 INTERAKTIVES TUTORIAL                │\n└─────────────────────────────────────────┘\n\nNeu hier? Keine Sorge!\n\n🎓 Lernen Sie den Editor in 5 Minuten mit dem INTERAKTIVEN TUTORIAL kennen!\n\n• Schritt-für-Schritt-Anleitung\n• Visuelle Highlights\n• Interaktive Aufgaben\n• Fortschrittsverfolgung\n\nUm zu beginnen:\n1. Klicken Sie oben auf die Schaltfläche \"🎓 Interaktives Tutorial starten\"\n2. Oder über das Menü: 🎓 Tutorial\n\n┌─────────────────────────────────────────┐\n│  ERSTE SCHRITTE                         │\n└─────────────────────────────────────────┘\n\n1️⃣  NEUE DATEI ERSTELLEN\n   • Drücken Sie Strg+N\n   • Oder Menü: Datei > Neuer Tab\n\n2️⃣  DATEI ÖFFNEN\n   • Datei auswählen mit Strg+O\n   • Oder Datei ziehen und ablegen\n   • Ordner öffnen: Strg+Umschalt+O\n\n3️⃣  SPEICHERN\n   • Aktuelle Datei speichern mit Strg+S\n   • Speichern unter mit Strg+Umschalt+S\n   • Automatisches Speichern: Alle 30 Sekunden!\n\n4️⃣  THEMA ÄNDERN\n   • Menü: Thema > Wählen Sie Ihr gewünschtes Thema\n   • 9 verschiedene, ansprechende Themen verfügbar!\n\n5️⃣  WERKZEUGE UND FUNKTIONEN\n   • Strg+F: Suchen und Ersetzen\n   • Strg+G: Zu bestimmter Zeile gehen\n   • Strg+Rad: Vergrößern/Verkleinern\n   • F11: Vollbildmodus\n\n6️⃣  MULTI-CURSOR-WERKZEUGE\n   • Alt+Klick: Cursor überall hinzufügen\n   • Strg+D: Das gleiche Wort auswählen und bearbeiten\n   • Siehe \"Multi-Cursor-Anleitung\" für Details!\n\nViel Spaß beim Programmieren! 🚀",
-        "report_bug": "🐛 FEHLER MELDEN\n\nEinen Fehler gefunden? Lassen Sie es uns wissen!",
-        "shortcuts": "⌨️ TASTENKOMBINATIONEN\n\nSteuern Sie den Memati Editor mit Ihrer Tastatur!\n\n┌─────────────────────────────────────────┐\n│  📁 DATEIOPERATIONEN                    │\n└─────────────────────────────────────────┘\n\n{new_tab: <16} →  Neuer Tab\n{open_file: <16} →  Datei öffnen\n{open_folder: <16} →  Ordner öffnen\n{save_file: <16} →  Speichern\n{save_as: <16} →  Speichern unter\n{close_tab: <16} →  Tab schließen\n\n┌─────────────────────────────────────────┐\n│  ✏️ BEARBEITEN                          │\n└─────────────────────────────────────────┘\n\n{undo: <16} →  Rückgängig\n{redo: <16} →  Wiederholen\n{cut: <16} →  Ausschneiden\n{copy: <16} →  Kopieren\n{paste: <16} →  Einfügen\n{select_all: <16} →  Alles auswählen\n{find: <16} →  Suchen und Ersetzen\n{goto_line: <16} →  Gehe zu Zeile\n{duplicate_line: <16} →  Zeile duplizieren\n\n┌─────────────────────────────────────────┐\n│  👀 ANSICHT                             │\n└─────────────────────────────────────────┘\n\nStrg + Rad       →  Zoom\n{zoom_reset: <16} →  Zoom zurücksetzen\n{toggle_fullscreen: <16} →  Vollbild umschalten\n{toggle_file_explorer: <16} →  Explorer umschalten\n{toggle_minimap: <16} →  Minimap umschalten",
-        "supported_formats": "📁 UNTERSTÜTZTE FORMATE\n\nMemati Editor unterstützt viele Dateiformate!",
-        "theme_guide": "🎨 THEMEN-ANLEITUNG\n\nWählen Sie das Thema, das am besten zu Ihren Augen passt!",
-        "tips": "💡 TIPPS UND TRICKS\n\nNutzen Sie den Editor effizienter!"
+        "quick_start": "🎯 WILLKOMMEN BEIM MEMATI EDITOR!\n\nEin moderner, leistungsstarker und benutzerfreundlicher Texteditor steht bereit!\n\n┌─────────────────────────────────────────┐\n│  🎓 INTERAKTIVES TUTORIAL               │\n└─────────────────────────────────────────┘\n\nNeu hier? Keine Sorge!\n\n🎓 Lernen Sie den Editor in 5 Minuten mit dem INTERAKTIVEN TUTORIAL!\n\n• Schritt-für-Schritt-Anleitung\n• Visuelle Highlights\n• Interaktive Aufgaben\n• Fortschrittsverfolgung\n\nUm zu beginnen:\n1. Klicken Sie oben auf \"🎓 Interaktives Tutorial starten\"\n2. Oder Menü: 🎓 Tutorial\n\n┌─────────────────────────────────────────┐\n│  ERSTE SCHRITTE                         │\n└─────────────────────────────────────────┘\n\n1️⃣  NEUE DATEI ERSTELLEN\n   • Drücken Sie Strg+N\n   • Oder Menü: Datei > Neuer Tab\n\n2️⃣  DATEI ÖFFNEN\n   • Datei wählen mit Strg+O\n   • Oder Datei hereinziehen (Drag & Drop)\n   • Ordner öffnen: Strg+Umschalt+O\n\n3️⃣  SPEICHERN\n   • Strg+S zum Speichern\n   • Strg+Umschalt+S für Speichern unter\n   • Auto-Save: Alle 30 Sekunden!\n\n4️⃣  THEMA ÄNDERN\n   • Menü: Thema > Wählen Sie Ihr Wunschthema\n   • 9 verschiedene, tolle Themen verfügbar!\n\n5️⃣  TOOLS & FEATURES\n   • Strg+F: Suchen & Ersetzen\n   • Strg+G: Gehe zu Zeile\n   • Strg+Rad: Zoom In/Out\n   • F11: Vollbildmodus\n\n6️⃣  MULTI-CURSOR TOOLS\n   • Alt+Klick: Cursor überall hinzufügen\n   • Strg+D: Gleiches Wort auswählen\n   • Siehe \"Multi-Cursor-Guide\" für Details!\n\n┌─────────────────────────────────────────┐\n│  SCHNELLE TIPPS                         │\n└─────────────────────────────────────────┘\n\n💡 Automatisches Schließen von Klammern aktiv!\n💡 Code-Faltung: Pfeile an Zeilennummern klicken\n💡 Minimap: Schnelle Navigation in großen Dateien\n💡 Tabs: Rechtsklick für erweiterte Tab-Verwaltung\n\n┌─────────────────────────────────────────┐\n│  BRAUCHEN SIE HILFE?                    │\n└─────────────────────────────────────────┘\n\nEntdecken Sie Themen im linken Menü:\n• ⌨️  Tastenkürzel\n• 🖱️  Multi-Cursor-Guide\n• 💡 Tipps & Tricks\n• ❓ FAQ\n\nViel Spaß beim Coden! 🚀",
+        "report_bug": "🐛 FEHLER MELDEN\n\nFehler gefunden? Lassen Sie es uns wissen!\n\n┌─────────────────────────────────────────┐\n│  📧 KONTAKT                             │\n└─────────────────────────────────────────┘\n\nE-Mail: bugs@memati-editor.local\nGitHub: github.com/memati/memati-editor/issues\n\n┌─────────────────────────────────────────┐\n│  📝 FEHLERBERICHT VORLAGE               │\n└─────────────────────────────────────────┘\n\nBitte fügen Sie folgendes in Ihre E-Mail ein:\n\n1️⃣  TITEL\n   Kurz und prägnant\n   Bsp: \"Absturz bei Themenwechsel\"\n\n2️⃣  BESCHREIBUNG\n   Details zum Fehler:\n   • Was wollten Sie tun?\n   • Was ist passiert?\n   • Wie können wir es reproduzieren?\n\n3️⃣  LEISTUNGSBERICHT\n   Aus dem Abschnitt \"Leistungsbericht\" kopieren\n\n4️⃣  SCREENSHOT\n   Falls vorhanden, Fehler-Screenshot anhängen\n\n5️⃣  FEHLERMELDUNG\n   Konsole-Output oder Fehlermeldung\n\n┌─────────────────────────────────────────┐\n│  ✅ BEISPIEL GUTER BERICHT              │\n└─────────────────────────────────────────┘\n\nTitel:\n\"Cursor unsichtbar im Dracula-Thema\"\n\nBeschreibung:\n\"Wenn ich Dracula wähle, verschwindet der\nTextcursor. Im Dark-Thema kein Problem.\nNutze Windows 11.\"\n\nSchritte:\n1. Editor öffnen\n2. Thema > Dracula wählen\n3. Irgendwo klicken\n4. Cursor nicht sichtbar\n\nErwartet: Cursor sichtbar\nTatsächlich: Cursor unsichtbar\n\nLeistungsbericht: [hinzugefügt]\n\n┌─────────────────────────────────────────┐\n│  🚀 MITWIRKEN                           │\n└─────────────────────────────────────────┘\n\nNicht nur Fehler, auch Feature-Ideen!\n\n• Neue Feature-Ideen\n• UI/UX Verbesserungsvorschläge\n• Dokumentations-Updates\n• Code-Beiträge\n\nPull Request auf GitHub öffnen!\n\n┌─────────────────────────────────────────┐\n│  💙 DANKE                               │\n└─────────────────────────────────────────┘\n\nJedes Feedback macht Memati Editor besser.\nDanke für Ihre Beiträge!\n\n🌟 Wenn Sie das Projekt mögen, vergessen Sie\n   nicht, einen Stern auf GitHub zu geben!",
+        "shortcuts": "⌨️ TASTENKÜRZEL\n\nSteuern Sie Memati Editor mit der Tastatur!\n\n┌─────────────────────────────────────────┐\n│  📁 DATEI-OPERATIONEN                   │\n└─────────────────────────────────────────┘\n\n{new_tab: <16} →  Neuer Tab\n{open_file: <16} →  Datei öffnen\n{open_folder: <16} →  Ordner (Projekt) öffnen\n{save_file: <16} →  Speichern\n{save_as: <16} →  Speichern unter\n{close_tab: <16} →  Tab schließen\n\n┌─────────────────────────────────────────┐\n│  ✏️ BEARBEITEN                          │\n└─────────────────────────────────────────┘\n\n{undo: <16} →  Rückgängig\n{redo: <16} →  Wiederholen\n{cut: <16} →  Ausschneiden\n{copy: <16} →  Kopieren\n{paste: <16} →  Einfügen\n{select_all: <16} →  Alles auswählen\n{find: <16} →  Suchen & Ersetzen\n{goto_line: <16} →  Gehe zu Zeile\n{duplicate_line: <16} →  Zeile duplizieren\n{move_line_up: <16} →  Zeile nach oben\n{move_line_down: <16} →  Zeile nach unten\n\n┌─────────────────────────────────────────┐\n│  🖱️ MULTI-CURSOR                        │\n└─────────────────────────────────────────┘\n\nAlt + Klick      →  Cursor hinzufügen/entfernen\nStrg + D         →  Wort wählen (wiederholen)\nEscape           →  Cursor bereinigen\n\n┌─────────────────────────────────────────┐\n│  👀 ANSICHT                             │\n└─────────────────────────────────────────┘\n\nStrg + Rad       →  Zoom In/Out\n{zoom_reset: <16} →  Zoom zurücksetzen\n{toggle_fullscreen: <16} →  Vollbild\n{toggle_file_explorer: <16} →  Datei-Explorer an/aus\n{toggle_minimap: <16} →  Minimap an/aus\n{toggle_line_numbers: <16} →  Zeilennummern\n{toggle_word_wrap: <16} →  Zeilenumbruch (Word Wrap)\n{toggle_terminal: <16} →  Terminal an/aus\n{preview_markdown: <16} →  Markdown-Vorschau\n{toggle_zen_mode: <16} →  Zen-Modus (Fokus)\n\n┌─────────────────────────────────────────┐\n│  📋 KOPIER-SHORTCUTS                    │\n└─────────────────────────────────────────┘\n\n{copy_path: <16} →  Dateipfad kopieren\n{copy_relative_path: <16} →  Relativen Pfad kopieren\n\n┌─────────────────────────────────────────┐\n│  💡 PRO-TIPPS                           │\n└─────────────────────────────────────────┘\n\n🔸 Code-Faltung: Auf ▼ und ▶ bei Zeilen-\n   nummern klicken\n\n🔸 Rechtsklick auf Tab-Titel:\n   • Tab schließen\n   • Andere schließen\n   • Rechte schließen\n   • Pfad kopieren\n\n🔸 Auf Minimap klicken zum Navigieren\n\n🔸 Auf Zeilennummern klicken zum Markieren\n\n🔸 Im Terminal PowerShell, CMD oder Bash\n   verwenden",
+        "supported_formats": "📁 UNTERSTÜTZTE DATEIFORMATE\n\nMemati Editor unterstützt viele Formate!\n\n┌─────────────────────────────────────────┐\n│  🟢 VOLLE UNTERSTÜTZUNG (Highlight + Complete) │\n└─────────────────────────────────────────┘\n\nSyntax-Hervorhebung + Autovervollständigung:\n\n🐍 PYTHON (.py, .pyw)\n   • Intelligente Vervollständigung\n   • Funktionsvorschläge\n   • Paket-/Modulerkennung\n\n🌐 HTML (.html, .htm)\n   • Tag-Vervollständigung\n   • Attribut-Vorschläge\n   • Gepaarte Tags\n\n🎨 CSS (.css, .scss, .sass)\n   • Eigenschafts-Vorschläge\n   • Farbvorschau\n   • Klassen/ID Vervollständigung\n\n📜 JAVASCRIPT (.js, .jsx)\n   • ES6+ Unterstützung\n   • Schlüsselwort-Vervollständigung\n   • Moderne Syntax\n\n┌─────────────────────────────────────────┐\n│  🟡 SYNTAX-HERVORHEBUNG                 │\n└─────────────────────────────────────────┘\n\nNur Färbung (keine Vervollständigung):\n\n📋 JSON (.json)\n📰 XML (.xml)\n📝 MARKDOWN (.md, .markdown)\n☕ JAVA (.java)\n⚙️ C/C++ (.c, .cpp, .h, .hpp)\n🐍 C# (.cs)\n🦀 RUST (.rs)\n🔷 TYPESCRIPT (.ts, .tsx)\n🐘 PHP (.php)\n💎 RUBY (.rb)\n🎯 GO (.go)\n... und mehr!\n\n┌─────────────────────────────────────────┐\n│  ⚪ ANDERE DATEIEN                      │\n└─────────────────────────────────────────┘\n\nAls reiner Text geöffnet:\n\n📄 .txt, .log, .ini, .conf\n📝 .yaml, .yml, .toml\n🔧 .sh, .bash, .bat, .ps1\n📜 .sql, .csv\n\n┌─────────────────────────────────────────┐\n│  🎨 AUTOMATISCHE ERKENNUNG              │\n└─────────────────────────────────────────┘\n\nEditor erkennt automatisch anhand der Endung:\n\n✅ Passendes Farbschema\n✅ Syntax-Highlighter\n✅ Einrückungsstil\n✅ Datei-Icon\n\n┌─────────────────────────────────────────┐\n│  💡 TIPPS                               │\n└─────────────────────────────────────────┘\n\n🔸 Unbekannte Endungen werden als Text\n   geöffnet\n\n🔸 Manuelle Sprachänderung kommt bald!\n\n🔸 Binärdateien öffnen nicht empfohlen\n   (langsam & seltsame Zeichen)\n\nUnterstützte Formate:\n{formats}\n\nBearbeiten Sie jede Art von Textdatei bequem! 📝",
+        "theme_guide": "🎨 THEMEN-GUIDE\n\nWählen Sie das Thema, das Ihren Augen passt!\n\n┌─────────────────────────────────────────┐\n│  🌈 VERFÜGBARE THEMEN                   │\n└─────────────────────────────────────────┘\n\n🌑 DARK (DUNKEL)\n   ├─ Modernes, klassisches VS Code Thema\n   ├─ Hoher Kontrast\n   └─ Ideal für lange Sitzungen\n\n☀️ LIGHT (HELL)\n   ├─ Minimal und sauber\n   ├─ Perfekt für Tageslicht\n   └─ Professioneller Look\n\n... (Andere Themen im Menü ansehen)\n\n┌─────────────────────────────────────────┐\n│  🔄 THEMA WECHSELN                      │\n└─────────────────────────────────────────┘\n\n1. Klick auf \"🎨 Thema\" im Menü\n2. Wählen Sie das gewünschte Thema\n3. Thema wird sofort angewendet!\n\n┌─────────────────────────────────────────┐\n│  💡 AUSWAHL-TIPPS                       │\n└─────────────────────────────────────────┘\n\n🌙 BEI NACHT ARBEITEN:\n   → Dark, Dracula, Monokai, Nord, Synthwave\n\n☀️ BEI TAG ARBEITEN:\n   → Light, Solarized Light\n\n👁️ BEI AUGENERMÜDUNG:\n   → Solarized, Nord (niedriger Kontrast)\n\n🎨 ETWAS ANDERES WOLLEN:\n   → Synthwave, Gruvbox, Dracula\n\n💼 PROFESSIONELLER LOOK:\n   → One Dark Pro, GitHub Dark, Light\n\nViel Spaß! 🎨",
+        "tips": "💡 TIPPS UND TRICKS\n\nNutzen Sie den Editor effizienter!\n\n┌─────────────────────────────────────────┐\n│  🚀 PRODUKTIVITÄTS-TIPPS                │\n└─────────────────────────────────────────┘\n\n1️⃣  TAB-VERWALTUNG\n   🔸 RECHTSKLICK auf Tab-Titel:\n      • Tab schließen\n      • Andere schließen\n      • Rechte schließen\n      • Pfad kopieren\n   \n   🔸 Bei vielen Tabs regelmäßig aufräumen!\n\n2️⃣  SCHNELLES KOPIEREN\n   Über Tab-Rechtsklick oder Shortcuts:\n   🔸 Pfad kopieren (Strg+Umschalt+C)\n   🔸 Ordnerpfad kopieren\n   🔸 Relativen Pfad kopieren (Strg+Alt+C)\n   🔸 Nur Dateinamen kopieren\n\n3️⃣  SCHNELLE NAVIGATION\n   🔸 Strg+G um direkt zur Zeile zu springen\n   🔸 Minimap klicken zum Navigieren\n   🔸 Code-Faltung nutzen\n\n4️⃣  INTELLIGENTE SUCHE\n   🔸 Strg+F für Suchen & Ersetzen\n   🔸 Regex-Support!\n   🔸 Groß-/Kleinschreibung ignorieren\n\n5️⃣  AUTOMATISCHE FUNKTIONEN\n   🔸 Klammern schließen sich automatisch\n   🔸 Intelligente Einrückung bei Enter\n   🔸 Python: Extra Einrückung nach :\n   🔸 Auto-Save alle 30 Sek.\n\n6️⃣  VISUELLE VERBESSERUNGEN\n   🔸 Strg+Rad zum Zoomen\n   🔸 Schriftgröße 8-72\n   🔸 Minimap für Übersicht\n   🔸 Zeilenhervorhebung aktiv\n\n┌─────────────────────────────────────────┐\n│  🎯 WORKFLOW-EMPFEHLUNGEN               │\n└─────────────────────────────────────────┘\n\n📁 PROJEKTORDNER ÖFFNEN\n   • Strg+Umschalt+O für ganzes Projekt\n   • Schnellnavigation im Datei-Explorer\n\n🎨 THEMEN-ROUTINE\n   • Morgens: Light oder Solarized\n   • Abends: Dark, Nord oder Gruvbox\n   • Nachts: Dracula oder Synthwave\n\n📝 CODE-FALTUNG NUTZEN\n   • Lange Funktionen falten\n   • Fokus auf relevanten Code\n   • Pfeile an Zeilennummern nutzen\n\n🖱️ MULTI-CURSOR POWER\n   • Für wiederkehrende Änderungen\n   • Alt+Klick und Strg+D lernen\n   • Siehe \"Multi-Cursor-Guide\"!\n\n┌─────────────────────────────────────────┐\n│  ⚡ LEISTUNGS-TIPPS                     │\n└─────────────────────────────────────────┘\n\n🔸 Sehr große Dateien meiden (>10MB)\n🔸 Unnötige Tabs schließen\n🔸 Nicht 100+ Cursor gleichzeitig nutzen\n🔸 Auto-Save ist aktiv, manuelles Speichern\n   nicht vergessen (Strg+S)\n\n┌─────────────────────────────────────────┐\n│  🎓 LERNEN & ENTDECKEN                  │\n└─────────────────────────────────────────┘\n\n✅ Alle Shortcuts ausprobieren\n✅ Verschiedene Themen testen\n✅ Multi-Cursor üben\n✅ Datei-Explorer nutzen\n✅ Minimap erkunden\n\nJeden Tag etwas effizienter! 🚀"
     },
     "menu": {
         "edit": "Bearbeiten",
@@ -106,7 +106,7 @@
             "status_bar": "Statusleiste",
             "terminal": "Terminal",
             "undo": "Rückgängig",
-            "word_wrap": "Zeilenumbruch",
+            "word_wrap": "Zeilenumbruch (Word Wrap)",
             "zen_exit": "⤣ Zen-Modus beenden",
             "zen_mode": "Zen-Modus"
         },
@@ -128,16 +128,16 @@
         "import_success_title": "Erfolg",
         "no_limit": "Keine Änderungen",
         "no_results": "Keine Ergebnisse gefunden",
-        "passive": "Deaktiviert",
+        "passive": "Inaktiv",
         "preview": "Vorschau",
-        "reset_confirm_message": "Alle Einstellungen werden auf die Standardwerte zurückgesetzt. Sind Sie sicher?",
-        "reset_confirm_title": "Auf Standard zurücksetzen",
+        "reset_confirm_message": "Alle Einstellungen werden auf Standard zurückgesetzt. Sind Sie sicher?",
+        "reset_confirm_title": "Zurücksetzen",
         "search_results": "📊 {count} Ergebnisse gefunden",
         "seconds": "Sekunden",
         "selected": "✅ Ausgewählt",
-        "time_h": "h",
-        "time_m": "m",
-        "time_s": "s",
+        "time_h": "Std",
+        "time_m": "Min",
+        "time_s": "Sek",
         "unknown": "Unbekannt",
         "unknown_psutil": "Unbekannt (psutil erforderlich)",
         "version_text": "Memati Editor v2.0"
@@ -146,12 +146,12 @@
     "search_placeholder": "🔍 Einstellungen suchen...",
     "settings": {
         "app_name": {
-            "desc": "Name der Anwendung, der in der Titelleiste angezeigt wird",
+            "desc": "Name der Anwendung in der Titelleiste",
             "label": "Anwendungsname"
         },
         "auto_backup": {
             "desc": "Dateien regelmäßig als .bak sichern",
-            "label": "Automatische Sicherung"
+            "label": "Automatisches Backup"
         },
         "auto_save": {
             "desc": "Änderungen automatisch speichern",
@@ -162,19 +162,19 @@
             "label": "Speicherintervall"
         },
         "bracket_matching": {
-            "desc": "Übereinstimmende Klammern unter dem Cursor hervorheben",
+            "desc": "Passende Klammer unter Cursor hervorheben",
             "label": "Klammerübereinstimmung"
         },
         "error_reporting": {
-            "desc": "Bericht an den Entwickler senden, wenn ein Fehler auftritt",
+            "desc": "Bericht an Entwickler senden bei Fehler",
             "label": "Fehlerberichterstattung"
         },
         "font_family": {
-            "desc": "Im Editor verwendete Schriftart",
+            "desc": "Schriftart im Editor",
             "label": "Schriftart"
         },
         "font_size": {
-            "desc": "Schriftgröße des Editors (8-32)",
+            "desc": "Schriftgröße (8-32)",
             "label": "Schriftgröße"
         },
         "language": {
@@ -182,11 +182,11 @@
             "label": "Sprache / Language"
         },
         "max_file_size": {
-            "desc": "Maximale Dateigröße, die der Editor öffnen kann (MB)",
-            "label": "Maximale Dateigröße"
+            "desc": "Maximale Dateigröße zum Öffnen (MB)",
+            "label": "Max. Dateigröße"
         },
         "performance_mode": {
-            "desc": "Einige visuelle Effekte deaktivieren, um die Leistung zu verbessern",
+            "desc": "Visuelle Effekte reduzieren für mehr Leistung",
             "label": "Leistungsmodus"
         },
         "show_file_explorer": {
@@ -198,11 +198,11 @@
             "label": "Zeilennummern"
         },
         "show_minimap": {
-            "desc": "Code-Karte anzeigen",
+            "desc": "Code-Übersichtskarte anzeigen",
             "label": "Minimap"
         },
         "show_status_bar": {
-            "desc": "Informationsleiste unten anzeigen",
+            "desc": "Info-Leiste unten anzeigen",
             "label": "Statusleiste"
         },
         "show_terminal": {
@@ -210,23 +210,23 @@
             "label": "Terminal-Sichtbarkeit"
         },
         "start_fullscreen": {
-            "desc": "Anwendung im Vollbildmodus starten",
-            "label": "Im Vollbildmodus starten"
+            "desc": "Anwendung im Vollbild starten",
+            "label": "Im Vollbild starten"
         },
         "syntax_highlighting": {
             "desc": "Code-Einfärbung aktivieren",
             "label": "Syntax-Hervorhebung"
         },
         "tab_size": {
-            "desc": "Anzahl der Leerzeichen pro Tabulatorzeichen",
-            "label": "Tabulatorgröße"
+            "desc": "Anzahl Leerzeichen pro Tab",
+            "label": "Tab-Größe"
         },
         "terminal_font_size": {
-            "desc": "Schriftgröße des Terminals",
-            "label": "Schriftgröße"
+            "desc": "Schriftgröße im Terminal",
+            "label": "Terminal-Schriftgröße"
         },
         "terminal_history": {
-            "desc": "Zeilenlimit für die Terminalausgabe",
+            "desc": "Zeilenlimit für Terminal-Ausgabe",
             "label": "Verlaufslimit"
         },
         "terminal_type": {
@@ -234,17 +234,75 @@
             "label": "Terminal-Typ"
         },
         "theme_select": {
-            "desc": "Aussehen des Editors auswählen",
+            "desc": "Editor-Design wählen",
             "label": "Themenauswahl"
         },
         "word_wrap": {
             "desc": "Lange Zeilen automatisch umbrechen",
             "label": "Zeilenumbruch"
+        },
+        "highlight_current_line": {
+            "desc": "Aktuelle Zeile des Cursors visuell hervorheben",
+            "label": "Aktive Zeile hervorheben"
+        },
+        "show_whitespace": {
+            "desc": "Leerzeichen und Tabs sichtbar machen",
+            "label": "Leerzeichen anzeigen"
+        },
+        "auto_indent": {
+            "desc": "Automatische Einrückung bei neuer Zeile",
+            "label": "Automatische Einrückung"
+        },
+        "window_opacity": {
+            "desc": "Fenster-Transparenz (100 = undurchsichtig)",
+            "label": "Fenster-Transparenz"
+        },
+        "sidebar_width": {
+            "desc": "Breite der linken Seitenleiste (Pixel)",
+            "label": "Seitenleistenbreite"
+        },
+        "accent_color": {
+            "desc": "Akzentfarbe der Oberfläche",
+            "label": "Akzentfarbe"
+        },
+        "terminal_cursor_blink": {
+            "desc": "Blinken des Terminal-Cursors",
+            "label": "Cursor-Blinken"
+        },
+        "cache_size": {
+            "desc": "Cache-Größe (MB)",
+            "label": "Cache-Größe"
+        },
+        "log_level": {
+            "desc": "Detailgrad der Protokollierung",
+            "label": "Log-Level"
         }
     },
+    "categories_desc": {
+        "Genel": "App-Name, Sprache und Schriftarteinstellungen",
+        "Editör": "Code-Bearbeitungserfahrung anpassen",
+        "Görünüm": "Sichtbarkeit und Layout der Oberfläche",
+        "Tema": "Farbschemata und Design-Optionen",
+        "Klavye Kısayolları": "Tastenkürzel anpassen",
+        "Terminal": "Integriertes Terminal konfigurieren",
+        "Gelişmiş": "Leistungs- und Systemeinstellungen"
+    },
     "status_bar": {
-        "ln": "Satır",
-        "col": "Sütun"
+        "col": "Spalte",
+        "ln": "Zeile"
+    },
+    "drop_zone": {
+        "title": "Dateien hier ablegen",
+        "subtitle": "Hier ablegen zum Öffnen",
+        "file_single": "Datei wird geöffnet",
+        "file_multiple": "{count} Dateien werden geöffnet",
+        "folder_single": "Ordner wird geöffnet",
+        "folder_multiple": "{count} Ordner werden geöffnet",
+        "mixed": "{file_count} Dateien, {folder_count} Ordner",
+        "more_files": "... und {count} weitere",
+        "file_opened": "📄 {name} geöffnet",
+        "folder_opened": "📂 {name} geöffnet",
+        "items_opened": "✅ {count} Elemente geöffnet"
     },
     "status_messages": {
         "explorer_off": "Datei-Explorer aus",
@@ -258,7 +316,7 @@
         "preview_closed": "Vorschau geschlossen",
         "preview_failed": "❌ Vorschau fehlgeschlagen",
         "preview_opened": "Vorschau geöffnet",
-        "ready": "Hazır",
+        "ready": "Bereit",
         "terminal_closed": "Terminal geschlossen",
         "terminal_opened": "⌨️ Terminal geöffnet",
         "word_wrap_off": "Zeilenumbruch aus",
@@ -270,8 +328,8 @@
             "complete": "Fertig 🎉",
             "next": "Weiter",
             "pause": "Pause",
-            "resume": "Fortsetzen",
-            "skip": "Tutorial überspringen"
+            "resume": "Weiter",
+            "skip": "Überspringen"
         },
         "header_welcome": "Willkommen!",
         "labels": {
@@ -283,122 +341,125 @@
         "messages": {
             "completed_msg": "🎉 Herzlichen Glückwunsch!\n\nTutorial abgeschlossen!\nAufgaben: {completed}/{total}",
             "completed_title": "Abgeschlossen",
-            "skip_confirm_msg": "Sind Sie sicher, dass Sie das Tutorial schließen möchten?",
+            "skip_confirm_msg": "Möchten Sie das Tutorial wirklich beenden?",
             "skip_confirm_title": "Überspringen"
         },
         "steps": {
             "code_folding": {
-                "message": "Fokus durch Ausblenden von Blöcken.",
+                "message": "Fokus durch Ausblenden von Codeblöcken.\n\nKlicken Sie auf die Pfeile (▼) neben den Zeilennummern, um Funktionen oder Klassen zu falten.",
                 "tips": [],
                 "title": "Code-Faltung"
             },
             "congrats": {
-                "message": "Grundlagentraining abgeschlossen!",
+                "message": "Grundlagentraining erfolgreich abgeschlossen!\n\nDie Power von Memati Editor liegt nun in Ihren Händen. Es gibt noch viel mehr zu entdecken (Themen, Git-Integration etc.).\n\nViel Spaß beim Coden!",
                 "tips": [
-                    "Jederzeit über Hilfe-Menü abrufbar."
+                    "Sie können diese Tour jederzeit über das Hilfe-Menü aufrufen."
                 ],
                 "title": "Herzlichen Glückwunsch! 🎉"
             },
             "editor_area": {
-                "message": "Das ist Ihr Spielplatz.",
+                "message": "Das ist Ihr Spielplatz.\n\n✨ Features:\n• Autovervollständigung (Strg+Space)\n• Code-Färbung\n• Intelligente Einrückung\n\n🎯 Aufgabe: Tippen Sie irgendetwas in den Editor!",
                 "tips": [
-                    "Strg + Rad für Schriftgröße."
+                    "Nutzen Sie Strg + Rad für die Schriftgröße."
                 ],
-                "title": "Herz des Editors"
+                "title": "Des Editors Herz"
             },
             "file_explorer": {
-                "message": "Hier leben Ihre Projekte.",
+                "message": "Hier leben Ihre Projekte.\n\nSehen Sie Ihre Dateien in einer Baumstruktur. Doppelklick zum Öffnen/Schließen von Ordnern.\n\n🎯 Aufgabe: Erkunden Sie den 'Datei-Explorer' im linken Panel.",
                 "tips": [
-                    "Neuen Ordner mit Strg+Umschalt+O öffnen."
+                    "Neuer Ordner mit Strg+Umschalt+O.",
+                    "Panel ausblenden mit Strg+B."
                 ],
                 "title": "Datei-Explorer"
             },
             "find_replace": {
-                "message": "Leistungsstarke Suchmaschine.",
+                "message": "Mächtige Suchmaschine zu Diensten.\n\n🎯 Aufgabe: Drücken Sie Strg+F für das Suchpanel. Sogar Regex-Support!",
                 "tips": [],
                 "title": "Suchen und Zerstören (Ersetzen)"
             },
             "goto_line": {
-                "message": "Verlieren Sie sich nicht in langen Dateien.",
+                "message": "Verlieren Sie sich nicht in langen Dateien.\n\n🎯 Aufgabe: Drücken Sie Strg+G für das 'Gehe zu Zeile'-Fenster.",
                 "tips": [
-                    "Teleportieren Sie sich zu jeder Zeile."
+                    "Einfach Nummer eingeben und beamen."
                 ],
                 "title": "Gehe zu Zeile (Strg+G)"
             },
             "image_viewer": {
-                "message": "Ihr Editor kann jetzt auch Bilder öffnen!",
+                "message": "Ihr Editor kann jetzt auch Bilder öffnen!\n\nUnterstützte Formate: PNG, JPG, JPEG, BMP, GIF.\n\n🎯 Aufgabe: Öffnen Sie ein Bild aus dem Datei-Explorer.",
                 "tips": [
-                    "Mausrad zum Zoomen verwenden."
+                    "Mausrad zum Zoomen.",
+                    "Pfeiltasten zum Bewegen im Bild."
                 ],
                 "title": "Bildbetrachter"
             },
             "markdown": {
-                "message": "Tolles Feature für Autoren.",
+                "message": "Tolles Feature für Dokumentationsschreiber.\n\nIn einer .md Datei können Sie mit Strg+Umschalt+V die Live-Vorschau öffnen.\n\n💡 Wenn Sie im Editor scrollen, scrollt die Vorschau mit (Sync Scroll).",
                 "tips": [],
                 "title": "Markdown-Vorschau"
             },
             "menus": {
-                "message": "Dies ist das Zentrum von allem.",
+                "message": "Das Zentrum von allem.\n\nVon Dateioperationen bis Themeneinstellungen ist hier alles erreichbar.\n\n💡 Lernen Sie Shortcuts (z.B. Strg+N) aus den Menüs, um Zeit zu sparen.",
                 "tips": [],
                 "title": "Menüs und Befehle"
             },
             "minimap": {
-                "message": "Vogelperspektive Ihres Codes.",
+                "message": "Vogelperspektive Ihres Codes.\n\nNutzen Sie die Karte rechts, um schnell in langen Dateien zu navigieren.\n\nKürzel: Strg+M",
                 "tips": [],
                 "title": "Minimap (Code-Karte)"
             },
             "multi_cursor": {
-                "message": "Bearbeiten Sie mehrere Stellen gleichzeitig!",
+                "message": "Bearbeiten Sie mehrere Stellen gleichzeitig!\n\n🎯 Aufgabe: Halten Sie 'Alt' gedrückt und klicken Sie an verschiedene Stellen. Mehrere Cursor sollten blinken!",
                 "tips": [
-                    "'Escape' zum Abbrechen."
+                    "Esc drücken, um abzubrechen.",
+                    "Wirkt Wunder beim Bearbeiten von Listen."
                 ],
                 "title": "Multi-Cursor Magie"
             },
             "new_tab": {
-                "message": "Öffnen Sie ein leeres Blatt zum Coden.",
+                "message": "Öffnen Sie ein frisches Blatt zum Coden.\n\n🎯 Aufgabe: Nutzen Sie Strg+N oder das Datei-Menü für einen neuen Tab.",
                 "tips": [
-                    "Tabs durch Ziehen neu anordnen."
+                    "Tabs können durch Ziehen neu angeordnet werden."
                 ],
                 "title": "Ein Neuanfang"
             },
             "settings": {
-                "message": "Detaillierte Anpassung.",
+                "message": "Personalisieren Sie Ihren Editor komplett.\n\nÖffnen Sie Datei > Einstellungen.\n\n💡 Tipp: Schneller Zugriff mit Strg+,",
                 "tips": [],
                 "title": "Einstellungsmenü"
             },
             "smart_select": {
-                "message": "Variablennamen ändern war noch nie so einfach.",
+                "message": "Variablennamen ändern war nie einfacher.\n\n1. Wort auswählen.\n2. Strg+D drücken für das nächste Vorkommen.\n3. Tippen - alle ändern sich!\n\n🎯 Aufgabe: Probieren Sie es aus!",
                 "tips": [],
                 "title": "Intelligente Auswahl (Strg+D)"
             },
             "status_bar": {
-                "message": "Alles über Ihre Datei.",
+                "message": "Alles über Ihre Datei ist hier.\n\nIn der Leiste unten sehen Sie:\n• Zeile/Spalte\n• Dateisprache\n• Kodierung (UTF-8)",
                 "tips": [],
                 "title": "Statusleiste"
             },
             "terminal": {
-                "message": "Befehle ausführen ohne den Editor zu verlassen.",
+                "message": "Befehle ausführen ohne den Editor zu verlassen.\n\n🎯 Aufgabe: Strg+` (Taste über Tab) öffnet/schließt das Terminal.",
                 "tips": [
-                    "Mit 'exit' schließen."
+                    "Schließen auch mit 'exit'."
                 ],
                 "title": "Terminal-Integration"
             },
             "theme": {
-                "message": "Wählen Sie Ihren Look.",
+                "message": "Wählen Sie den Look, der Ihren Augen passt.\n\nÜber Einstellungen oder Ansicht > Thema aus 9 verschiedenen wählen.",
                 "tips": [
                     "Wir empfehlen 'Dracula' oder 'Dark' für nachts."
                 ],
                 "title": "Themen"
             },
             "welcome": {
-                "message": "Hallo! 👋\n\nWillkommen zu dieser interaktiven Anleitung.",
+                "message": "Hallo! 👋\n\nWillkommen zur interaktiven Anleitung, um Ihren Editor wie ein Profi zu nutzen.\n\n🚀 Auf dieser Tour entdecken Sie:\n• Versteckte Kräfte der Oberfläche\n• Blitzschnelle Coding-Techniken\n• Projektmanagement-Tipps\n\nBereit? Los geht's!",
                 "tips": [
-                    "Sie können das Tutorial-Fenster verschieben."
+                    "Sie können dieses Fenster an eine bequeme Stelle verschieben."
                 ],
-                "title": "Willkommen beim Memati Editor!"
+                "title": "Willkommen bei Memati Editor!"
             },
             "zen_mode": {
-                "message": "Wenn Sie sich nur auf den Code konzentrieren wollen...",
+                "message": "Wenn Sie sich nur auf den Code konzentrieren wollen...\n\n🧘 Strg+K, dann Z drücken.\n\nAlles wird ausgeblendet, nur Code bleibt. Gleicher Weg zurück.",
                 "tips": [],
                 "title": "Zen-Modus"
             }

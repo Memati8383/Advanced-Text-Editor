@@ -1163,12 +1163,38 @@ class DropZoneOverlay(ctk.CTkFrame):
 # DRAG DROP MANAGER
 # =============================================================================
 
+class DropConfig:
+    """Sürükle-bırak yapılandırma sabitleri."""
+    
+    # Dosya limitleri
+    MAX_FILES_AT_ONCE: int = 20  # Tek seferde maksimum dosya sayısı
+    MAX_FILE_SIZE_MB: int = 50   # Maksimum dosya boyutu (MB)
+    MAX_FOLDER_SCAN_DEPTH: int = 3  # Klasör tarama derinliği
+    MAX_FILES_FROM_FOLDER: int = 50  # Klasörden alınacak maksimum dosya
+    
+    # Binary dosya algılama
+    BINARY_CHECK_BYTES: int = 8192  # İlk kontrol edilecek byte sayısı
+    BINARY_THRESHOLD: float = 0.30  # Null karakter oranı eşiği
+    
+    # Büyük dosya uyarı limiti (MB)
+    LARGE_FILE_WARNING_MB: int = 10
+
+
 class DragDropManager:
     """
-    Sürükle-bırak işlemlerini yöneten ana sınıf.
+    Sürükle-bırak işlemlerini yöneten gelişmiş ana sınıf.
     
     MainWindow ile entegre çalışır ve dosya/klasör
     sürükle-bırak işlemlerini koordine eder.
+    
+    Özellikler:
+        - Çoklu dosya sürükle-bırak
+        - Klasör içerik tarama ve açma
+        - Dosya boyutu ve tür kontrolü
+        - Binary dosya algılama ve uyarı
+        - Yinelenmiş dosya kontrolü
+        - Dosya sayısı limit kontrolü
+        - Detaylı durum bildirimleri
     
     Attributes:
         master: Ana pencere referansı
@@ -1208,11 +1234,173 @@ class DragDropManager:
         # Sürükleme durumu
         self._dragging = False
         self._pending_files: List[str] = []
+        
+        # İşlem istatistikleri (her drop işlemi için sıfırlanır)
+        self._stats: Dict[str, int] = {}
     
     def _get_language_manager(self) -> 'LanguageManager':
         """Dil yöneticisini döndürür."""
         from text_editor.utils.language_manager import LanguageManager
         return LanguageManager.get_instance()
+    
+    # -------------------------------------------------------------------------
+    # Dosya Doğrulama
+    # -------------------------------------------------------------------------
+    
+    def _is_binary_file(self, file_path: str) -> bool:
+        """
+        Dosyanın binary olup olmadığını kontrol eder.
+        
+        Args:
+            file_path: Dosya yolu
+            
+        Returns:
+            Binary dosyaysa True
+        """
+        try:
+            with open(file_path, 'rb') as f:
+                chunk = f.read(DropConfig.BINARY_CHECK_BYTES)
+                if not chunk:
+                    return False
+                
+                # Null karakter oranını kontrol et
+                null_count = chunk.count(b'\x00')
+                ratio = null_count / len(chunk)
+                
+                return ratio > DropConfig.BINARY_THRESHOLD
+        except Exception:
+            return False
+    
+    def _get_file_size_mb(self, file_path: str) -> float:
+        """
+        Dosya boyutunu MB cinsinden döndürür.
+        
+        Args:
+            file_path: Dosya yolu
+            
+        Returns:
+            MB cinsinden dosya boyutu
+        """
+        try:
+            return os.path.getsize(file_path) / (1024 * 1024)
+        except Exception:
+            return 0.0
+    
+    def _is_file_already_open(self, file_path: str) -> bool:
+        """
+        Dosyanın zaten açık olup olmadığını kontrol eder.
+        
+        Args:
+            file_path: Dosya yolu
+            
+        Returns:
+            Dosya açıksa True
+        """
+        try:
+            if hasattr(self.master, 'tab_manager'):
+                abs_path = os.path.abspath(file_path)
+                for editor in self.master.tab_manager.editors.values():
+                    if editor.file_path:
+                        if os.path.abspath(editor.file_path) == abs_path:
+                            return True
+        except Exception:
+            pass
+        return False
+    
+    def _validate_file(self, file_path: str) -> Tuple[bool, str]:
+        """
+        Dosyayı detaylı olarak doğrular.
+        
+        Args:
+            file_path: Dosya yolu
+            
+        Returns:
+            (geçerli_mi, hata_mesajı) tuple'ı
+        """
+        # Dosya var mı?
+        if not os.path.exists(file_path):
+            return False, self._lang.get("drop_zone.error_not_found", "Dosya bulunamadı")
+        
+        # Okuma izni var mı?
+        if not os.access(file_path, os.R_OK):
+            return False, self._lang.get("drop_zone.error_no_permission", "Okuma izni yok")
+        
+        # Dosya boyutu kontrolü
+        size_mb = self._get_file_size_mb(file_path)
+        if size_mb > DropConfig.MAX_FILE_SIZE_MB:
+            return False, self._lang.get(
+                "drop_zone.error_too_large", 
+                f"Dosya çok büyük ({size_mb:.1f} MB)"
+            )
+        
+        # Binary dosya kontrolü (resimler hariç)
+        if not FileTypeRegistry.is_image(file_path):
+            if self._is_binary_file(file_path):
+                return False, self._lang.get("drop_zone.error_binary", "Binary dosya açılamaz")
+        
+        return True, ""
+    
+    # -------------------------------------------------------------------------
+    # Klasör İşlemleri
+    # -------------------------------------------------------------------------
+    
+    def _scan_folder_for_files(
+        self, 
+        folder_path: str, 
+        current_depth: int = 0
+    ) -> List[str]:
+        """
+        Klasör içindeki desteklenen dosyaları tarar.
+        
+        Args:
+            folder_path: Klasör yolu
+            current_depth: Mevcut tarama derinliği
+            
+        Returns:
+            Dosya yolları listesi
+        """
+        files: List[str] = []
+        
+        if current_depth >= DropConfig.MAX_FOLDER_SCAN_DEPTH:
+            return files
+        
+        try:
+            entries = os.listdir(folder_path)
+            
+            for entry in entries:
+                # Gizli dosyaları atla
+                if entry.startswith('.'):
+                    continue
+                
+                full_path = os.path.join(folder_path, entry)
+                
+                if os.path.isfile(full_path):
+                    # Desteklenen dosya mı kontrol et
+                    if FileTypeRegistry.is_supported(full_path) or FileTypeRegistry.is_image(full_path):
+                        files.append(full_path)
+                        
+                        # Limit kontrolü
+                        if len(files) >= DropConfig.MAX_FILES_FROM_FOLDER:
+                            return files
+                
+                elif os.path.isdir(full_path):
+                    # Alt klasörleri de tara (özyinelemeli)
+                    sub_files = self._scan_folder_for_files(
+                        full_path, 
+                        current_depth + 1
+                    )
+                    files.extend(sub_files)
+                    
+                    # Limit kontrolü
+                    if len(files) >= DropConfig.MAX_FILES_FROM_FOLDER:
+                        return files[:DropConfig.MAX_FILES_FROM_FOLDER]
+        
+        except PermissionError:
+            pass
+        except Exception:
+            pass
+        
+        return files
     
     # -------------------------------------------------------------------------
     # Drag & Drop Event Handler'ları
@@ -1249,6 +1437,10 @@ class DragDropManager:
         """
         Dosya/klasör bırakıldığında çağrılır.
         
+        Modifier Tuşları:
+            - Ctrl: Klasör içindeki dosyaları da açar
+            - Shift: Sadece klasörü açar (dosyaları açmaz)
+        
         Args:
             event: TkinterDnD event objesi
             
@@ -1261,6 +1453,10 @@ class DragDropManager:
             self.overlay.hide()
             return []
         
+        # Modifier tuşlarını kontrol et
+        ctrl_pressed = self._is_ctrl_pressed()
+        shift_pressed = self._is_shift_pressed()
+        
         # Dosya listesini ayrıştır
         try:
             files = self.master.tk.splitlist(event.data)
@@ -1272,7 +1468,37 @@ class DragDropManager:
         self._handle_drop_visual(list(files))
         
         # Dosyaları işle
-        return self._process_dropped_files(files)
+        return self._process_dropped_files(
+            files, 
+            open_folder_files=ctrl_pressed,
+            folder_only=shift_pressed
+        )
+    
+    def _is_ctrl_pressed(self) -> bool:
+        """Ctrl tuşunun basılı olup olmadığını kontrol eder."""
+        try:
+            return bool(self.master.winfo_pointerx() and 
+                       self.master.tk.call('tk::MotifGetState', 'Control'))
+        except Exception:
+            # Alternatif yöntem
+            try:
+                import ctypes
+                return bool(ctypes.windll.user32.GetAsyncKeyState(0x11) & 0x8000)
+            except Exception:
+                return False
+    
+    def _is_shift_pressed(self) -> bool:
+        """Shift tuşunun basılı olup olmadığını kontrol eder."""
+        try:
+            return bool(self.master.winfo_pointerx() and 
+                       self.master.tk.call('tk::MotifGetState', 'Shift'))
+        except Exception:
+            # Alternatif yöntem
+            try:
+                import ctypes
+                return bool(ctypes.windll.user32.GetAsyncKeyState(0x10) & 0x8000)
+            except Exception:
+                return False
     
     def _handle_drop_visual(self, files: List[str]) -> None:
         """Bırakma işlemi için görsel geri bildirimi yönetir."""
@@ -1291,37 +1517,207 @@ class DragDropManager:
         self.overlay.show(files)
         self.master.after(AnimationConfig.DROP_FLASH_DURATION_MS, self.overlay.hide)
     
-    def _process_dropped_files(self, files: tuple) -> List[str]:
+    def _process_dropped_files(
+        self, 
+        files: tuple,
+        open_folder_files: bool = False,
+        folder_only: bool = False
+    ) -> List[str]:
         """
-        Bırakılan dosyaları işler.
+        Bırakılan dosyaları işler (gelişmiş versiyon).
+        
+        Özellikler:
+            - Dosya sayısı limit kontrolü
+            - Yinelenmiş dosya kontrolü
+            - Dosya doğrulama (boyut, izin, binary)
+            - Büyük dosya uyarıları
+            - Detaylı durum bildirimleri
+            - Ctrl ile klasör içerik açma
+            - Shift ile sadece klasör açma
         
         Args:
             files: Dosya yolları tuple'ı
+            open_folder_files: Klasör içindeki dosyaları da aç (Ctrl tuşu)
+            folder_only: Sadece klasörü aç, dosyaları açma (Shift tuşu)
             
         Returns:
             Açılan tüm öğelerin listesi
         """
+        # İstatistikleri sıfırla
+        self._stats = {
+            'opened_files': 0,
+            'opened_folders': 0,
+            'skipped_already_open': 0,
+            'skipped_invalid': 0,
+            'skipped_limit': 0,
+            'large_files': 0,
+            'folder_files_opened': 0
+        }
+        
         opened_files: List[str] = []
         opened_folders: List[str] = []
+        skipped_reasons: List[str] = []
+        
+        # Önce dosya listesini temizle ve sınıflandır
+        cleaned_files: List[str] = []
+        folder_paths: List[str] = []
         
         for file_path in files:
             file_path = self._clean_file_path(file_path)
             
             if os.path.isdir(file_path):
-                if self.on_folder_open:
-                    self.on_folder_open(file_path)
-                    opened_folders.append(file_path)
+                folder_paths.append(file_path)
             elif os.path.isfile(file_path):
-                if self.on_file_open:
+                cleaned_files.append(file_path)
+        
+        # Shift tuşu basılıysa sadece klasörleri işle
+        if folder_only:
+            cleaned_files = []
+        
+        # Limit kontrolü - toplam öğe sayısı
+        total_items = len(cleaned_files) + len(folder_paths)
+        if total_items > DropConfig.MAX_FILES_AT_ONCE:
+            self._show_limit_warning(total_items)
+            # İlk N öğeyi al
+            if len(cleaned_files) > DropConfig.MAX_FILES_AT_ONCE:
+                self._stats['skipped_limit'] = len(cleaned_files) - DropConfig.MAX_FILES_AT_ONCE
+                cleaned_files = cleaned_files[:DropConfig.MAX_FILES_AT_ONCE]
+                folder_paths = []
+            else:
+                remaining = DropConfig.MAX_FILES_AT_ONCE - len(cleaned_files)
+                self._stats['skipped_limit'] = len(folder_paths) - remaining
+                folder_paths = folder_paths[:remaining]
+        
+        # Önce klasörleri işle (File Explorer için)
+        for folder_path in folder_paths:
+            if self.on_folder_open:
+                self.on_folder_open(folder_path)
+                opened_folders.append(folder_path)
+                self._stats['opened_folders'] += 1
+            
+            # Ctrl tuşu basılıysa klasör içindeki dosyaları da aç
+            if open_folder_files and not folder_only:
+                folder_files = self._scan_folder_for_files(folder_path)
+                for folder_file in folder_files:
+                    # Limit kontrolü
+                    if len(opened_files) >= DropConfig.MAX_FILES_AT_ONCE:
+                        self._stats['skipped_limit'] += 1
+                        break
+                    
+                    # Yinelenmiş kontrol
+                    if self._is_file_already_open(folder_file):
+                        self._stats['skipped_already_open'] += 1
+                        continue
+                    
+                    # Doğrulama
+                    is_valid, error_msg = self._validate_file(folder_file)
+                    if not is_valid:
+                        self._stats['skipped_invalid'] += 1
+                        continue
+                    
+                    # Aç
+                    if self.on_file_open:
+                        try:
+                            self.on_file_open(folder_file)
+                            opened_files.append(folder_file)
+                            self._stats['opened_files'] += 1
+                            self._stats['folder_files_opened'] += 1
+                        except Exception as e:
+                            self._stats['skipped_invalid'] += 1
+                            skipped_reasons.append(f"{os.path.basename(folder_file)}: {str(e)}")
+        
+        # Dosyaları işle
+        for file_path in cleaned_files:
+            # Dosya sayısı limiti
+            if len(opened_files) >= DropConfig.MAX_FILES_AT_ONCE:
+                self._stats['skipped_limit'] += 1
+                continue
+            
+            # Yinelenmiş dosya kontrolü
+            if self._is_file_already_open(file_path):
+                self._stats['skipped_already_open'] += 1
+                # Zaten açık olan sekmeye geç
+                self._focus_existing_tab(file_path)
+                continue
+            
+            # Dosya doğrulama
+            is_valid, error_msg = self._validate_file(file_path)
+            if not is_valid:
+                self._stats['skipped_invalid'] += 1
+                skipped_reasons.append(f"{os.path.basename(file_path)}: {error_msg}")
+                continue
+            
+            # Büyük dosya uyarısı
+            size_mb = self._get_file_size_mb(file_path)
+            if size_mb > DropConfig.LARGE_FILE_WARNING_MB:
+                self._stats['large_files'] += 1
+            
+            # Dosyayı aç
+            if self.on_file_open:
+                try:
                     self.on_file_open(file_path)
                     opened_files.append(file_path)
+                    self._stats['opened_files'] += 1
+                except Exception as e:
+                    self._stats['skipped_invalid'] += 1
+                    skipped_reasons.append(f"{os.path.basename(file_path)}: {str(e)}")
         
-        self._report_status(opened_files, opened_folders)
+        # Sonuç raporla
+        self._report_detailed_status(opened_files, opened_folders, skipped_reasons)
+        
         return opened_files + opened_folders
     
+    def _focus_existing_tab(self, file_path: str) -> None:
+        """
+        Zaten açık olan dosyanın sekmesine odaklanır.
+        
+        Args:
+            file_path: Dosya yolu
+        """
+        try:
+            if hasattr(self.master, 'tab_manager'):
+                abs_path = os.path.abspath(file_path)
+                for tab_name, editor in self.master.tab_manager.editors.items():
+                    if editor.file_path:
+                        if os.path.abspath(editor.file_path) == abs_path:
+                            self.master.tab_manager.set(tab_name)
+                            break
+        except Exception:
+            pass
+    
+    def _show_limit_warning(self, total: int) -> None:
+        """
+        Dosya limiti uyarısı gösterir.
+        
+        Args:
+            total: Toplam dosya sayısı
+        """
+        if self._has_visible_status_bar():
+            msg = self._format_message(
+                "drop_zone.limit_warning",
+                f"⚠️ Çok fazla dosya ({total}). İlk {DropConfig.MAX_FILES_AT_ONCE} tanesi açılacak.",
+                total=total,
+                limit=DropConfig.MAX_FILES_AT_ONCE
+            )
+            self.master.status_bar.set_message(msg, "warning")
+    
     def _clean_file_path(self, file_path: str) -> str:
-        """Dosya yolunu temizler (Windows {} karakterleri)."""
-        return file_path.strip('{}')
+        """
+        Dosya yolunu temizler ve normalleştirir.
+        
+        Args:
+            file_path: Ham dosya yolu
+            
+        Returns:
+            Temizlenmiş dosya yolu
+        """
+        # Windows {} karakterlerini temizle
+        cleaned = file_path.strip('{}')
+        
+        # Yolu normalleştir
+        cleaned = os.path.normpath(cleaned)
+        
+        return cleaned
     
     # -------------------------------------------------------------------------
     # Durum Raporlama
@@ -1385,6 +1781,107 @@ class DragDropManager:
         except Exception:
             return default.format(**kwargs)
     
+    def _report_detailed_status(
+        self, 
+        files: List[str], 
+        folders: List[str], 
+        skipped: List[str]
+    ) -> None:
+        """
+        Detaylı durum raporu oluşturur.
+        
+        İstatistikler:
+            - Açılan dosya/klasör sayısı
+            - Atlanan dosya sayısı ve nedenleri
+            - Büyük dosya uyarıları
+        
+        Args:
+            files: Açılan dosyalar
+            folders: Açılan klasörler
+            skipped: Atlanan dosya nedenleri
+        """
+        if not self._has_visible_status_bar():
+            return
+        
+        # Hiç açılmadıysa
+        if not files and not folders:
+            if skipped:
+                msg = self._format_message(
+                    "drop_zone.all_skipped",
+                    f"⚠️ Tüm dosyalar atlandı: {skipped[0]}",
+                    reason=skipped[0] if skipped else "Bilinmeyen hata"
+                )
+                self.master.status_bar.set_message(msg, "warning")
+            return
+        
+        # Başarı mesajı oluştur
+        message_parts: List[str] = []
+        
+        # Açılan dosyalar
+        if len(files) == 1:
+            message_parts.append(self._format_message(
+                "drop_zone.file_opened",
+                "📄 {name} açıldı",
+                name=os.path.basename(files[0])
+            ))
+        elif len(files) > 1:
+            message_parts.append(self._format_message(
+                "drop_zone.files_opened_count",
+                f"📄 {len(files)} dosya açıldı",
+                count=len(files)
+            ))
+        
+        # Açılan klasörler
+        if len(folders) == 1:
+            message_parts.append(self._format_message(
+                "drop_zone.folder_opened",
+                "📂 {name} açıldı",
+                name=os.path.basename(folders[0])
+            ))
+        elif len(folders) > 1:
+            message_parts.append(self._format_message(
+                "drop_zone.folders_opened_count",
+                f"📂 {len(folders)} klasör açıldı",
+                count=len(folders)
+            ))
+        
+        # Atlanan dosyalar
+        skipped_count = (
+            self._stats.get('skipped_already_open', 0) + 
+            self._stats.get('skipped_invalid', 0) + 
+            self._stats.get('skipped_limit', 0)
+        )
+        
+        if skipped_count > 0:
+            # Zaten açık olanlar
+            already_open = self._stats.get('skipped_already_open', 0)
+            if already_open > 0:
+                message_parts.append(self._format_message(
+                    "drop_zone.already_open",
+                    f"({already_open} zaten açık)",
+                    count=already_open
+                ))
+        
+        # Büyük dosya uyarısı
+        large_files = self._stats.get('large_files', 0)
+        if large_files > 0:
+            message_parts.append(self._format_message(
+                "drop_zone.large_files_warning",
+                f"⚠️ {large_files} büyük dosya",
+                count=large_files
+            ))
+        
+        # Mesajı birleştir
+        if message_parts:
+            full_message = " • ".join(message_parts)
+            
+            # Durum tipini belirle
+            status_type = "success"
+            if skipped_count > 0 or large_files > 0:
+                status_type = "warning" if skipped_count > len(files) else "success"
+            
+            self.master.status_bar.set_message(full_message, status_type)
+    
     # -------------------------------------------------------------------------
     # Dosya Kontrolleri
     # -------------------------------------------------------------------------
@@ -1412,6 +1909,142 @@ class DragDropManager:
             Resim dosyasıysa True
         """
         return FileTypeRegistry.is_image(file_path)
+    
+    # -------------------------------------------------------------------------
+    # Gelişmiş Klasör İşlemleri
+    # -------------------------------------------------------------------------
+    
+    def open_folder_with_files(
+        self, 
+        folder_path: str, 
+        open_files: bool = True,
+        max_files: int = None
+    ) -> Dict[str, any]:
+        """
+        Klasörü File Explorer'da açar ve isteğe bağlı olarak dosyalarını da açar.
+        
+        Args:
+            folder_path: Klasör yolu
+            open_files: Dosyaları da aç
+            max_files: Açılacak maksimum dosya sayısı
+            
+        Returns:
+            İşlem sonuç sözlüğü
+        """
+        result = {
+            'folder_opened': False,
+            'files_opened': [],
+            'files_skipped': 0,
+            'error': None
+        }
+        
+        # Klasör kontrolü
+        if not os.path.isdir(folder_path):
+            result['error'] = self._lang.get(
+                "drop_zone.error_not_folder", 
+                "Klasör bulunamadı"
+            )
+            return result
+        
+        # Klasörü File Explorer'da aç
+        if self.on_folder_open:
+            self.on_folder_open(folder_path)
+            result['folder_opened'] = True
+        
+        # Dosyaları aç
+        if open_files:
+            max_files = max_files or DropConfig.MAX_FILES_FROM_FOLDER
+            files = self._scan_folder_for_files(folder_path)
+            
+            for file_path in files[:max_files]:
+                # Yinelenmiş kontrol
+                if self._is_file_already_open(file_path):
+                    result['files_skipped'] += 1
+                    continue
+                
+                # Doğrulama
+                is_valid, _ = self._validate_file(file_path)
+                if not is_valid:
+                    result['files_skipped'] += 1
+                    continue
+                
+                # Aç
+                if self.on_file_open:
+                    try:
+                        self.on_file_open(file_path)
+                        result['files_opened'].append(file_path)
+                    except Exception:
+                        result['files_skipped'] += 1
+            
+            # Limit aşımı
+            if len(files) > max_files:
+                result['files_skipped'] += len(files) - max_files
+        
+        return result
+    
+    def get_folder_file_count(self, folder_path: str) -> Dict[str, int]:
+        """
+        Klasördeki dosya sayılarını döndürür.
+        
+        Args:
+            folder_path: Klasör yolu
+            
+        Returns:
+            Dosya türü bazlı sayılar
+        """
+        counts = {
+            'total': 0,
+            'supported': 0,
+            'images': 0,
+            'other': 0
+        }
+        
+        try:
+            files = self._scan_folder_for_files(folder_path)
+            counts['total'] = len(files)
+            
+            for f in files:
+                if FileTypeRegistry.is_image(f):
+                    counts['images'] += 1
+                elif FileTypeRegistry.is_supported(f):
+                    counts['supported'] += 1
+                else:
+                    counts['other'] += 1
+        except Exception:
+            pass
+        
+        return counts
+    
+    def set_config(self, **kwargs) -> None:
+        """
+        Drop yapılandırmasını günceller.
+        
+        Kullanılabilir parametreler:
+            - max_files_at_once: Tek seferde maksimum dosya
+            - max_file_size_mb: Maksimum dosya boyutu (MB)
+            - max_folder_scan_depth: Klasör tarama derinliği
+            - large_file_warning_mb: Büyük dosya uyarı limiti
+        
+        Args:
+            **kwargs: Yapılandırma parametreleri
+        """
+        if 'max_files_at_once' in kwargs:
+            DropConfig.MAX_FILES_AT_ONCE = int(kwargs['max_files_at_once'])
+        if 'max_file_size_mb' in kwargs:
+            DropConfig.MAX_FILE_SIZE_MB = int(kwargs['max_file_size_mb'])
+        if 'max_folder_scan_depth' in kwargs:
+            DropConfig.MAX_FOLDER_SCAN_DEPTH = int(kwargs['max_folder_scan_depth'])
+        if 'large_file_warning_mb' in kwargs:
+            DropConfig.LARGE_FILE_WARNING_MB = int(kwargs['large_file_warning_mb'])
+    
+    def get_last_stats(self) -> Dict[str, int]:
+        """
+        Son sürükle-bırak işleminin istatistiklerini döndürür.
+        
+        Returns:
+            İstatistik sözlüğü
+        """
+        return self._stats.copy()
     
     # -------------------------------------------------------------------------
     # Tema Güncelleme

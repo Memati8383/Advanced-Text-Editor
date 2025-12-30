@@ -1,108 +1,161 @@
 """
 Gelişmiş Ayarlar Paneli
-Performans ve sistem ayarları.
+
+Performans, yedekleme ve sistem ayarları.
+Optimize edilmiş ve localizable yapı.
+
+Özellikler:
+    - Performans modu
+    - Yedekleme ayarları
+    - Hata raporlama
+    - Ayar dışa/içe aktarma
+    - Log seviyeleri
 """
+from __future__ import annotations
 
 import tkinter as tk
 import customtkinter as ctk
-from text_editor.ui.settings.base_panel import BaseSettingsPanel
+from typing import Final
+
+from text_editor.ui.settings.base_panel import BaseSettingsPanel, PanelConstants, ValidationRule
+
+
+class AdvancedPanelConstants:
+    """Panel sabitleri."""
+    LOG_LEVELS: Final[list] = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+    MIN_FILE_SIZE_MB: Final[int] = 1
+    MAX_FILE_SIZE_MB: Final[int] = 100
+    MIN_CACHE_SIZE_MB: Final[int] = 10
+    MAX_CACHE_SIZE_MB: Final[int] = 500
 
 
 class AdvancedSettingsPanel(BaseSettingsPanel):
-    """Gelişmiş ayarlar için panel."""
+    """
+    Gelişmiş ayarlar için panel.
     
-    def _setup_content(self):
+    Performans, yedekleme ve sistem seviyesi ayarları içerir.
+    """
+    
+    def _setup_content(self) -> None:
         """Panel içeriğini oluşturur."""
         
         # ── Performans Grubu ──
-        self._add_section_header("⚡ Performans", "Performans optimizasyon ayarları")
+        perf_title = self._get_localized("sections.performance", "⚡ Performans")
+        perf_desc = self._get_localized("sections.performance_desc", "Performans optimizasyon ayarları")
+        self._add_section_header(perf_title, perf_desc)
         
         self.add_switch("performance_mode")
         
+        # Cache boyutu (varsa)
+        if "cache_size" in self.current_settings:
+            self.add_slider(
+                "cache_size", 
+                AdvancedPanelConstants.MIN_CACHE_SIZE_MB, 
+                AdvancedPanelConstants.MAX_CACHE_SIZE_MB, 
+                steps=49,
+                unit="MB"
+            )
+        
         # ── Yedekleme Grubu ──
-        self._add_section_header("💾 Yedekleme", "Otomatik yedekleme ayarları")
+        backup_title = self._get_localized("sections.backup", "💾 Yedekleme")
+        backup_desc = self._get_localized("sections.backup_desc", "Otomatik yedekleme ayarları")
+        self._add_section_header(backup_title, backup_desc)
         
         self.add_switch("auto_backup")
-        
-        # Max dosya boyutu - Özel Entry
         self._add_max_file_size()
         
         # ── Hata Ayıklama Grubu ──
-        self._add_section_header("🐛 Hata Ayıklama", "Hata raporlama ve günlük ayarları")
+        debug_title = self._get_localized("sections.debugging", "🐛 Hata Ayıklama")
+        debug_desc = self._get_localized("sections.debugging_desc", "Hata raporlama ve günlük ayarları")
+        self._add_section_header(debug_title, debug_desc)
         
         self.add_switch("error_reporting")
         
         # Log seviyesi
-        log_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-        self.add_combo("log_level", log_levels, width=150)
+        if "log_level" in self.current_settings:
+            self.add_segmented_control("log_level", AdvancedPanelConstants.LOG_LEVELS)
         
         # ── Veri Yönetimi Grubu ──
-        self._add_section_header("📦 Veri Yönetimi", "Ayar dışa/içe aktarma")
+        data_title = self._get_localized("sections.data_management", "📦 Veri Yönetimi")
+        data_desc = self._get_localized("sections.data_management_desc", "Ayar dışa/içe aktarma")
+        self._add_section_header(data_title, data_desc)
         
         # İçe/Dışa Aktarma Butonları
-        button_frame = ctk.CTkFrame(self, fg_color="transparent")
-        button_frame.pack(fill="x", padx=10, pady=10)
-        
-        # Dışa Aktar
-        ctk.CTkButton(
-            button_frame, 
-            text=self.lang_manager.get("buttons.export"), 
-            command=self.settings_dialog.export_settings,
-            height=42, 
-            corner_radius=10,
-            fg_color=("#3498db", "#2980b9"),
-            hover_color=("#2980b9", "#1f618d"),
-            font=ctk.CTkFont(size=13, weight="bold")
-        ).pack(fill="x", pady=(0, 8))
-        
-        # İçe Aktar
-        ctk.CTkButton(
-            button_frame, 
-            text=self.lang_manager.get("buttons.import"), 
-            command=self.settings_dialog.import_settings,
-            height=42, 
-            corner_radius=10, 
-            fg_color=("gray75", "gray30"), 
-            hover_color=("gray65", "gray40"),
-            text_color=("gray20", "gray85"),
-            font=ctk.CTkFont(size=13, weight="bold")
-        ).pack(fill="x")
+        self._create_export_import_buttons()
         
         # ── Uyarı Kartı ──
-        self.add_info_card(
-            "⚠️",
-            "Dikkat",
+        warning_title = self._get_localized("warnings.performance_mode_title", "Dikkat")
+        warning_content = self._get_localized(
+            "warnings.performance_mode_content",
             "Performans modu etkinleştirildiğinde bazı görsel efektler "
             "(animasyonlar, gölgeler vb.) devre dışı bırakılır. "
             "Bu, düşük donanımlı sistemlerde daha akıcı bir deneyim sağlar."
         )
+        self.add_info_card("⚠️", warning_title, warning_content, card_type="warning")
     
-    def _add_max_file_size(self):
-        """Maksimum dosya boyutu ayarı."""
+    def _add_max_file_size(self) -> None:
+        """Maksimum dosya boyutu ayarını özel widget ile ekler."""
         label, desc = self._get_setting_info("max_file_size")
         container = self._create_row_frame(label, desc)
         
-        # MB etiketi
-        ctk.CTkLabel(
-            container, 
-            text="MB", 
-            font=ctk.CTkFont(size=13, weight="bold"),
-            text_color=("gray50", "gray55")
-        ).pack(side="right", padx=(8, 0))
+        # Değer container
+        value_frame = ctk.CTkFrame(container, fg_color="transparent")
+        value_frame.pack(side="right")
         
-        # Değer girişi
+        # Entry
         size_var = tk.IntVar(value=self.current_settings.get("max_file_size", 10))
         
         entry = ctk.CTkEntry(
-            container, 
+            value_frame, 
             textvariable=size_var, 
             width=80,
             justify="center",
             border_width=2,
-            border_color=("gray75", "gray35"),
+            border_color=(PanelConstants.BORDER_LIGHT, PanelConstants.BORDER_DARK),
             fg_color=("white", "gray22"),
             font=ctk.CTkFont(size=13, weight="bold")
         )
-        entry.pack(side="right")
-        entry.bind("<FocusOut>", lambda e: self.update_setting("max_file_size", size_var.get()))
-        entry.bind("<Return>", lambda e: self.update_setting("max_file_size", size_var.get()))
+        entry.pack(side="left")
+        
+        # MB etiketi
+        ctk.CTkLabel(
+            value_frame, 
+            text="MB", 
+            font=ctk.CTkFont(size=13, weight="bold"),
+            text_color=(PanelConstants.TEXT_MUTED_LIGHT, PanelConstants.TEXT_MUTED_DARK)
+        ).pack(side="left", padx=(8, 0))
+        
+        def on_change(event=None):
+            try:
+                value = size_var.get()
+                # Sınır kontrolü
+                if AdvancedPanelConstants.MIN_FILE_SIZE_MB <= value <= AdvancedPanelConstants.MAX_FILE_SIZE_MB:
+                    self.update_setting("max_file_size", value)
+                    entry.configure(border_color=(PanelConstants.BORDER_LIGHT, PanelConstants.BORDER_DARK))
+                else:
+                    entry.configure(border_color=("#e74c3c", "#e74c3c"))
+            except tk.TclError:
+                entry.configure(border_color=("#e74c3c", "#e74c3c"))
+        
+        entry.bind("<FocusOut>", on_change)
+        entry.bind("<Return>", on_change)
+        
+        self._widget_cache["max_file_size"] = entry
+
+    def _create_export_import_buttons(self) -> None:
+        """Dışa/İçe aktarma butonlarını oluşturur."""
+        export_text = self._get_localized("buttons.export", "📤 Dışa Aktar")
+        import_text = self._get_localized("buttons.import", "📥 İçe Aktar")
+        
+        self.add_button_row([
+            {
+                "text": export_text,
+                "command": self.settings_dialog.export_settings,
+                "style": "primary"
+            },
+            {
+                "text": import_text,
+                "command": self.settings_dialog.import_settings,
+                "style": "default"
+            }
+        ])
